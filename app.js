@@ -18,7 +18,7 @@ const config = {
 //For Image Downloader
 const options = {
   url: 'http://203.155.220.231/Radar/pics/nkzfiltered.jpg',
-  dest: './public/radar.jpg'        // Save to /path/to/dest/photo.jpg 
+  dest: './public/radarfull.jpg'        // Save to /path/to/dest/photo.jpg 
 };
 
 const optionsgif = {
@@ -76,8 +76,11 @@ new CronJob('0 */10 * * * *', function() { // sec min hr
     }).catch((err) => {
     throw err
     })
-    //Resize
-    resizeImg(fs.readFileSync('./public/radar.jpg'), {width: 240, height: 240}).then(buf => {
+    //Resize To Full 800x800
+    resizeImg(fs.readFileSync('./public/radarfull.jpg'), {width: 800, height: 800}).then(buf => {
+    fs.writeFileSync('./public/radar.jpg', buf);});
+    //Resize To Preview 240x240
+    resizeImg(fs.readFileSync('./public/radarfull.jpg'), {width: 240, height: 240}).then(buf => {
     fs.writeFileSync('./public/radar-preview.jpg', buf);});
     //Convert GIF to MP4 by CloudConvert
     fss.createReadStream('./public/radar.gif')
