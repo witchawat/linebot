@@ -87,7 +87,7 @@ new CronJob('0 */10 * * * *', function() { // sec min hr
     // throw err
     // })
     //UPLOAD GIF TO CLOUDINARY
-    cloudinary.uploader.upload("http://203.155.220.231/Radar/pics/radar.gif", function(result) { 
+    cloudinary.uploader.upload("http://203.155.220.231/Radar/pics/radar.gif",{use_filename: true, unique_filename : false}, function(result) { 
     console.log(result) 
     });
     //Resize To Full 800x800
