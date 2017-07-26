@@ -78,7 +78,7 @@ new CronJob('56 * * * * *', function() { // sec min hr
     console.log(result) 
     });
     //UPLOAD Img & Resize to 800x800
-    cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkzfiltered.jpg", {width:800, height: 800, crop: "scale", public_id: "radar800" use_filename: true, unique_filename : false}, function(error, result) { 
+    cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkzfiltered.jpg", {width:800, height: 800, crop: "scale", public_id: "radar800", use_filename: true, unique_filename : false}, function(error, result) { 
     console.log("=====IMAGE 800 UPLOADED=====")
     console.log(result) 
     });
