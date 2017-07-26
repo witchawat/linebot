@@ -57,7 +57,7 @@ function handleEvent(event) {
   if (event.type == 'message' && event.message.text == '!rain'){ 
       return client.replyMessage(event.replyToken, {
         "type": "image",
-        "originalContentUrl": "https://res.cloudinary.com/witchawat/image/upload/radar800.jpg",
+        "originalContentUrl": "https://res.cloudinary.com/witchawat/image/upload/radar240.jpg",
         "previewImageUrl": "https://res.cloudinary.com/witchawat/image/upload/radar240.jpg"
       })};
     //!rainvid
@@ -78,12 +78,12 @@ new CronJob('56 * * * * *', function() { // sec min hr
     console.log(result) 
     });
     //UPLOAD Img & Resize to 800x800
-    cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkzfiltered.jpg", "radar800.jpg", {width:800, height: 800, crop: "scale", use_filename: true, unique_filename : false}, function(error, result) { 
-    console.log("=====IMAGE 800 UPLOADED=====")
-    console.log(result) 
-    });
+    // cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkzfiltered.jpg", {width:800, height: 800, crop: "scale", use_filename: true, unique_filename : false}, function(error, result) { 
+    // console.log("=====IMAGE 800 UPLOADED=====")
+    // console.log(result) 
+    // });
     //UPLOAD Img & Resize to 240x240
-    cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkzfiltered.jpg", "radar240.jpg", {width:240, height: 240, crop: "scale", use_filename: true, unique_filename : false}, function(error, result) { 
+    cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkzfiltered.jpg", {width:240, height: 240, crop: "scale", use_filename: true, unique_filename : false}, function(error, result) { 
     console.log("=====IMAGE 240 UPLOADED=====")
     console.log(result) 
     });
