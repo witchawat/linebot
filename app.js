@@ -57,20 +57,20 @@ function handleEvent(event) {
   if (event.type == 'message' && event.message.text == '!rain'){ 
       return client.replyMessage(event.replyToken, {
         "type": "image",
-        "originalContentUrl": "https://linerain.herokuapp.com/radar.jpg",
-        "previewImageUrl": "https://linerain.herokuapp.com/radar-preview.jpg"
+        "originalContentUrl": "https://res.cloudinary.com/witchawat/image/upload/radar800.jpg",
+        "previewImageUrl": "https://res.cloudinary.com/witchawat/image/upload/radar240.jpg"
       })};
     //!rainvid
   if (event.type == 'message' && event.message.text == '!rainvid'){ 
       return client.replyMessage(event.replyToken, {
         "type": "video",
         "originalContentUrl": "https://res.cloudinary.com/witchawat/image/upload/radar.mp4",
-        "previewImageUrl": "https://linerain.herokuapp.com/radar-preview.jpg"
+        "previewImageUrl": "https://res.cloudinary.com/witchawat/image/upload/radar240.jpg"
       })};
 };
 
 //Download Image to /public/radar.jpg every xx minute
-new CronJob('56 */10 * * * *', function() { // sec min hr
+new CronJob('56 * * * * *', function() { // sec min hr
     console.log('You will see this message every 11 mins');
     //DL Image
     download.image(options)
@@ -87,15 +87,20 @@ new CronJob('56 */10 * * * *', function() { // sec min hr
     // throw err
     // })
     //UPLOAD GIF TO CLOUDINARY
-    cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/radar.gif",{use_filename: true, unique_filename : false}, function(result) { 
+    cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/radar.gif",{use_filename: true, unique_filename : false}, function(error, result) { 
+    console.log("=====GIF UPLOADED=====")
     console.log(result) 
     });
-    //Resize To Full 800x800
-    resizeImg(fs.readFileSync('./public/radarfull.jpg'), {width: 800, height: 800}).then(buf => {
-    fs.writeFileSync('./public/radar.jpg', buf);});
-    //Resize To Preview 240x240
-    resizeImg(fs.readFileSync('./public/radarfull.jpg'), {width: 240, height: 240}).then(buf => {
-    fs.writeFileSync('./public/radar-preview.jpg', buf);});
+    //UPLOAD Img & Resize to 800x800
+    cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkzfiltered.jpg", "radar800.jpg", {width:800, height: 800, use_filename: true, unique_filename : false}, function(error, result) { 
+    console.log("=====IMAGE 800 UPLOADED=====")
+    console.log(result) 
+    });
+    //UPLOAD Img & Resize to 240x240
+    cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkzfiltered.jpg", "radar240.jpg", {width:240, height: 240, use_filename: true, unique_filename : false}, function(error, result) { 
+    console.log("=====IMAGE 240 UPLOADED=====")
+    console.log(result) 
+    });
     //Convert GIF to MP4 by CloudConvert
     // fss.createReadStream('./public/radar.gif')
     // .pipe(cloudconvert.convert({
