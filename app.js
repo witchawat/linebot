@@ -26,10 +26,10 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET 
 });
 //For Image Downloader
-const options = {
-  url: 'http://203.155.220.231/Radar/pics/nkzfiltered.jpg',
-  dest: './public/radarfull.jpg'        // Save to /path/to/dest/photo.jpg 
-};
+// const options = {
+//   url: 'http://203.155.220.231/Radar/pics/nkzfiltered.jpg',
+//   dest: './public/radarfull.jpg'        // Save to /path/to/dest/photo.jpg 
+// };
 
 // const optionsgif = {
 //   url: 'http://203.155.220.231/Radar/pics/radar.gif',
