@@ -11,11 +11,11 @@
   "dependencies": {
     "@line/bot-sdk": "^2.0.0",
     "cloudconvert": "^1.1.2",
+    "cloudinary": "^1.9.0",
     "cron": "^1.2.1",
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
     "image-downloader": "^3.2.2",
-    "resize-img": "^1.1.2",
-    "cloudinary"
+    "resize-img": "^1.1.2"
   }
 }
