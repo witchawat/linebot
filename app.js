@@ -70,7 +70,7 @@ function handleEvent(event) {
 };
 
 //Download Image to /public/radar.jpg every xx minute
-new CronJob('40 * * * * *', function() { // sec min hr
+new CronJob('56 */10 * * * *', function() { // sec min hr
     console.log('You will see this message every 11 mins');
     //DL Image
     download.image(options)
