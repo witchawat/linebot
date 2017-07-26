@@ -17,7 +17,7 @@ const config = {
 };
 //For Image Downloader
 const options = {
-  url: 'http://weather.bangkok.go.th/FTPCustomer/radar/pics/nkradar.jpg',
+  url: 'http://203.155.220.231/Radar/pics/nkzfiltered.jpg',
   dest: './public/radar.jpg'        // Save to /path/to/dest/photo.jpg 
 };
 
@@ -47,15 +47,15 @@ function handleEvent(event) {
   if (event.type == 'message' && event.message.text == '!rain'){ 
       return client.replyMessage(event.replyToken, {
         "type": "image",
-        "originalContentUrl": "https://node-test-witchawat.c9users.io/radar.jpg",
-        "previewImageUrl": "https://node-test-witchawat.c9users.io/radar-preview.jpg"
+        "originalContentUrl": "https://linerain.herokuapp.com/radar.jpg",
+        "previewImageUrl": "https://linerain.herokuapp.com/radar-preview.jpg"
       })};
     //!rainvid
   if (event.type == 'message' && event.message.text == '!rainvid'){ 
       return client.replyMessage(event.replyToken, {
         "type": "video",
-        "originalContentUrl": "https://node-test-witchawat.c9users.io/radar.mp4",
-        "previewImageUrl": "https://node-test-witchawat.c9users.io/radar-preview.jpg"
+        "originalContentUrl": "https://linerain.herokuapp.com/radar.mp4",
+        "previewImageUrl": "https://linerain.herokuapp.com/radar-preview.jpg"
       })};
 };
 
