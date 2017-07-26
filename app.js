@@ -5,8 +5,12 @@ var CronJob = require('cron').CronJob;
 const download = require('image-downloader')
 const fs = require('fs'); //resize
 const fss = require('fs'); //resize
-
+var cloudinary = require('cloudinary'); //gif to mp4
 const resizeImg = require('resize-img'); //resize
+
+//================================
+//        KEYS
+//================================
 
 //Convert GIF to MP4
 var cloudconvert = new (require('cloudconvert'))(process.env.CLOUDCONVERT);
@@ -15,16 +19,22 @@ const config = {
   channelAccessToken: process.env.LINEACCESS,
   channelSecret: process.env.LINESECRET
 };
+//Cloudinary GIF to MP4
+cloudinary.config({ 
+  cloud_name: process.env.CLOUDINARY_NAME, 
+  api_key: process.env.CLOUDINARY_KEY, 
+  api_secret: process.env.CLOUDINARY_SECRET 
+});
 //For Image Downloader
 const options = {
   url: 'http://203.155.220.231/Radar/pics/nkzfiltered.jpg',
   dest: './public/radarfull.jpg'        // Save to /path/to/dest/photo.jpg 
 };
 
-const optionsgif = {
-  url: 'http://203.155.220.231/Radar/pics/radar.gif',
-  dest: './public/radar.gif'        // Save to /path/to/dest/photo.jpg 
-};
+// const optionsgif = {
+//   url: 'http://203.155.220.231/Radar/pics/radar.gif',
+//   dest: './public/radar.gif'        // Save to /path/to/dest/photo.jpg 
+// };
 
 const app = express();
 app.use(express.static('public'))
@@ -54,7 +64,7 @@ function handleEvent(event) {
   if (event.type == 'message' && event.message.text == '!rainvid'){ 
       return client.replyMessage(event.replyToken, {
         "type": "video",
-        "originalContentUrl": "https://linerain.herokuapp.com/radar.mp4",
+        "originalContentUrl": "https://res.cloudinary.com/witchawat/image/upload/radar.mp4",
         "previewImageUrl": "https://linerain.herokuapp.com/radar-preview.jpg"
       })};
 };
@@ -70,12 +80,16 @@ new CronJob('0 */10 * * * *', function() { // sec min hr
     throw err
     })
     //DL GIF
-    download.image(optionsgif)
-    .then(({ filename, image }) => {
-    console.log('File saved to', filename)
-    }).catch((err) => {
-    throw err
-    })
+    // download.image(optionsgif)
+    // .then(({ filename, image }) => {
+    // console.log('File saved to', filename)
+    // }).catch((err) => {
+    // throw err
+    // })
+    //UPLOAD GIF TO CLOUDINARY
+    cloudinary.uploader.upload("http://203.155.220.231/Radar/pics/radar.gif", function(result) { 
+    console.log(result) 
+    });
     //Resize To Full 800x800
     resizeImg(fs.readFileSync('./public/radarfull.jpg'), {width: 800, height: 800}).then(buf => {
     fs.writeFileSync('./public/radar.jpg', buf);});
@@ -83,13 +97,14 @@ new CronJob('0 */10 * * * *', function() { // sec min hr
     resizeImg(fs.readFileSync('./public/radarfull.jpg'), {width: 240, height: 240}).then(buf => {
     fs.writeFileSync('./public/radar-preview.jpg', buf);});
     //Convert GIF to MP4 by CloudConvert
-    fss.createReadStream('./public/radar.gif')
-    .pipe(cloudconvert.convert({
-        inputformat: 'gif',
-        outputformat: 'mp4',
-        input: 'upload'
-    }))
-    .pipe(fss.createWriteStream('./public/radar.mp4'));
+    // fss.createReadStream('./public/radar.gif')
+    // .pipe(cloudconvert.convert({
+    //     inputformat: 'gif',
+    //     outputformat: 'mp4',
+    //     input: 'upload'
+    // }))
+    // .pipe(fss.createWriteStream('./public/radar.mp4'));
+    //Convert GIF to MP4 by CloudConvert
         
     }, null, true, 'Asia/Bangkok');
 
