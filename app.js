@@ -28,6 +28,8 @@ const optionsgif = {
 
 const app = express();
 app.use(express.static('public'))
+app.set('port', (process.env.PORT || 5000));
+
 
 app.post('/webhook', line.middleware(config), (req, res) => {
   Promise
@@ -92,8 +94,12 @@ app.get("*", function(req,res){
     res.send("Ong Line Bot");
 });
 
-app.listen(process.env.PORT, process.env.IP, function(){
-    console.log("Server has started!");
-})
+//c9.io setting
+//app.listen(process.env.PORT, process.env.IP, function(){
+//    console.log("Server has started!");
+//})
 
-//WTF?
+//Heroku setting
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
