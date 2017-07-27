@@ -70,7 +70,7 @@ function handleEvent(event) {
 };
 
 //Download Image to /public/radar.jpg every xx minute
-new CronJob('56 1,11,21,31,41,51 4-23 * * *', function() { // sec min hr
+new CronJob('56 1,11,21,31,41,51 * * * *', function() { // sec min hr
     console.log('You will see this message every 11 mins');
     //UPLOAD GIF TO CLOUDINARY
     cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/radar.gif",{use_filename: true, unique_filename : false}, function(error, result) { 
