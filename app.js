@@ -32,7 +32,13 @@ app.set('port', (process.env.PORT || 5000));
 app.post('/webhook', line.middleware(config), (req, res) => {
   Promise
     .all(req.body.events.map(handleEvent))
-    .then((result) => res.json(result),(reject)=>res.json(''));
+    .then(
+      (result) => res.json(result),
+      (reject)=>{
+        console.log('handleEvent func rejected');
+        res.json('');
+      }
+    );
 });
 
 const client = new line.Client(config);
