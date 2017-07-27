@@ -3,8 +3,6 @@ const express = require('express');
 const line = require('@line/bot-sdk');
 var CronJob = require('cron').CronJob;
 var cloudinary = require('cloudinary'); //gif to mp4
-var htmlparser = require("htmlparser2");//ไว้ parse ผลหวย
-var request = require('request');
 
 //================================
 //        KEYS
@@ -52,7 +50,6 @@ function handleEvent(event) {
         "originalContentUrl": url_radar800,
         "previewImageUrl": url_radar240
       })};
-  
     //!rainvid
   if (event.type == 'message' && event.message.text == '!rainvid'){ 
       return client.replyMessage(event.replyToken, {
@@ -60,55 +57,8 @@ function handleEvent(event) {
         "originalContentUrl": url_radarvid,
         "previewImageUrl": url_radar240
       })};
-  /*
-  //!lotto <lottoNum>
-  var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
-  if (lottoParam[0] == '!lotto' || lottoParam[0] == '!หวย') {
-    lottoResult(lottoParam[1]).then(resolve => {
-      if (resolve != '') {
-        return client.replyMessage(event.replyToken, {
-          "type": "text",
-          "text": resolve
-        })
-      };
-    });
-  }
-  // end lotto
-  */
 };
 
-/*
-//ตรวจหวย
-function lottoResult(lottoNum) {
-  return new Promise((resolve, reject) => {
-    var dd = new Date();
-    var ldate = dd.getFullYear() + '-' + ('0' + (dd.getMonth() + 1)).slice(-2) + '-' + (dd.getDate() < 16 ? '01' : '16');
-    lottoNum = lottoNum.trim();
-    if (isNaN(lottoNum) || lottoNum.length != 6) resolve('');
-    request.post({
-      url: 'http://www.glo.or.th/glo_seize/lottary/check_lottary.php',
-      form: {
-        kuson: 1,
-        ldate: ldate,
-        lnumber: lottoNum,
-        c_set: ''
-      }
-    }, function (err, res, body) {
-      var _res = body.substring(body.indexOf('id="dCheckLotto">') + 18, body.indexOf('id="dCheckLotto">') + 1000).trim();
-      _res = _res.substring(0, _res.indexOf('</table>') + 8);
-      var parserRes = '';
-      var parser = new htmlparser.Parser({
-        ontext: function (text) {
-          parserRes += text.trim() + ' ';
-        }
-      });
-      parser.write(_res);
-      parser.end();
-      resolve(parserRes.trim().replace('ขอขอบคุณที่ร่วมเป็นส่วนหนึ่งในการพัฒนาสังคมอย่างยั่งยืน  ช่วยราษฎร์  เสริมรัฐ ยืนหยัดยุติธรรม', ''));
-    });
-  });
-}
-*/
 //Upload Radar Images to CLOUDINARY every 11th min 
 new CronJob('56 1,11,21,31,41,51 * * * *', function() { // sec min hr
     console.log('You will see this message every 11 mins');
