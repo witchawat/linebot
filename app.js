@@ -64,7 +64,7 @@ function handleEvent(event) {
   //!lotto <lottoNum>
   var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
   if (lottoParam[0] == '!lotto' || lottoParam[0] == '!หวย') {
-    lottoResult(lottoParam[1]).then((resolve, reject) => {
+    lottoResult(lottoParam[1]).then(resolve => {
       if (resolve != '') {
         return client.replyMessage(event.replyToken, {
           "type": "text",
