@@ -60,7 +60,7 @@ function handleEvent(event) {
         "originalContentUrl": url_radarvid,
         "previewImageUrl": url_radar240
       })};
-  
+  /*
   //!lotto <lottoNum>
   var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
   if (lottoParam[0] == '!lotto' || lottoParam[0] == '!หวย') {
@@ -74,6 +74,7 @@ function handleEvent(event) {
     });
   }
   // end lotto
+  */
 };
 
 //ตรวจหวย
