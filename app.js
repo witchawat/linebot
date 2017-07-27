@@ -2,11 +2,7 @@ require('dotenv').config()
 const express = require('express');
 const line = require('@line/bot-sdk');
 var CronJob = require('cron').CronJob;
-const download = require('image-downloader')
-const fs = require('fs'); //resize
-const fss = require('fs'); //resize
 var cloudinary = require('cloudinary'); //gif to mp4
-const resizeImg = require('resize-img'); //resize
 
 //================================
 //        KEYS
@@ -25,16 +21,7 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_KEY, 
   api_secret: process.env.CLOUDINARY_SECRET 
 });
-//For Image Downloader
-// const options = {
-//   url: 'http://203.155.220.231/Radar/pics/nkzfiltered.jpg',
-//   dest: './public/radarfull.jpg'        // Save to /path/to/dest/photo.jpg 
-// };
-
-// const optionsgif = {
-//   url: 'http://203.155.220.231/Radar/pics/radar.gif',
-//   dest: './public/radar.gif'        // Save to /path/to/dest/photo.jpg 
-// };
+//================================
 
 const app = express();
 app.use(express.static('public'))
@@ -69,7 +56,7 @@ function handleEvent(event) {
       })};
 };
 
-//Download Image to /public/radar.jpg every xx minute
+//Upload Radar Images to CLOUDINARY every 11th min 
 new CronJob('56 1,11,21,31,41,51 * * * *', function() { // sec min hr
     console.log('You will see this message every 11 mins');
     //UPLOAD GIF TO CLOUDINARY
@@ -87,15 +74,6 @@ new CronJob('56 1,11,21,31,41,51 * * * *', function() { // sec min hr
     console.log("=====IMAGE 240 UPLOADED=====")
     console.log(result) 
     });
-    //Convert GIF to MP4 by CloudConvert
-    // fss.createReadStream('./public/radar.gif')
-    // .pipe(cloudconvert.convert({
-    //     inputformat: 'gif',
-    //     outputformat: 'mp4',
-    //     input: 'upload'
-    // }))
-    // .pipe(fss.createWriteStream('./public/radar.mp4'));
-    //Convert GIF to MP4 by CloudConvert
         
     }, null, true, 'Asia/Bangkok');
 
