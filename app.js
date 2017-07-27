@@ -35,13 +35,18 @@ app.post('/webhook', line.middleware(config), (req, res) => {
     .then(
       (result) => res.json(result),
       (reject)=>{
+        if(!isFetchingImageAndVid){
+          isFetchingImageAndVid = true;
+          setTimeout(function(){fetchImageAndVid();},10);
+        }
         console.log('handleEvent func rejected');
-        res.json('');
+        res.send('');
       }
     );
 });
 
 const client = new line.Client(config);
+var isFetchingImageAndVid = false;
 var url_radarvid = "";
 var url_radar240 = "";
 var url_radar800 = "";
@@ -67,7 +72,8 @@ function handleEvent(event) {
 };
 
 //Upload Radar Images to CLOUDINARY every 11th min 
-new CronJob('56 1,11,21,31,41,51 * * * *', function() { // sec min hr
+new CronJob('56 1,11,21,31,41,51 * * * *', fetchImageAndVid, null, true, 'Asia/Bangkok');
+function fetchImageAndVid() { // sec min hr
     console.log('You will see this message every 11 mins');
     //UPLOAD GIF TO CLOUDINARY
     cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkradar.gif",{use_filename: true, unique_filename : true}, function(error, result) { 
@@ -88,8 +94,7 @@ new CronJob('56 1,11,21,31,41,51 * * * *', function() { // sec min hr
     url_radar240 = result.secure_url;
     });
         
-    }, null, true, 'Asia/Bangkok');
-
+    }
 app.get("*", function(req,res){
     res.send("Ong Line Bot");
 });
