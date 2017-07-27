@@ -77,6 +77,7 @@ function handleEvent(event) {
   */
 };
 
+/*
 //ตรวจหวย
 function lottoResult(lottoNum) {
   return new Promise((resolve, reject) => {
@@ -107,7 +108,7 @@ function lottoResult(lottoNum) {
     });
   });
 }
-
+*/
 //Upload Radar Images to CLOUDINARY every 11th min 
 new CronJob('56 1,11,21,31,41,51 * * * *', function() { // sec min hr
     console.log('You will see this message every 11 mins');
