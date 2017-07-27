@@ -35,10 +35,6 @@ app.post('/webhook', line.middleware(config), (req, res) => {
     .then(
       (result) => res.json(result),
       (reject)=>{
-        if(!isFetchingImageAndVid){
-          isFetchingImageAndVid = true;
-          setTimeout(function(){fetchImageAndVid();},10);
-        }
         console.log('handleEvent func rejected');
         res.send('');
       }
@@ -46,7 +42,6 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 });
 
 const client = new line.Client(config);
-var isFetchingImageAndVid = false;
 var url_radarvid = "";
 var url_radar240 = "";
 var url_radar800 = "";
@@ -138,7 +133,8 @@ function fetchImageAndVid() { // sec min hr
     url_radar240 = result.secure_url;
     });
         
-    }
+}
+fetchImageAndVid();
 app.get("*", function(req,res){
     res.send("Ong Line Bot");
 });
