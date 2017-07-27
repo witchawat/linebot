@@ -58,25 +58,6 @@ function handleEvent(event) {
         "originalContentUrl": url_radarvid,
         "previewImageUrl": url_radar240
       })};
-
-  //!lotto <lottoNum>
-  if(event.message.text){
-    var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
-    if (lottoParam[0] == '!lotto' || lottoParam[0] == '!หวย') {
-      console.log('หวย หวย หวย ')
-      /*
-      lottoResult(lottoParam[1]).then(resolve => {
-        if (resolve != '') {
-          return client.replyMessage(event.replyToken, {
-            "type": "text",
-            "text": resolve
-          },reject={})
-        };
-      });
-      */
-    }
-  }
-  // end lotto  
 };
 
 //Upload Radar Images to CLOUDINARY every 11th min 
