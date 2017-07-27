@@ -35,6 +35,9 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 });
 
 const client = new line.Client(config);
+var url_radarvid = "";
+var url_radar240 = "";
+var url_radar800 = "";
 
 function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
@@ -44,15 +47,15 @@ function handleEvent(event) {
   if (event.type == 'message' && event.message.text == '!rain'){ 
       return client.replyMessage(event.replyToken, {
         "type": "image",
-        "originalContentUrl": "https://res.cloudinary.com/witchawat/image/upload/radar800.jpg",
-        "previewImageUrl": "https://res.cloudinary.com/witchawat/image/upload/radar240.jpg"
+        "originalContentUrl": url_radar800,
+        "previewImageUrl": url_radar240
       })};
     //!rainvid
   if (event.type == 'message' && event.message.text == '!rainvid'){ 
       return client.replyMessage(event.replyToken, {
         "type": "video",
-        "originalContentUrl": "https://res.cloudinary.com/witchawat/image/upload/radar.mp4",
-        "previewImageUrl": "https://res.cloudinary.com/witchawat/image/upload/radar240.jpg"
+        "originalContentUrl": url_radarvid,
+        "previewImageUrl": url_radar240
       })};
 };
 
@@ -62,17 +65,20 @@ new CronJob('56 1,11,21,31,41,51 * * * *', function() { // sec min hr
     //UPLOAD GIF TO CLOUDINARY
     cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/radar.gif",{use_filename: true, unique_filename : false}, function(error, result) { 
     console.log("=====GIF UPLOADED=====")
-    console.log(result) 
+    console.log(result.secure_url) 
+    url_radarvid = result.secure_url;
     });
     //UPLOAD Img & Resize to 800x800
     cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkzfiltered.jpg", {width:800, height: 800, crop: "scale", public_id: "radar800", use_filename: true, unique_filename : false}, function(error, result) { 
     console.log("=====IMAGE 800 UPLOADED=====")
-    console.log(result) 
+    console.log(result.secure_url) 
+    url_radar800 = result.secure_url;
     });
     //UPLOAD Img & Resize to 240x240
     cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkzfiltered.jpg", {width:240, height: 240, crop: "scale", public_id: "radar240", use_filename: true, unique_filename : false}, function(error, result) { 
     console.log("=====IMAGE 240 UPLOADED=====")
-    console.log(result) 
+    console.log(result.secure_url) 
+    url_radar240 = result.secure_url;
     });
         
     }, null, true, 'Asia/Bangkok');
