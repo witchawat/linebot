@@ -51,7 +51,7 @@ function handleEvent(event) {
         "previewImageUrl": url_radar240
       })};
     //!rainvid
-  // if (event.type == 'message' && event.message.text == '!rainvid'){ 
+  if (event.type == 'message' && event.message.text == '!rainvid'){ 
       return client.replyMessage(event.replyToken, {
         "type": "video",
         "originalContentUrl": url_radarvid,
