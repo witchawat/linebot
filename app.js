@@ -121,9 +121,14 @@ function fetchImageAndVid() { // sec min hr
     console.log('You will see this message every 11 mins');
     //UPLOAD GIF TO CLOUDINARY
     cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkradar.gif",{use_filename: true, unique_filename : true}, function(error, result) { 
-    console.log("=====GIF UPLOADED=====")
-    console.log(result.secure_url) 
-    url_radarvid = result.secure_url.replace(".gif", ".mp4");
+    if(result.secure_url){
+      console.log("=====GIF UPLOADED=====")
+      console.log(result.secure_url) 
+      url_radarvid = result.secure_url.replace(".gif", ".mp4");
+    }else{
+      console.log("=====GIF UPLOADED FAILED ?!? =====")
+      console.log(result);
+    }
     });
     //UPLOAD Img & Resize to 800x800
     cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkzfiltered.jpg", {width:800, height: 800, crop: "scale", public_id: "radar800", use_filename: true, unique_filename : true}, function(error, result) { 
