@@ -86,6 +86,7 @@ function lottoResult(lottoNum) {
     var dd = new Date();
     var ldate = dd.getFullYear() + '-' + ('0' + (dd.getMonth() + 1)).slice(-2) + '-' + (dd.getDate() < 16 ? '01' : '16');
     lottoNum = lottoNum.trim();
+    ldate='2017-08-01';
     if (isNaN(lottoNum) || lottoNum.length != 6) resolve('');
     request.post({
       url: 'http://www.glo.or.th/glo_seize/lottary/check_lottary.php',
@@ -96,7 +97,9 @@ function lottoResult(lottoNum) {
         c_set: ''
       }
     }, function (err, res, body) {
+      if(err) resolve('');
       var _res = body.substring(body.indexOf('id="dCheckLotto">') + 18, body.indexOf('id="dCheckLotto">') + 1000).trim();
+      if(body.indexOf('value="'+ldate+'"')<0) resolve('หวยยังไม่ออกจ้า');
       _res = _res.substring(0, _res.indexOf('</table>') + 8);
       var parserRes = '';
       var parser = new htmlparser.Parser({
