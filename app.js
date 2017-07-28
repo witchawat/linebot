@@ -60,7 +60,9 @@ function handleEvent(event) {
         client.replyMessage(event.replyToken, {
           "type": "text",
           "text": 'ไปสวนลุม :: '+resp.txt
-        }).then(()=>{
+        }).then((resp2)=>{
+          console.log('--- resp2 ---');
+          console.log(resp2);
           return client.replyMessage(event.replyToken, {
             "type": "image",
             "originalContentUrl": 'https://linerain.herokuapp.com/'+resp.img,
