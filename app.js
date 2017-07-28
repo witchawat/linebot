@@ -5,6 +5,7 @@ var CronJob = require('cron').CronJob;
 var cloudinary = require('cloudinary'); //gif to mp4
 var htmlparser = require("htmlparser2");//ไว้ parse ผลหวย
 var request = require('request');
+var fs = require('fs');
 //================================
 //        KEYS
 //================================
