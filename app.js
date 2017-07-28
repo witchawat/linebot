@@ -60,11 +60,12 @@ function handleEvent(event) {
         client.replyMessage(event.replyToken, {
           "type": "text",
           "text": 'ไปสวนลุม :: '+resp.txt
-        });
-        return client.replyMessage(event.replyToken, {
-          "type": "image",
-          "originalContentUrl": 'https://linerain.herokuapp.com/'+resp.img,
-          "previewImageUrl": 'https://linerain.herokuapp.com/'+resp.img
+        }).then(()=>{
+          return client.replyMessage(event.replyToken, {
+            "type": "image",
+            "originalContentUrl": 'https://linerain.herokuapp.com/'+resp.img,
+            "previewImageUrl": 'https://linerain.herokuapp.com/'+resp.img
+          });
         });
       },
       rej => { return Promise.resolve(null) }
