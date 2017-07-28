@@ -84,6 +84,7 @@ function handleEvent(event) {
 function lottoResult(lottoNum) {
   return new Promise((resolve, reject) => {
     var dd = new Date();
+    console.log(dd);
     var ldate = dd.getFullYear() + '-' + ('0' + (dd.getMonth() + 1)).slice(-2) + '-' + (dd.getDate() < 16 ? '01' : '16');
     lottoNum = lottoNum.trim();
     if (isNaN(lottoNum) || lottoNum.length != 6) resolve('');
