@@ -59,7 +59,7 @@ function handleEvent(event) {
       resp => {
         client.replyMessage(event.replyToken, {
           "type": "text",
-          "text": resp.txt
+          "text": 'ไปสวนลุม :: '+resp.txt
         });
         return client.replyMessage(event.replyToken, {
           "type": "image",
@@ -94,6 +94,7 @@ function handleEvent(event) {
   }
   
   //!lotto <lottoNum>
+  if(event.message.text){
   var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
   if (!hasMatchedCommand && (lottoParam[0] == '!lotto' || lottoParam[0] == '!หวย')) {
     hasMatchedCommand = true;
@@ -105,6 +106,7 @@ function handleEvent(event) {
         })
       };
     });
+  }
   }
   // end lotto
 };
