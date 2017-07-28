@@ -50,7 +50,7 @@ var url_radar800 = "";
 
 function handleEvent(event) {
   //console.log('--- handleEvent ---');
-  //console.log(event);
+  console.log(event);
   //!สล
   var hasMatchedCommand = false;
   if(!hasMatchedCommand && (event.type == 'message' && event.message.type == 'location')){
