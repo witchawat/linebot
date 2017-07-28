@@ -49,27 +49,48 @@ var url_radar800 = "";
 function handleEvent(event) {
   //console.log('--- handleEvent ---');
   //console.log(event);
-  if (event.type !== 'message' || event.message.type !== 'text') {
+  //!สล
+  var hasMatchedCommand = false;
+  if(!hasMatchedCommand && (event.type == 'message' && event.message.type == 'location')){
+    hasMatchedCommand = true;
+    di2suanlum(event.message.latitude, event.message.longitude).then(
+      resp => {
+        return client.replyMessage(event.replyToken, {
+          "type": "image",
+          "originalContentUrl": 'https://linerain.herokuapp.com/'+resp.img,
+          "previewImageUrl": 'https://linerain.herokuapp.com/'+resp.img
+        });
+      },
+      rej => return Promise.resolve(null)
+    );
+  }
+  if (!hasMatchedCommand && (event.type !== 'message' || event.message.type !== 'text')) {
+    hasMatchedCommand = true;
     return Promise.resolve(null);
   }
   //!rain - jpg
-  if (event.type == 'message' && event.message.text == '!rain'){ 
-      return client.replyMessage(event.replyToken, {
-        "type": "image",
-        "originalContentUrl": url_radar800,
-        "previewImageUrl": url_radar240
-      })};
+  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!rain')){ 
+    hasMatchedCommand = true;
+    return client.replyMessage(event.replyToken, {
+      "type": "image",
+      "originalContentUrl": url_radar800,
+      "previewImageUrl": url_radar240
+    })
+  }
     //!rainvid
-  if (event.type == 'message' && event.message.text == '!rainvid'){ 
-      return client.replyMessage(event.replyToken, {
-        "type": "video",
-        "originalContentUrl": url_radarvid,
-        "previewImageUrl": url_radar240
-      })};
+  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!rainvid')){ 
+    hasMatchedCommand = true;
+    return client.replyMessage(event.replyToken, {
+      "type": "video",
+      "originalContentUrl": url_radarvid,
+      "previewImageUrl": url_radar240
+    })
+  }
   
   //!lotto <lottoNum>
   var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
-  if (lottoParam[0] == '!lotto' || lottoParam[0] == '!หวย') {
+  if (!hasMatchedCommand && (lottoParam[0] == '!lotto' || lottoParam[0] == '!หวย')) {
+    hasMatchedCommand = true;
     lottoResult(lottoParam[1]).then(resolve => {
       if (resolve != '') {
         return client.replyMessage(event.replyToken, {
