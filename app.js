@@ -57,13 +57,14 @@ function handleEvent(event) {
     hasMatchedCommand = true;
     di2suanlum(event.message.latitude, event.message.longitude).then(
       resp => {
-        client.replyMessage(event.replyToken, {
+        var pushTo=event.source.userId;
+        if(event.source.roomId)pushTo=event.source.roomId;
+        if(event.source.groupId)pushTo=event.source.groupId;
+        client.pushMessage(pushTo, {
           "type": "text",
           "text": 'ไปสวนลุม :: '+resp.txt
-        }).then((resp2)=>{
-          console.log('--- resp2 ---');
-          console.log(resp2);
-          return client.replyMessage(event.replyToken, {
+        }).then(()=>{
+          return client.pushMessage(pushTo, {
             "type": "image",
             "originalContentUrl": 'https://linerain.herokuapp.com/'+resp.img,
             "previewImageUrl": 'https://linerain.herokuapp.com/'+resp.img
