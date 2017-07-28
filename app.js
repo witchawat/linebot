@@ -47,8 +47,8 @@ var url_radar240 = "";
 var url_radar800 = "";
 
 function handleEvent(event) {
-  console.log('--- handleEvent ---');
-  console.log(event);
+  //console.log('--- handleEvent ---');
+  //console.log(event);
   if (event.type !== 'message' || event.message.type !== 'text') {
     return Promise.resolve(null);
   }
