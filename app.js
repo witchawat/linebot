@@ -61,7 +61,7 @@ function handleEvent(event) {
           "previewImageUrl": 'https://linerain.herokuapp.com/'+resp.img
         });
       },
-      rej => return Promise.resolve(null)
+      rej => { return Promise.resolve(null) }
     );
   }
   if (!hasMatchedCommand && (event.type !== 'message' || event.message.type !== 'text')) {
