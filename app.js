@@ -57,6 +57,10 @@ function handleEvent(event) {
     hasMatchedCommand = true;
     di2suanlum(event.message.latitude, event.message.longitude).then(
       resp => {
+        client.replyMessage(event.replyToken, {
+          "type": "text",
+          "text": resp.txt
+        });
         return client.replyMessage(event.replyToken, {
           "type": "image",
           "originalContentUrl": 'https://linerain.herokuapp.com/'+resp.img,
