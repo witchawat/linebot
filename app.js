@@ -115,6 +115,32 @@ function lottoResult(lottoNum) {
     });
   });
 }
+// map to สวนลุม
+
+function di2suanlum(lat, lng) {
+  return new Promise((resolve, reject) => {
+    var diTxt, diImg;
+    request.get("https://maps.googleapis.com/maps/api/directions/json?origin=" + lat + ',' + lng + "&destination=13.732587,100.545527&key=AIzaSyDJQ3f8DxNjNkokV7T5PoV-EA1_iUUFCw8&language=th", function (err, response, body) {
+      if (err) return reject('');
+      var ret = JSON.parse(body);
+      if (ret.routes.length == 0) return reject('');
+      diTxt = ret.routes[0].legs[0].duration.text + ', ' + ret.routes[0].legs[0].distance.text;
+      request.get('https://maps.googleapis.com/maps/api/staticmap?size=600x600&key=AIzaSyDJQ3f8DxNjNkokV7T5PoV-EA1_iUUFCw8&markers=color:crimson%7Clabel:S%7C13.732587,100.545527&path=enc:' + ret.routes[0].overview_polyline.points, {
+        encoding: 'binary'
+      }, function (err, response, body) {
+        if (err) return reject('');
+        diImg = (new Date().getTime()) + '.png';
+        fs.writeFile(path.join(process.cwd(), '/./public/', diImg), body, 'binary', function (err) {
+          if (err) return reject('');
+          return resolve({
+            'txt': diTxt,
+            'img': diImg
+          });
+        });
+      });
+    });
+  });
+}
 //Upload Radar Images to CLOUDINARY every 11th min 
 new CronJob('56 1,11,21,31,41,51 * * * *', fetchImageAndVid, null, true, 'Asia/Bangkok');
 function fetchImageAndVid() { // sec min hr
