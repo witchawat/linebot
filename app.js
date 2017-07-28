@@ -86,7 +86,6 @@ function lottoResult(lottoNum) {
     var dd = new Date();
     var ldate = dd.getFullYear() + '-' + ('0' + (dd.getMonth() + 1)).slice(-2) + '-' + (dd.getDate() < 16 ? '01' : '16');
     lottoNum = lottoNum.trim();
-    ldate='2017-08-01';
     if (isNaN(lottoNum) || lottoNum.length != 6) resolve('');
     request.post({
       url: 'http://www.glo.or.th/glo_seize/lottary/check_lottary.php',
