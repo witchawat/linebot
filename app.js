@@ -57,12 +57,23 @@ function handleEvent(event) {
     hasMatchedCommand = true;
     di2suanlum(event.message.latitude, event.message.longitude).then(
       resp => {
+        return client.replyMessage(event.replyToken, [
+          {
+          "type": "text",
+          "text": 'ขับรถไปสวนลุม :: '+resp.txt
+          },{
+            "type": "image",
+            "originalContentUrl": 'https://linerain.herokuapp.com/'+resp.img,
+            "previewImageUrl": 'https://linerain.herokuapp.com/'+resp.img
+          }
+        ])
+        /*
         var pushTo=event.source.userId;
         if(event.source.roomId)pushTo=event.source.roomId;
         if(event.source.groupId)pushTo=event.source.groupId;
         client.pushMessage(pushTo, {
           "type": "text",
-          "text": 'ไปสวนลุม :: '+resp.txt
+          "text": 'ขับรถไปสวนลุม :: '+resp.txt
         }).then(()=>{
           return client.pushMessage(pushTo, {
             "type": "image",
@@ -70,6 +81,7 @@ function handleEvent(event) {
             "previewImageUrl": 'https://linerain.herokuapp.com/'+resp.img
           });
         });
+        */
       },
       rej => { return Promise.resolve(null) }
     );
