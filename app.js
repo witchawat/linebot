@@ -169,7 +169,12 @@ function di2suanlum(lat, lng) {
       if (err) return reject('');
       var ret = JSON.parse(body);
       if (ret.routes.length == 0) return reject('');
-      diTxt = ret.routes[0].legs[0].duration_in_traffic.text + ', ' + ret.routes[0].legs[0].distance.text;
+      if(ret.routes[0].legs[0].duration){
+        diTxt = ret.routes[0].legs[0].duration.text + ', ' + ret.routes[0].legs[0].distance.text;
+      }
+      if(ret.routes[0].legs[0].duration_in_traffic){
+        diTxt = ret.routes[0].legs[0].duration_in_traffic.text + ', ' + ret.routes[0].legs[0].distance.text;
+      }
       request.get('https://maps.googleapis.com/maps/api/staticmap?size=600x600&key=AIzaSyDJQ3f8DxNjNkokV7T5PoV-EA1_iUUFCw8&markers=color:crimson%7C13.732587,100.545527&path=enc:' + ret.routes[0].overview_polyline.points, {
         encoding: 'binary'
       }, function (err, response, body) {
