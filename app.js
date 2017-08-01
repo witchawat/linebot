@@ -116,9 +116,9 @@ function handleEvent(event) {
     hasMatchedCommand = true;
     lottoResult(lottoParam[1]).then(resolve => {
       if (resolve.length>0) {
-        var resTxt=lottoParam[1]+'ถูกรางวัล ';
+        var resTxt=lottoParam[1]+' ถูกรางวัล ';
         for(var i in resolve){
-          resTxt+=(resolve.message+' มูลค่า '+resolve.prize+' บาท ');
+          resTxt+=(resolve[i].message+' มูลค่า '+resolve[i].prize+' บาท ');
         }
         return client.replyMessage(event.replyToken, {
           "type": "text",
