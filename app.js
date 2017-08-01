@@ -163,6 +163,7 @@ function lottoResult(lottoNum) {
     if(lottoRes.prize['prize_last2'].indexOf(chk)>=0){
       res.push(lottoRes.wording['prize_last2']);
     }
+    res.push({message:'หวยแดก',prize:'0'});
     resolve(res);
   });
 }
