@@ -144,10 +144,6 @@ function lottoResult(lottoNum) {
         res.push(lottoRes.wording[i]);
       }
     }
-    // first prize
-    if(lottoNum==lottoRes.prize['prize_1']){
-      res.push(lottoRes.wording['prize_1']);
-    }
     //first 3
     var chk=lottoNum.substring(0,3);
     if(lottoRes.prize['prize_first3'].indexOf(chk)>=0){
