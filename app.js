@@ -115,10 +115,14 @@ function handleEvent(event) {
   if (!hasMatchedCommand && (lottoParam[0] == '!lotto' || lottoParam[0] == '!หวย')) {
     hasMatchedCommand = true;
     lottoResult(lottoParam[1]).then(resolve => {
-      if (resolve != '') {
+      if (resolve.length>0) {
+        var resTxt=lottoParam[1]+'ถูกรางวัล ';
+        for(var i in resolve){
+          resTxt+=(resolve.message+' มูลค่า '+resolve.prize+' บาท ');
+        }
         return client.replyMessage(event.replyToken, {
           "type": "text",
-          "text": resolve
+          "text": resTxt
         })
       };
     });
@@ -128,7 +132,41 @@ function handleEvent(event) {
 };
 
 //ตรวจหวย
+
 function lottoResult(lottoNum) {
+  return new Promise((resolve, reject) => {
+    lottoNum+='';
+    lottoNum = lottoNum.trim();
+    var res=[];
+    if (isNaN(lottoNum) || lottoNum.length != 6){ resolve([]);return;}
+    for(var i in lottoRes.prize){
+      if(lottoRes.prize[i].indexOf(lottoNum)>=0){
+        res.push(lottoRes.wording[i]);
+      }
+    }
+    // first prize
+    if(lottoNum==lottoRes.prize['prize_1']){
+      res.push(lottoRes.wording['prize_1']);
+    }
+    //first 3
+    var chk=lottoNum.substring(0,3);
+    if(lottoRes.prize['prize_first3'].indexOf(chk)>=0){
+      res.push(lottoRes.wording['prize_first3']);
+    }
+    //last 3
+    var chk=lottoNum.substring(3);
+    if(lottoRes.prize['prize_last3'].indexOf(chk)>=0){
+      res.push(lottoRes.wording['prize_last3']);
+    }
+    //last 2
+    chk=chk.substring(1);
+    if(lottoRes.prize['prize_last2'].indexOf(chk)>=0){
+      res.push(lottoRes.wording['prize_last2']);
+    }
+    resolve(res);
+  });
+}
+function _lottoResult(lottoNum) {
   return new Promise((resolve, reject) => {
     var dd = new Date();
     console.log('hh:mm '+dd.getHours()+':'+dd.getMinutes());
