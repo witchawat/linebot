@@ -279,7 +279,7 @@ function fetchImageAndVid() { // sec min hr
     {invalidate: true }, function(error, result) {console.log(result)});
     console.log('>>>>>Begin DOWNLOADING new images<<<<<')
     //UPLOAD GIF TO CLOUDINARY
-    cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkradar.gif",{use_filename: true, unique_filename : true}, function(error, result) { 
+    cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkradar.gif",{public_id: "radarvid", use_filename: true, unique_filename : true}, function(error, result) { 
       if(error){
         console.log("=====GIF UPLOADED FAILED ?!? =====")
         console.log(error);
