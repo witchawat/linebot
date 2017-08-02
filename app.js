@@ -309,7 +309,7 @@ function FBaggregator() {
       console.log('fbToken is empty');
       return false;
     }
-    request.get("https://graph.facebook.com/v2.10/219520224912468/feed?fields=message,permalink_url,updated_time,created_time,full_picture&limit=30&access_token=" + fbToken, function (err, response, body) {
+    request.get("https://graph.facebook.com/v2.10/219520224912468/feed?fields=message,permalink_url,updated_time,created_time,full_picture&limit=300&access_token=" + fbToken, function (err, response, body) {
       if (err) {
         console.log(err);
         return;
@@ -364,7 +364,7 @@ function processSalePost(o) {
     if (typeof uIdVal == 'undefined' || !uIdVal) {
       console.log(uId);
       console.log(message);
-      client.pushMessage(process.env.LINE_SALE_POST_NOTI_TARGET, message);
+      //client.pushMessage(process.env.LINE_SALE_POST_NOTI_TARGET, message);
       redisClient.set(uId, 1, 'EX', 7 * 24 * 60 * 60);
     }
   });
