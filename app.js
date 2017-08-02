@@ -160,7 +160,9 @@ function handleEvent(event) {
   /*!sound*/
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!sound')){ 
     hasMatchedCommand = true;
-    var resTxt='เท่ โสด';
+    var resTxt='เท่ โสด' + 	\
+	//DATEDIFF('DD,HH:MM:SS', )	\
+    	+ 'ถึงวันเสาร์นี้ \n\r\tเจอกัน 10AM @โบสถ์อัสสัม \n\r\t6PM @Miracle Grand\n\r';
 	return client.replyMessage(event.replyToken, {
 	  "type": "text",
 	  "text": resTxt
