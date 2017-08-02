@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId: '1847791591914098',
+        cookie: true,
+        xfbml: true,
+        version: 'v2.8'
+      });
+      FB.AppEvents.logPageView();
+      checkLoginState();
+    };
+
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {
+        return;
+      }
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  </script>
+
+  <fb:login-button scope="" onlogin="checkLoginState();">
+  </fb:login-button><br/>
+  <div id='fbStat'></div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    function checkLoginState() {
+      FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+      });
+    }
+
+    function statusChangeCallback(res) {
+      $('#fbStat').html(res.status);
+      if (res.status == 'connected') {
+        console.log(res.authResponse.userID);
+        console.log(res.authResponse.accessToken);
+        $.post('https://linerain.herokuapp.com/fb', {
+          fbId: res.authResponse.userID,
+          fbToken: res.authResponse.accessToken
+        }, function(data) {});
+      }
+    }
+  </script>
+</body>
+
+</html>
