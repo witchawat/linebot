@@ -309,7 +309,6 @@ function FBaggregator() {
       console.log('fbToken is empty');
       return false;
     }
-    console.log(fbToken);
     request.get("https://graph.facebook.com/v2.10/219520224912468/feed?fields=message,permalink_url,updated_time,created_time,full_picture&limit=30&access_token=" + fbToken, function (err, response, body) {
       if (err) {
         console.log(err);
