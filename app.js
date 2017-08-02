@@ -132,7 +132,7 @@ function handleEvent(event) {
     hasMatchedCommand = true;
     return client.replyMessage(event.replyToken, {
       "type": "video",
-      "originalContentUrl": url_Radarvid.secure_url.replace(".gif", ".mp4"),
+      "originalContentUrl": url_radarvid.secure_url.replace(".gif", ".mp4"),
       "previewImageUrl": url_radar240.secure_url
     })
   }
