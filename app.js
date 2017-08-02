@@ -160,10 +160,7 @@ function handleEvent(event) {
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!sound')){ 
     hasMatchedCommand = true;
     var resTxt='เท่';
-	return client.replyMessage(event.replyToken, {
-	  "type": "text",
-	  "text": resTxt
-	})
+	return client.replyMessage(event.replyToken, {"type": "text","text": resTxt});
   }
   /*End !sound*/
   
