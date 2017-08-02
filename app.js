@@ -123,8 +123,8 @@ function handleEvent(event) {
     hasMatchedCommand = true;
     return client.replyMessage(event.replyToken, {
       "type": "image",
-      "originalContentUrl": url_radar800,
-      "previewImageUrl": url_radar240
+      "originalContentUrl": url_radar800.secure_url,
+      "previewImageUrl": url_radar240.secure_url
     })
   }
     //!rainvid
@@ -132,8 +132,8 @@ function handleEvent(event) {
     hasMatchedCommand = true;
     return client.replyMessage(event.replyToken, {
       "type": "video",
-      "originalContentUrl": url_radarvid,
-      "previewImageUrl": url_radar240
+      "originalContentUrl": url_Radarvid.secure_url.replace(".gif", ".mp4");,
+      "previewImageUrl": url_radar240.secure_url
     })
   }
   
@@ -161,10 +161,10 @@ function handleEvent(event) {
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!sound')){ 
     hasMatchedCommand = true;
     var resTxt='เท่ โสด';
-	return client.replyMessage(event.replyToken, {
-	  "type": "text",
-	  "text": resTxt
-	})
+  return client.replyMessage(event.replyToken, {
+    "type": "text",
+    "text": resTxt
+  })
   }
   /*End !sound*/
    
@@ -269,6 +269,15 @@ function di2suanlum(lat, lng) {
 new CronJob('56 1,11,21,31,41,51 * * * *', fetchImageAndVid, null, true, 'Asia/Bangkok');
 function fetchImageAndVid() { // sec min hr
     console.log('You will see this message every 11 mins');
+    //DELETE OLD IMAGES & VID
+    console.log('!!!!!Begin DELETE of old images & video!!!!!')
+    cloudinary.v2.uploader.destroy('url_radar240.public_id', 
+    {invalidate: true }, function(error, result) {console.log(result)});
+    cloudinary.v2.uploader.destroy('url_radar800.public_id', 
+    {invalidate: true }, function(error, result) {console.log(result)});
+    cloudinary.v2.uploader.destroy('url_radarvid.public_id', 
+    {invalidate: true }, function(error, result) {console.log(result)});
+    console.log('>>>>>Begin DOWNLOADING new images<<<<<')
     //UPLOAD GIF TO CLOUDINARY
     cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkradar.gif",{use_filename: true, unique_filename : true}, function(error, result) { 
       if(error){
@@ -278,19 +287,24 @@ function fetchImageAndVid() { // sec min hr
       }
       console.log("=====GIF UPLOADED=====")
       console.log(result.secure_url) 
-      url_radarvid = result.secure_url.replace(".gif", ".mp4");
+      url_radarvid = result;
+
+//      url_radarvid = result.secure_url.replace(".gif", ".mp4");
     });
     //UPLOAD Img & Resize to 800x800
     cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkzfiltered.jpg", {width:800, height: 800, crop: "scale", public_id: "radar800", use_filename: true, unique_filename : true}, function(error, result) { 
     console.log("=====IMAGE 800 UPLOADED=====")
     console.log(result.secure_url) 
-    url_radar800 = result.secure_url;
+
+    url_radar800 = result;
+//    url_radar800 = result.secure_url;
     });
     //UPLOAD Img & Resize to 240x240
     cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkzfiltered.jpg", {width:240, height: 240, crop: "scale", public_id: "radar240", use_filename: true, unique_filename : true}, function(error, result) { 
     console.log("=====IMAGE 240 UPLOADED=====")
     console.log(result.secure_url) 
-    url_radar240 = result.secure_url;
+    url_radar240 = result;
+//    url_radar240 = result.secure_url;
     });
         
 }
