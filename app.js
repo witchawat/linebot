@@ -159,9 +159,9 @@ function handleEvent(event) {
   //!ฝากบอก <text>
   if(event.message.text){
   var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
-    if (!hasMatchedCommand && (lottoParam[0] == '!ฝากบอก')) {
+    if (!hasMatchedCommand && (lottoParam[0] == '!ฝากบอก?')) {
       hasMatchedCommand = true;
-      var txt=event.message.text.replace('!ฝากบอก ','');
+      var txt=event.message.text.replace('!ฝากบอก? ','');
       client.pushMessage(process.env.LINE_PAGER_ID, {
         type: 'text',
         'text': txt
