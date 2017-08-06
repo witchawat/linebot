@@ -172,7 +172,7 @@ function handleEvent(event) {
   /*!sound*/
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!sound')){ 
     hasMatchedCommand = true;
-    var resTxt='เท่ โสด';
+    var resTxt='skarerunningtothecheckpointandmustgoingontothemoon';
   return client.replyMessage(event.replyToken, {
     "type": "text",
     "text": resTxt
