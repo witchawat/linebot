@@ -174,10 +174,10 @@ function handleEvent(event) {
   
   //!sticker <text>
   if(event.message.text){
-  var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
-    if (!hasMatchedCommand && (lottoParam[0] == '!sticker')) {
+  var txt = event.message.text.trim().toLowerCase();
+    if (!hasMatchedCommand && txt.indexOf('!sticker')==0) {
       hasMatchedCommand = true;
-      var txt=event.message.text.replace('!sticker ','');
+      txt=txt.replace('!sticker','');
       request.get('http://chaichana.org/linebot/sticker.php?txt='+encodeURIComponent(txt),{
         encoding: 'binary'
       }, function (err, response, body) {
