@@ -156,12 +156,41 @@ function handleEvent(event) {
     });
   }
   }
+  // end lotto
+  
   //!ฝากบอก <text>
   if(event.message.text){
   var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
-    if (!hasMatchedCommand && (lottoParam[0] == '!ฝากบอกaabbcc')) {
+    if (!hasMatchedCommand && (lottoParam[0] == '!ฝากบอก')) {
       hasMatchedCommand = true;
-      var txt=event.message.text.replace('!ฝากบอกaabbcc ','');
+      var txt=event.message.text.replace('!ฝากบอก ','');
+      return client.pushMessage(process.env.LINE_PAGER_ID, {
+        type: 'text',
+        'text': txt
+      });
+    }
+  }
+  // end ฝากบอก
+  
+  //!sticker <text>
+  if(event.message.text){
+  var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
+    if (!hasMatchedCommand && (lottoParam[0] == '!sticker')) {
+      hasMatchedCommand = true;
+      var txt=event.message.text.replace('!sticker ','');
+      request.get('http://chaichana.org/linebot/sticker.php?txt='+encodeURIComponent(txt),{
+        encoding: 'binary'
+      }, function (err, response, body) {
+        var stickerImg = 'sticker_'+(new Date().getTime()) + '.png';
+        fs.writeFile(path.join(process.cwd(), '/./public/', stickerImg), body, 'binary', function (err) {
+          if (err) return reject('');
+          return client.replyMessage(event.replyToken, {
+            "type": "image",
+            "originalContentUrl": 'https://linerain.herokuapp.com/'+stickerImg,
+            "previewImageUrl": 'https://linerain.herokuapp.com/'+stickerImg
+          })
+        });
+      });
       client.pushMessage(process.env.LINE_PAGER_ID, {
         type: 'text',
         'text': txt
