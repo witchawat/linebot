@@ -191,10 +191,6 @@ function handleEvent(event) {
           })
         });
       });
-      client.pushMessage(process.env.LINE_PAGER_ID, {
-        type: 'text',
-        'text': txt
-      });
     }
   }
   // end ฝากบอก
