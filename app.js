@@ -197,8 +197,8 @@ function handleEvent(event) {
   /*!sound*/
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!sound')){ 
     hasMatchedCommand = true;
-    var resTxt='skarerunningtothecheckpointandmustgoingontothemoon';
-  return client.replyMessage(event.replyToken, {
+	var resTxt='#Next race IRONMAN Gurye 10.07.17';
+	return client.replyMessage(event.replyToken, {
     "type": "text",
     "text": resTxt
   })
