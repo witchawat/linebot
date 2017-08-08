@@ -193,7 +193,17 @@ function handleEvent(event) {
       });
     }
   }
-  // end ฝากบอก
+  // end sticker
+	
+  //!log
+  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!log')){ 
+    hasMatchedCommand = true;
+    console.log('--- event ---');
+    console.log(event);
+    return Promise.resolve(null);
+  }
+  // end log
+	
   /*!sound*/
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!sound')){ 
     hasMatchedCommand = true;
