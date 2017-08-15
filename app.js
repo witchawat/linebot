@@ -403,7 +403,7 @@ app.listen(app.get('port'), function() {
 
 
 function FBaggregator() {
-  console.log('-- fbCron --');
+  //console.log('-- fbCron --');
   console.log(new Date());
   redisClient.get('fbToken', function (err, fbToken) {
     if (err) {
@@ -430,7 +430,7 @@ function FBaggregator() {
       }
     });
   });
-}
+}/*
 var fbCron = new CronJob({
   cronTime: '0,30 * * * * *',
   onTick: FBaggregator,
@@ -438,7 +438,7 @@ var fbCron = new CronJob({
   timeZone: 'Asia/Bangkok',
   runOnInit: true
 });
-
+*/
 function processSalePost(o) {
   var uId = 'sale.' + o.id + '.' + new Date(o.created_time).getTime();
   var message = {
@@ -498,7 +498,7 @@ function fetchLottoRes() {
   });
 }
 var lottoCron = new CronJob({
-  cronTime: '0,30 * 0,12-16 1,16 * *',
+  cronTime: '0 * 0,12-16 1,16 * *',
   onTick: fetchLottoRes,
   start: true,
   timeZone: 'Asia/Bangkok',
