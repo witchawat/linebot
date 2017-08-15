@@ -237,7 +237,6 @@ function lottoResult(lottoNum) {
     }
     var dd = new Date();
     var ldate = (dd.getDate() < 16 ? '01' : '16') + ('0' + (dd.getMonth() + 1)).slice(-2) + (dd.getFullYear() + 543);
-    ldate = '16082560';
     redisClient.get('lottoRes' + ldate, function (err, _lottoRes) {
       if (err) {
         resolve([]);
