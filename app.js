@@ -498,7 +498,7 @@ function fetchLottoRes() {
   });
 }
 var lottoCron = new CronJob({
-  cronTime: '0,30 * 12-16 1,16 * *',
+  cronTime: '0,30 * 0,12-16 1,16 * *',
   onTick: fetchLottoRes,
   start: true,
   timeZone: 'Asia/Bangkok',
