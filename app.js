@@ -270,6 +270,7 @@ function lottoResult(lottoNum) {
             message: 'หวยแดก',
             prize: '0'
           });
+      }
       resolve(res);
     });
   });
