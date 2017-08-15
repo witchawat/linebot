@@ -143,6 +143,8 @@ function handleEvent(event) {
   if (!hasMatchedCommand && (lottoParam[0] == '!lotto' || lottoParam[0] == '!หวย')) {
     hasMatchedCommand = true;
     lottoResult(lottoParam[1]).then(resolve => {
+      console.log('-- lottoResult --');
+	    console.log(resolve);
       if (resolve.res && resolve.res.length>0) {
         var resTxt=lottoParam[1]+' ถูกรางวัล ';
         for(var i in resolve.res){
