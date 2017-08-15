@@ -143,26 +143,26 @@ if (event.message.text) {
   if (!hasMatchedCommand && (lottoParam[0] == '!lotto' || lottoParam[0] == '!หวย')) {
     hasMatchedCommand = true;
     lottoResult(lottoParam[1]).then(resolve => {
-        console.log('-- lottoResult --');
-        console.log(resolve);
-        var resTxt = '';
-        if (resolve.res && resolve.res.length > 0) {
-          resTxt = lottoParam[1] + ' ถูกรางวัล ';
-          for (var i in resolve.res) {
-            resTxt += (resolve.res[i].message + ' มูลค่า ' + resolve.res[i].prize + ' บาท ');
-          }
+      console.log('-- lottoResult --');
+      console.log(resolve);
+      var resTxt = '';
+      if (resolve.res && resolve.res.length > 0) {
+        resTxt = lottoParam[1] + ' ถูกรางวัล ';
+        for (var i in resolve.res) {
+          resTxt += (resolve.res[i].message + ' มูลค่า ' + resolve.res[i].prize + ' บาท ');
         }
-        if (resolve.remark) resTxt = lottoParam[1] + ' :: ' + resolve.remark;
-        if (resTxt != '') {
-          return client.replyMessage(event.replyToken, {
-            "type": "text",
-            "text": resTxt
-          })
-        } else {
-          return Promise.resolve(null)
-        }
-      };
+      }
+      if (resolve.remark) resTxt = lottoParam[1] + ' :: ' + resolve.remark;
+      if (resTxt != '') {
+        return client.replyMessage(event.replyToken, {
+          "type": "text",
+          "text": resTxt
+        })
+      } else {
+        return Promise.resolve(null)
+      }
     });
+  }
 }
 // end lotto
   
