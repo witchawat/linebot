@@ -143,11 +143,12 @@ function handleEvent(event) {
   if (!hasMatchedCommand && (lottoParam[0] == '!lotto' || lottoParam[0] == '!หวย')) {
     hasMatchedCommand = true;
     lottoResult(lottoParam[1]).then(resolve => {
-      if (resolve.length>0) {
+      if (resolve.res && resolve.res.length>0) {
         var resTxt=lottoParam[1]+' ถูกรางวัล ';
-        for(var i in resolve){
-          resTxt+=(resolve[i].message+' มูลค่า '+resolve[i].prize+' บาท ');
+        for(var i in resolve.res){
+          resTxt+=(resolve.res[i].message+' มูลค่า '+resolve.res[i].prize+' บาท ');
         }
+	if(resolve.remark)resTxt+="\r\n"+resolve.remark;
         return client.replyMessage(event.replyToken, {
           "type": "text",
           "text": resTxt
@@ -227,13 +228,15 @@ function lottoResult(lottoNum) {
       resolve([]);
       return;
     }
-    request.get('http://news.sanook.com/lotto/check/01082560/?foo=' + Math.random(), (err, resp, body) => {
+    var dd = new Date();
+    var ldate = (dd.getDate() < 16 ? '01' : '16') + ('0' + (dd.getMonth() + 1)).slice(-2) + (dd.getFullYear() + 543);
+    ldate = '16082560';
+    redisClient.get('lottoRes' + ldate, function (err, _lottoRes) {
       if (err) {
         resolve([]);
         return;
       }
-      var _res = body.substring(body.indexOf('lottoResult =') + 13, body.indexOf('lottoResult =') + 2500);
-      var lottoRes = JSON.parse(_res.substring(0, _res.indexOf(';')).trim());
+      lottoRes = JSON.parse(_lottoRes);
       for (var i in lottoRes.prize) {
         if (lottoRes.prize[i].indexOf(lottoNum) >= 0) {
           res.push(lottoRes.wording[i]);
@@ -254,11 +257,14 @@ function lottoResult(lottoNum) {
       if (lottoRes.prize['prize_last2'].indexOf(chk) >= 0) {
         res.push(lottoRes.wording['prize_last2']);
       }
-      if (res.length == 0) res.push({
+      if (res.length == 0 && _lottoRes.indexOf('x')<0) res.push({
         message: 'หวยแดก',
         prize: '0'
       });
-      resolve(res);
+      if(_lottoRes.indexOf('x')<0)
+        resolve({'res':res});
+      else
+	resolve({'res':res,'remark':'**หวยยังออกไม่ครบ'});
     });
   });
 }
@@ -459,3 +465,34 @@ function processSalePost(o) {
     }
   });
 }
+
+function fetchLottoRes() {
+  return new Promise((resolve, reject) => {
+    console.log('--- lottoCron ---');
+    var dd = new Date();
+    var ldate = (dd.getDate() < 16 ? '01' : '16') + ('0' + (dd.getMonth() + 1)).slice(-2) + (dd.getFullYear() + 543);
+    ldate = '16082560';
+    redisClient.get('lottoRes' + ldate, function (err, lottoRes) {
+      if (err) reject('');
+      if (typeof lottoRes == 'undefined' || !lottoRes || lottoRes.indexOf('x') >= 0) {
+        console.log('--- fetching lotto result ---');
+        request.get('http://news.sanook.com/lotto/check/' + ldate + '/?foo=' + Math.random(), (err, resp, body) => {
+          if (err) console.log('error');
+          var _res = body.substring(body.indexOf('lottoResult =') + 13, body.indexOf('lottoResult =') + 2500);
+          _res = _res.substring(0, _res.indexOf(';')).trim();
+          redisClient.set('lottoRes' + ldate, _res, 'EX', 60 * 60 * 24 * 16);
+          resolve(_res);
+        });
+      }else{
+        resolve(lottoRes);
+      }
+    });
+  });
+}
+var lottoCron = new CronJob({
+  cronTime: '0,30 * 12-16 1,16 * *',
+  onTick: fetchLottoRes,
+  start: true,
+  timeZone: 'Asia/Bangkok',
+  runOnInit: true
+});
