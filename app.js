@@ -271,7 +271,7 @@ function lottoResult(lottoNum) {
             prize: '0'
           });
       }
-      resolve(res);
+      resolve({'res':res});
     });
   });
 }
