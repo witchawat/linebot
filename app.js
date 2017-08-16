@@ -137,7 +137,7 @@ if (event.message.text) {
           resTxt += (resolve.res[i].message + ' มูลค่า ' + resolve.res[i].prize + ' บาท ');
         }
       }
-      if (resolve.remark) resTxt = lottoParam[1] + ' :: ' + resolve.remark;
+      if (!resolve.res && resolve.remark) resTxt = lottoParam[1] + ' :: ' + resolve.remark;
       if (resTxt != '') {
         return client.replyMessage(event.replyToken, {
           "type": "text",
