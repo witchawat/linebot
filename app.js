@@ -95,21 +95,6 @@ function handleEvent(event) {
             "previewImageUrl": 'https://linerain.herokuapp.com/'+resp.img
           }
         ])
-        /*
-        var pushTo=event.source.userId;
-        if(event.source.roomId)pushTo=event.source.roomId;
-        if(event.source.groupId)pushTo=event.source.groupId;
-        client.pushMessage(pushTo, {
-          "type": "text",
-          "text": 'ขับรถไปสวนลุม :: '+resp.txt
-        }).then(()=>{
-          return client.pushMessage(pushTo, {
-            "type": "image",
-            "originalContentUrl": 'https://linerain.herokuapp.com/'+resp.img,
-            "previewImageUrl": 'https://linerain.herokuapp.com/'+resp.img
-          });
-        });
-        */
       },
       rej => { return Promise.resolve(null) }
     );
@@ -244,6 +229,8 @@ function lottoResult(lottoNum) {
       }
       lottoRes = JSON.parse(_lottoRes);
       var isResultComplete=(_lottoRes.indexOf('x')<0);
+      var totalNoResult=(_lottoRes.match(/xxxxxx/g) || []).length;
+      var remark=(totalNoResult==168)?'หวยยังไม่ออกจ้า':'ลุ้นต่อ หวยยังออกไม่ครบ';
       for (var i in lottoRes.prize) {
         if (lottoRes.prize[i].indexOf(lottoNum) >= 0) {
           res.push(lottoRes.wording[i]);
@@ -273,42 +260,11 @@ function lottoResult(lottoNum) {
       if(isResultComplete)
         resolve({'res':res});
       else
-        resolve({'res':res,'remark':'ลุ้นต่อ หวยยังออกไม่ครบ'});
+        resolve({'res':res,'remark':remark});
     });
   });
 }
-function _lottoResult(lottoNum) {
-  return new Promise((resolve, reject) => {
-    var dd = new Date();
-    console.log('hh:mm '+dd.getHours()+':'+dd.getMinutes());
-    var ldate = dd.getFullYear() + '-' + ('0' + (dd.getMonth() + 1)).slice(-2) + '-' + (dd.getDate() < 16 ? '01' : '16');
-    lottoNum = lottoNum.trim();
-    if (isNaN(lottoNum) || lottoNum.length != 6) resolve('');
-    request.post({
-      url: 'http://www.glo.or.th/glo_seize/lottary/check_lottary.php',
-      form: {
-        kuson: 1,
-        ldate: ldate,
-        lnumber: lottoNum,
-        c_set: ''
-      }
-    }, function (err, res, body) {
-      if(err) resolve('');
-      var _res = body.substring(body.indexOf('id="dCheckLotto">') + 18, body.indexOf('id="dCheckLotto">') + 1000).trim();
-      if(body.indexOf('value="'+ldate+'"')<0) resolve('หวยยังไม่ออกจ้า');
-      _res = _res.substring(0, _res.indexOf('</table>') + 8);
-      var parserRes = '';
-      var parser = new htmlparser.Parser({
-        ontext: function (text) {
-          parserRes += text.trim() + ' ';
-        }
-      });
-      parser.write(_res);
-      parser.end();
-      resolve(parserRes.trim().replace('ขอขอบคุณที่ร่วมเป็นส่วนหนึ่งในการพัฒนาสังคมอย่างยั่งยืน  ช่วยราษฎร์  เสริมรัฐ ยืนหยัดยุติธรรม', ''));
-    });
-  });
-}
+
 // map to สวนลุม
 
 function di2suanlum(lat, lng) {
