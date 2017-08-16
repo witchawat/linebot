@@ -132,7 +132,7 @@ if (event.message.text) {
       console.log(resolve);
       var resTxt = '';
       if (resolve.res && resolve.res.length > 0) {
-        resTxt = lottoParam[1] + ' ถูกรางวัล ';
+        resTxt = lottoParam[1] + ':: ถูกรางวัล ';
         for (var i in resolve.res) {
           resTxt += (resolve.res[i].message + ' มูลค่า ' + resolve.res[i].prize + ' บาท ');
         }
