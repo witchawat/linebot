@@ -190,7 +190,7 @@ if (event.message.text) {
 	
   //!buff1 <text>
   if(event.message.text){
-  var txt = event.message.text.trim().toLowerCase();
+  var txt = event.message.text.trim();
     if (!hasMatchedCommand && txt.indexOf('!buff1')==0) {
       hasMatchedCommand = true;
       txt=txt.replace('!buff1','');
@@ -212,7 +212,7 @@ if (event.message.text) {
   // end buff1
   //!buff2 <text>
   if(event.message.text){
-  var txt = event.message.text.trim().toLowerCase();
+  var txt = event.message.text.trim();
     if (!hasMatchedCommand && txt.indexOf('!buff2')==0) {
       hasMatchedCommand = true;
       txt=txt.replace('!buff2','');
