@@ -188,6 +188,51 @@ if (event.message.text) {
   }
   // end sticker
 	
+  //!buff1 <text>
+  if(event.message.text){
+  var txt = event.message.text.trim().toLowerCase();
+    if (!hasMatchedCommand && txt.indexOf('!buff1')==0) {
+      hasMatchedCommand = true;
+      txt=txt.replace('!buff1','');
+      request.get('http://chaichana.org/linebot/buffPlain.php?txt='+encodeURIComponent(txt),{
+        encoding: 'binary'
+      }, function (err, response, body) {
+        var stickerImg = 'buff1_'+(new Date().getTime()) + '.png';
+        fs.writeFile(path.join(process.cwd(), '/./public/', stickerImg), body, 'binary', function (err) {
+          if (err) return reject('');
+          return client.replyMessage(event.replyToken, {
+            "type": "image",
+            "originalContentUrl": 'https://linerain.herokuapp.com/'+stickerImg,
+            "previewImageUrl": 'https://linerain.herokuapp.com/'+stickerImg
+          })
+        });
+      });
+    }
+  }
+  // end buff1
+  //!buff2 <text>
+  if(event.message.text){
+  var txt = event.message.text.trim().toLowerCase();
+    if (!hasMatchedCommand && txt.indexOf('!buff2')==0) {
+      hasMatchedCommand = true;
+      txt=txt.replace('!buff2','');
+      request.get('http://chaichana.org/linebot/buffMoutain.php?txt='+encodeURIComponent(txt),{
+        encoding: 'binary'
+      }, function (err, response, body) {
+        var stickerImg = 'buff2_'+(new Date().getTime()) + '.png';
+        fs.writeFile(path.join(process.cwd(), '/./public/', stickerImg), body, 'binary', function (err) {
+          if (err) return reject('');
+          return client.replyMessage(event.replyToken, {
+            "type": "image",
+            "originalContentUrl": 'https://linerain.herokuapp.com/'+stickerImg,
+            "previewImageUrl": 'https://linerain.herokuapp.com/'+stickerImg
+          })
+        });
+      });
+    }
+  }
+  // end buff2
+	
   //!log
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!log')){ 
     hasMatchedCommand = true;
