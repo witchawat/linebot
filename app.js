@@ -431,7 +431,7 @@ function FBaggregator() {
       }
     });
   });
-}/*
+}
 var fbCron = new CronJob({
   cronTime: '0,30 * * * * *',
   onTick: FBaggregator,
@@ -439,7 +439,7 @@ var fbCron = new CronJob({
   timeZone: 'Asia/Bangkok',
   runOnInit: true
 });
-*/
+
 function processSalePost(o) {
   var uId = 'sale.' + o.id + '.' + new Date(o.created_time).getTime();
   var message = {
