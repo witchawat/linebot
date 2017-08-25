@@ -103,6 +103,29 @@ function handleEvent(event) {
     hasMatchedCommand = true;
     return Promise.resolve(null);
   }
+  //!demo - jpg
+  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!demo')){ 
+    hasMatchedCommand = true;
+  var message = {
+    "type": "template",
+    "altText": "",
+    "template": {
+      "type": "buttons",
+      "text": "",
+      "thumbnailImageUrl":"https://linerain.herokuapp.com/radar.jpg",
+      "actions": [{
+        "type": "uri",
+        "label": "เปิดดู google",
+        "uri": "http://google.com"
+      },{
+        "type": "uri",
+        "label": "เปิดดู facebook",
+        "uri": "http://facebook.com"
+      }]
+    }
+  };
+    return client.replyMessage(event.replyToken, message);
+  }
   //!rain - jpg
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!rain')){ 
     hasMatchedCommand = true;
