@@ -108,10 +108,10 @@ function handleEvent(event) {
     hasMatchedCommand = true;
   var message = {
     "type": "template",
-    "altText": "",
+    "altText": "ตัวอย่าง ตัวอย่าง",
     "template": {
       "type": "buttons",
-      "text": "",
+      "text": "ตัวอย่าง ตัวอย่าง",
       "thumbnailImageUrl":"https://linerain.herokuapp.com/radar.jpg",
       "actions": [{
         "type": "uri",
