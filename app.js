@@ -48,20 +48,6 @@ const app = express();
 app.use(express.static('public'))
 app.set('port', (process.env.PORT || 5000));
 
-//URLBOX options
-var options = {
-  url: "http://utmb.livetrail.net/coureur.php?rech="+bib,
-  delay: 1000,
-  selector: '#contvues',
-  thumb_width: 800,
-  width: 800,
-  height: 800,
-  crop_width: 800,
-  click: '#tips',
-  format: 'jpg',
-  quality: 80
-};
-//================================
 
 
 app.post('/webhook', line.middleware(config), (req, res) => {
@@ -239,6 +225,20 @@ var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().
     hasMatchedCommand = true;
     var utmbimgUrl = urlbox.buildUrl(options);
     var bib=event.message.text.replace('!utmbrace ','');
+	//URLBOX options
+	var options = {
+	  url: "http://utmb.livetrail.net/coureur.php?rech="+bib,
+	  delay: 1000,
+	  selector: '#contvues',
+	  thumb_width: 800,
+	  width: 800,
+	  height: 800,
+	  crop_width: 800,
+	  click: '#tips',
+	  format: 'jpg',
+	  quality: 80
+	};
+	//================================
     return client.replyMessage(event.replyToken, {
       "type": "image",
       "originalContentUrl": utmbimgUrl,
