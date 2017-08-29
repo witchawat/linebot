@@ -18,7 +18,7 @@ var htmlparser = require("htmlparser2");//ไว้ parse ผลหวย
 var request = require('request');
 var fs = require('fs');
 var path = require('path');
-var utmbrunner = require('./utmbrunner.js');
+var utmbRunner = require('./utmbrunner.js');
 //================================
 //        KEYS
 //================================
@@ -190,19 +190,23 @@ if (event.message.text) {
   // end ฝากบอก
 //UTMB RUNNER
   //!utmb <bib>
-  if(event.message.text){
-  var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
-    if (!hasMatchedCommand && (lottoParam[0] == '!utmb')) {
-      hasMatchedCommand = true;
-      var bib=event.message.text.replace('!utmb ','');
-	console.log(bib);
-	    console.log(utmbrunner(bib));
-      return client.pushMessage(process.env.LINE_PAGER_ID, {
-        type: 'text',
-        'text': utmbrunner(bib).toString()
-      });
-    }
+if(event.message.text){
+var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
+  if (!hasMatchedCommand && (lottoParam[0] == '!utmb')) {
+    hasMatchedCommand = true;
+    var bib=event.message.text.replace('!utmb ','');
+    utmbRunner(bib, function(err,runner){
+       if(err){
+         console.log(err);
+       } else {
+         return client.pushMessage(process.env.LINE_PAGER_ID, {
+           type: 'text',
+           'text': runner
+          });
+        }
+    });
   }
+};
   // end UTMB RUNNER
   
   //!sticker <text>
