@@ -21,7 +21,7 @@ var options = {
 var utmbimgUrl = urlbox.buildUrl(options);
 
 request.get({url: utmbimgUrl, encoding: 'binary'}, function (err, response, body) {
-  fs.writeFile("./utmbrace.jpg", body, 'binary', function(err) {
+  fs.writeFile("./public/utmbrace.jpg", body, 'binary', function(err) {
     if(err)
       console.log(err);
     else
