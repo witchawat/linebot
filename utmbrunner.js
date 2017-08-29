@@ -11,7 +11,7 @@ function utmbRunner(bib, callback){
   var km = [];
 
   request.get('https://service.chillingtrail.run/result/2017/utmb/' + bib, function(error, response, body){
-    if(response.statusCode == 200) {
+    if(response.statusCode == 200 && _.size(JSON.parse(body).identity) !== 0) {
     var runinfo = JSON.parse(body);
     var rname = runinfo.identity.prenom || runinfo.identity.pnom || "noname";
     var rsurname = runinfo.identity.nom;
@@ -31,6 +31,7 @@ function utmbRunner(bib, callback){
     callback(null, runnerinfo);
   } else { // resp != 200
     console.log('error');
+    callback(null, "Runner not found!!");
   }
 
 });
