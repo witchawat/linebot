@@ -1,7 +1,7 @@
 var request = require('request');
 var _       = require('underscore');
 
-export function utmbrunner(bib){
+function utmbrunner(bib){
   var result = request.get('https://service.chillingtrail.run/result/2017/utmb/' + bib, function(error, response, body){
   var runinfo = JSON.parse(body);
   var jsonsize = _.size(runinfo.points);
@@ -23,3 +23,5 @@ export function utmbrunner(bib){
   return info;
 });
 }; // end of func utmbrunner
+
+module.exports = utmbrunner; 
