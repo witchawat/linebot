@@ -19,12 +19,10 @@ var request = require('request');
 var fs = require('fs');
 var path = require('path');
 var utmbRunner = require('./utmbrunner.js');
-var Urlbox = require('urlbox');
+var utmbImg = require('./utmbimg.js');
 //================================
 //        KEYS
 //================================
-//URLBOX Web Screenshot
-var urlbox = Urlbox(process.env.URLBOX_API_KEY, process.env.URLBOX_API_SECRET);
 //Convert GIF to MP4
 var cloudconvert = new (require('cloudconvert'))(process.env.CLOUDCONVERT);
 //Line API
@@ -216,38 +214,28 @@ var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().
 };
   // end UTMB RUNNER
 	
-//UTMBrace - SCREENSHOT
+//UTMBimg - SCREENSHOT
 	
-  //!utmbrace <bib>
+  //!utmbimg <bib>
 if(event.message.text){
 var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
-  if (!hasMatchedCommand && (lottoParam[0] == '!utmbrace')) {
+  if (!hasMatchedCommand && (lottoParam[0] == '!utmbimg')) {
     hasMatchedCommand = true;
-    var utmbimgUrl = urlbox.buildUrl(options);
-    var bib=event.message.text.replace('!utmbrace ','');
-	//URLBOX options
-	var options = {
-	  url: "http://utmb.livetrail.net/coureur.php?rech="+bib,
-	  delay: 1000,
-	  selector: '#contvues',
-	  thumb_width: 800,
-	  width: 800,
-	  height: 800,
-	  crop_width: 800,
-	  click: '#tips',
-	  format: 'jpg',
-	  quality: 80
-	};
-	//================================
-    return client.replyMessage(event.replyToken, {
-      "type": "image",
-      "originalContentUrl": utmbimgUrl,
-      "previewImageUrl": utmbimgUrl
-    })
+    var bib=event.message.text.replace('!utmbimg ','');
+    utmbImg(bib, function(err,runnerImg){
+       if(err){
+         console.log(err);
+       } else {
+         return client.replyMessage(event.replyToken, {
+            "type": "image",
+            "originalContentUrl": 'https://linerain.herokuapp.com/'+runnerImg,
+            "previewImageUrl": 'https://linerain.herokuapp.com/'+runnerImg
+          });
+        }
+    });
   }
 };
-	
-//END OF UTMBrace - SCREENSHOT
+//END OF UTMBimg - SCREENSHOT
   
   //!sticker <text>
   if(event.message.text){
