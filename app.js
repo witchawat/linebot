@@ -18,7 +18,7 @@ var htmlparser = require("htmlparser2");//ไว้ parse ผลหวย
 var request = require('request');
 var fs = require('fs');
 var path = require('path');
-var utmbrunner from './utmbrunner';
+var utmbrunner = require('./utmbrunner.js');
 //================================
 //        KEYS
 //================================
