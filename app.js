@@ -18,6 +18,7 @@ var htmlparser = require("htmlparser2");//ไว้ parse ผลหวย
 var request = require('request');
 var fs = require('fs');
 var path = require('path');
+import utmbrunner from 'utmbrunner';
 //================================
 //        KEYS
 //================================
@@ -187,6 +188,20 @@ if (event.message.text) {
     }
   }
   // end ฝากบอก
+//UTMB RUNNER
+  //!utmb <bib>
+  if(event.message.text){
+  var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
+    if (!hasMatchedCommand && (lottoParam[0] == '!utmb')) {
+      hasMatchedCommand = true;
+      var bib=event.message.text.replace('!utmb ','');
+      return client.pushMessage(process.env.LINE_PAGER_ID, {
+        type: 'text',
+        'text': utmbrunner(bib)
+      });
+    }
+  }
+  // end UTMB RUNNER
   
   //!sticker <text>
   if(event.message.text){
