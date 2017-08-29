@@ -26,7 +26,7 @@ function utmbRunner(bib, callback){
         km.push(runinfo.points[i].km);
       }
     }
-    runnerinfo = "BIB: " + bib + "\nName: " + rname + " " + rsurname + "\nRace: " + runinfo.identity.race.toUpperCase() + "\n\nLast Checkpoint\n" + _.last(cpname) +"\nTime: " + _.last(cptime)
+    runnerinfo = "BIB: " + runinfo.identity.bib + "\nName: " + rname + " " + rsurname + "\nRace: " + runinfo.identity.race.toUpperCase() + "\n\nLast Checkpoint\n" + _.last(cpname) +"\nTime: " + _.last(cptime)
       +"\n\nAt " +_.last(km) + "/" +runinfo.points[jsonsize-1].km +" km";
     callback(null, runnerinfo);
   } else { // resp != 200
