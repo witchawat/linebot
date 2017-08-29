@@ -197,7 +197,7 @@ if (event.message.text) {
       var bib=event.message.text.replace('!utmb ','');
       return client.pushMessage(process.env.LINE_PAGER_ID, {
         type: 'text',
-        'text': utmbrunner(bib)
+        'text': utmbrunner(bib).toString()
       });
     }
   }
