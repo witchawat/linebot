@@ -199,7 +199,7 @@ var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().
        if(err){
          console.log(err);
        } else {
-         return client.pushMessage(process.env.LINE_PAGER_ID, {
+         return client.replyMessage(event.replyToken, {
            type: 'text',
            'text': runner
           });
