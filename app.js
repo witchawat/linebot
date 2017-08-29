@@ -19,10 +19,12 @@ var request = require('request');
 var fs = require('fs');
 var path = require('path');
 var utmbRunner = require('./utmbrunner.js');
+var Urlbox = require('urlbox');
 //================================
 //        KEYS
 //================================
-
+//URLBOX Web Screenshot
+var urlbox = Urlbox(process.env.URLBOX_API_KEY, process.env.URLBOX_API_SECRET);
 //Convert GIF to MP4
 var cloudconvert = new (require('cloudconvert'))(process.env.CLOUDCONVERT);
 //Line API
@@ -38,9 +40,28 @@ cloudinary.config({
 });
 //================================
  
+//================================
+//  OPTIONS
+//================================
+
 const app = express();
 app.use(express.static('public'))
 app.set('port', (process.env.PORT || 5000));
+
+//URLBOX options
+var options = {
+  url: "http://utmb.livetrail.net/coureur.php?rech="+bib,
+  delay: 1000,
+  selector: '#contvues',
+  thumb_width: 800,
+  width: 800,
+  height: 800,
+  crop_width: 800,
+  click: '#tips',
+  format: 'jpg',
+  quality: 80
+};
+//================================
 
 
 app.post('/webhook', line.middleware(config), (req, res) => {
@@ -208,6 +229,25 @@ var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().
   }
 };
   // end UTMB RUNNER
+	
+//UTMBrace - SCREENSHOT
+	
+  //!utmbrace <bib>
+if(event.message.text){
+var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
+  if (!hasMatchedCommand && (lottoParam[0] == '!utmbrace')) {
+    hasMatchedCommand = true;
+    var utmbimgUrl = urlbox.buildUrl(options);
+    var bib=event.message.text.replace('!utmbrace ','');
+    return client.replyMessage(event.replyToken, {
+      "type": "image",
+      "originalContentUrl": utmbimgUrl,
+      "previewImageUrl": utmbimgUrl
+    })
+  }
+};
+	
+//END OF UTMBrace - SCREENSHOT
   
   //!sticker <text>
   if(event.message.text){
