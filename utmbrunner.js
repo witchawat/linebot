@@ -12,7 +12,7 @@ function utmbRunner(bib, callback){
   request.get('https://service.chillingtrail.run/result/2017/utmb/' + bib, function(error, response, body){
     if(response.statusCode == 200) {
     var runinfo = JSON.parse(body);
-    var rname = runinfo.identity.prenom;
+    var rname = runinfo.identity.prenom || runinfo.identity.pnom;
     var rsurname = runinfo.identity.nom;
     var jsonsize = _.size(runinfo.points);
 
