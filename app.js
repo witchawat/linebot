@@ -195,6 +195,8 @@ if (event.message.text) {
     if (!hasMatchedCommand && (lottoParam[0] == '!utmb')) {
       hasMatchedCommand = true;
       var bib=event.message.text.replace('!utmb ','');
+	console.log(bib);
+	    console.log(utmbrunner(bib));
       return client.pushMessage(process.env.LINE_PAGER_ID, {
         type: 'text',
         'text': utmbrunner(bib).toString()
