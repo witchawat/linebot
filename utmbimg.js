@@ -18,15 +18,16 @@ var options = {
   format: 'jpg',
   quality: 80
 };
+var utmbImgFileName="./public/utmbrace"+(new Date().getTime()) +".jpg";
 var utmbimgUrl = urlbox.buildUrl(options);
 
 request.get({url: utmbimgUrl, encoding: 'binary'}, function (err, response, body) {
-  fs.writeFile("./public/utmbrace.jpg", body, 'binary', function(err) {
+  fs.writeFile(utmbImgFileName, body, 'binary', function(err) {
     if(err)
       console.log(err);
     else
       console.log("utmbrace.jpg file was saved!");
-      callback(null, "utmbrace.jpg");
+      callback(null, utmbImgFileName);
   });
 });
 }; // end of utmbimg function
