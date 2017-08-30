@@ -16,6 +16,9 @@ function utmbRunner(bib, callback){
     var rname = runinfo.identity.prenom || runinfo.identity.pnom || "noname";
     var rsurname = runinfo.identity.nom;
     var jsonsize = _.size(runinfo.points);
+    var rank = runinfo.state.overallRank;
+    var catrank = runinfo.state.categoryRank;
+      
 
     //get current runner's info
     for(var i = 0 ; i < jsonsize ; i++){
@@ -26,8 +29,13 @@ function utmbRunner(bib, callback){
         km.push(runinfo.points[i].km);
       }
     }
-    runnerinfo = "BIB: " + runinfo.identity.bib + "\nName: " + rname + " " + rsurname + "\nRace: " + runinfo.identity.race.toUpperCase() + "\n\nLast Checkpoint\n" + _.last(cpname) +"\nTime: " + _.last(cptime)
-      +"\n\nAt " +_.last(km) + "/" +runinfo.points[jsonsize-1].km +" km";
+    runnerinfo =  "BIB: " + runinfo.identity.bib + 
+                  "\nName: " + rname + " " + rsurname + 
+                  "\nRace: " + runinfo.identity.race.toUpperCase() + 
+                  "\n\nLast Checkpoint\n" + _.last(cpname) +
+                  "\nTime: " + _.last(cptime) +
+                  "\n\nAt " +_.last(km) + "/" +runinfo.points[jsonsize-1].km +" km" +
+                  "\nRank: " + rank + " | Cat :" + catrank;
     callback(null, runnerinfo);
   } else { // resp != 200
     console.log('error');
