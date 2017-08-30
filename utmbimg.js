@@ -18,11 +18,11 @@ var options = {
   format: 'jpg',
   quality: 80
 };
-var utmbImgFileName="./public/utmbrace"+(new Date().getTime()) +".jpg";
+var utmbImgFileName="utmbrace"+(new Date().getTime()) +".jpg";
 var utmbimgUrl = urlbox.buildUrl(options);
 
 request.get({url: utmbimgUrl, encoding: 'binary'}, function (err, response, body) {
-  fs.writeFile(utmbImgFileName, body, 'binary', function(err) {
+  fs.writeFile("./public/"+utmbImgFileName, body, 'binary', function(err) {
     if(err)
       console.log(err);
     else
