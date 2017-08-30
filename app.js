@@ -20,6 +20,7 @@ var fs = require('fs');
 var path = require('path');
 var utmbRunner = require('./utmbrunner.js');
 var utmbImg = require('./utmbimg.js');
+var utmbVideo = require('./utmbVideo.js');
 //================================
 //        KEYS
 //================================
@@ -213,6 +214,24 @@ var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().
   }
 };
   // end UTMB RUNNER
+
+//UTMB VIDEO
+  //!utmbvid <bib>
+if(event.message.text){
+var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
+  if (!hasMatchedCommand && (lottoParam[0] == '!utmbvid')) {
+    hasMatchedCommand = true;
+    var bib=event.message.text.replace('!utmbvid ','');
+         return client.replyMessage(event.replyToken, {
+	      "type": "video",
+	      "originalContentUrl": utmbVideo(bib),
+	      "previewImageUrl": 
+          });
+        }
+    });
+  }
+};
+  // end UTMB VIDEO	
 	
 //UTMBimg - SCREENSHOT
 	
