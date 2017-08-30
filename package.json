@@ -23,6 +23,8 @@
     "redis": "^2.7.1",
     "request": "^2.81.0",
     "underscore": "^1.8.3",
-    "urlbox": "^1.2.3"
+    "urlbox": "^1.2.3",
+    "cheerio": "^1.0.0-rc.2"
+    
   }
 }
