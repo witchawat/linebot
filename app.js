@@ -225,7 +225,7 @@ var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().
          return client.replyMessage(event.replyToken, {
 	      "type": "video",
 	      "originalContentUrl": utmbVideo(bib),
-	      "previewImageUrl": 
+	      "previewImageUrl": ""
           });
         }
     });
