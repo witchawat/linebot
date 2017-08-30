@@ -595,3 +595,4 @@ var lottoCron = new CronJob({
   timeZone: 'Asia/Bangkok',
   runOnInit: true
 });
+//beautify
