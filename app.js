@@ -32,13 +32,13 @@ const config = {
   channelSecret: process.env.LINESECRET
 };
 //Cloudinary GIF to MP4
-cloudinary.config({ 
-  cloud_name: process.env.CLOUDINARY_NAME, 
-  api_key: process.env.CLOUDINARY_KEY, 
-  api_secret: process.env.CLOUDINARY_SECRET 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET
 });
 //================================
- 
+
 //================================
 //  OPTIONS
 //================================
@@ -111,7 +111,7 @@ function handleEvent(event) {
     return Promise.resolve(null);
   }
   //!demo - jpg
-  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!demo')){ 
+  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!demo')){
     hasMatchedCommand = true;
   var message = {
     "type": "template",
@@ -134,7 +134,7 @@ function handleEvent(event) {
     return client.replyMessage(event.replyToken, message);
   }
   //!rain - jpg
-  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!rain')){ 
+  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!rain')){
     hasMatchedCommand = true;
     return client.replyMessage(event.replyToken, {
       "type": "image",
@@ -143,7 +143,7 @@ function handleEvent(event) {
     })
   }
     //!rainvid
-  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!rainvid')){ 
+  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!rainvid')){
     hasMatchedCommand = true;
     return client.replyMessage(event.replyToken, {
       "type": "video",
@@ -151,7 +151,7 @@ function handleEvent(event) {
       "previewImageUrl": url_radar240.secure_url
     })
   }
-  
+
 //!lotto <lottoNum>
 if (event.message.text) {
   var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
@@ -180,7 +180,7 @@ if (event.message.text) {
   }
 }
 // end lotto
-  
+
   //!ฝากบอก <text>
   if(event.message.text){
   var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
@@ -228,13 +228,12 @@ var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().
 	      "previewImageUrl": ""
           });
         }
-    });
-  }
-};
-  // end UTMB VIDEO	
-	
+    };
+  
+  // end UTMB VIDEO
+
 //UTMBimg - SCREENSHOT
-	
+
   //!utmbimg <bib>
 if(event.message.text){
 var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
@@ -255,7 +254,7 @@ var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().
   }
 };
 //END OF UTMBimg - SCREENSHOT
-  
+
   //!sticker <text>
   if(event.message.text){
   var txt = event.message.text.trim().toLowerCase();
@@ -278,7 +277,7 @@ var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().
     }
   }
   // end sticker
-	
+
   //!buff1 <text>
   if(event.message.text){
   var txt = event.message.text.trim();
@@ -323,18 +322,18 @@ var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().
     }
   }
   // end buff2
-	
+
   //!log
-  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!log')){ 
+  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!log')){
     hasMatchedCommand = true;
     console.log('--- event ---');
     console.log(event);
     return Promise.resolve(null);
   }
   // end log
-	
+
   /*!sound*/
-  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!sound')){ 
+  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!sound')){
     hasMatchedCommand = true;
 	var resTxt='#Next race IRONMAN Gurye 10.09.17';
 	return client.replyMessage(event.replyToken, {
@@ -343,7 +342,7 @@ var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().
   })
   }
   /*End !sound*/
-   
+
 };
 
 //ตรวจหวย
@@ -432,21 +431,21 @@ function di2suanlum(lat, lng) {
     });
   });
 }
-//Upload Radar Images to CLOUDINARY every 11th min 
+//Upload Radar Images to CLOUDINARY every 11th min
 new CronJob('56 1,11,21,31,41,51 * * * *', fetchImageAndVid, null, true, 'Asia/Bangkok');
 function fetchImageAndVid() { // sec min hr
     console.log('You will see this message every 11 mins');
     //DELETE OLD IMAGES & VID
     console.log('!!!!!Begin DELETE of old images & video!!!!!')
-    cloudinary.v2.uploader.destroy('url_radar240.public_id', 
+    cloudinary.v2.uploader.destroy('url_radar240.public_id',
     {invalidate: true }, function(error, result) {console.log(result)});
-    cloudinary.v2.uploader.destroy('url_radar800.public_id', 
+    cloudinary.v2.uploader.destroy('url_radar800.public_id',
     {invalidate: true }, function(error, result) {console.log(result)});
-    cloudinary.v2.uploader.destroy('url_radarvid.public_id', 
+    cloudinary.v2.uploader.destroy('url_radarvid.public_id',
     {invalidate: true }, function(error, result) {console.log(result)});
     console.log('>>>>>Begin DOWNLOADING new images<<<<<')
     //UPLOAD GIF TO CLOUDINARY
-    cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkradar.gif",{public_id: "radarvid", use_filename: true, unique_filename : true}, function(error, result) { 
+    cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkradar.gif",{public_id: "radarvid", use_filename: true, unique_filename : true}, function(error, result) {
       if(error){
         console.log("=====GIF UPLOADED FAILED ?!? =====")
         console.log(error);
@@ -460,7 +459,7 @@ function fetchImageAndVid() { // sec min hr
 //      url_radarvid = result.secure_url.replace(".gif", ".mp4");
     });
     //UPLOAD Img & Resize to 800x800
-    cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkzfiltered.jpg", {width:800, height: 800, crop: "scale", public_id: "radar800", use_filename: true, unique_filename : true}, function(error, result) { 
+    cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkzfiltered.jpg", {width:800, height: 800, crop: "scale", public_id: "radar800", use_filename: true, unique_filename : true}, function(error, result) {
     console.log("=====IMAGE 800 UPLOADED=====")
       if(result){
         url_radar800 = result;
@@ -468,14 +467,14 @@ function fetchImageAndVid() { // sec min hr
 //    url_radar800 = result.secure_url;
     });
     //UPLOAD Img & Resize to 240x240
-    cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkzfiltered.jpg", {width:240, height: 240, crop: "scale", public_id: "radar240", use_filename: true, unique_filename : true}, function(error, result) { 
+    cloudinary.v2.uploader.upload("http://203.155.220.231/Radar/pics/nkzfiltered.jpg", {width:240, height: 240, crop: "scale", public_id: "radar240", use_filename: true, unique_filename : true}, function(error, result) {
     console.log("=====IMAGE 240 UPLOADED=====")
       if(result){
         url_radar240 = result;
       }
 //    url_radar240 = result.secure_url;
     });
-        
+
 }
 fetchImageAndVid();
 app.get("*", function(req,res){
