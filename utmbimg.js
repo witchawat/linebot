@@ -7,9 +7,9 @@ var urlbox = Urlbox(process.env.URLBOX_API_KEY, process.env.URLBOX_API_SECRET);
 function utmbImg(bib, callback){
 // Set your options
 var options = {
-  url: "http://utmb.livetrail.net/coureur.php?rech="+bib,
+  url: "http://http://utmbmontblanc.com/en/live/runner/"+bib,
   delay: 1000,
-  selector: '#contvues',
+  selector: '#fcprogress',
   thumb_width: 800,
   width: 800,
   height: 800,
