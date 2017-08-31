@@ -141,7 +141,7 @@ Gfy.prototype.genWeatherImgAndVid = async function () {
         gfyname = await this.getGfyStat(gfyname, token);
         gfyObj = await this.getGfy(gfyname, token);
         this.thumbUrl = gfyObj.miniPosterUrl;
-        this.imgUrl = gfyObj.mobilePosterUrl;
+        this.imgUrl = gfyObj.posterUrl;
         break;
       } catch (e) {
         await new Promise(resolve => setTimeout(resolve, 10000));
