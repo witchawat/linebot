@@ -447,8 +447,7 @@ new CronJob('56 1,11,21,31,41,51 * * * *', fetchImageAndVidFromGfy, null, true, 
 function fetchImageAndVidFromGfy(){
   console.log('You will see this message every 11 mins');
   gfy.genWeatherImgAndVid().then(r => {
-    console.log('gfyStat '+gfy.gfyStat);
-    console.log('thumbUrl '+gfy.thumbUrl);
+    console.log('done process img/gif');
   });
 }
 //Upload Radar Images to CLOUDINARY every 11th min
