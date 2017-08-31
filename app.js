@@ -21,6 +21,8 @@ var path = require('path');
 var utmbRunner = require('./utmbrunner.js');
 var utmbImg = require('./utmbimg.js');
 var utmbVideo = require('./utmbVideo.js');
+var gfy=new (require('./gfy.js'));
+gfy.init(process.env.GFY_ID,process.env.GFY_SECRET);
 //================================
 //        KEYS
 //================================
@@ -136,20 +138,28 @@ function handleEvent(event) {
   //!rain - jpg
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!rain')){
     hasMatchedCommand = true;
+    if(gfy.imgUrl!=''){
     return client.replyMessage(event.replyToken, {
       "type": "image",
-      "originalContentUrl": url_radar800.secure_url,
-      "previewImageUrl": url_radar240.secure_url
-    })
+      //"originalContentUrl": url_radar800.secure_url,
+      //"previewImageUrl": url_radar240.secure_url
+      "originalContentUrl": gfy.imgUrl,
+      "previewImageUrl": gfy.thumbUrl
+    });
+    }
   }
     //!rainvid
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!rainvid')){
     hasMatchedCommand = true;
+    if(gfy.vidUrl!=''){
     return client.replyMessage(event.replyToken, {
       "type": "video",
-      "originalContentUrl": url_radarvid.secure_url.replace(".gif", ".mp4"),
-      "previewImageUrl": url_radar240.secure_url
+     // "originalContentUrl": url_radarvid.secure_url.replace(".gif", ".mp4"),
+     // "previewImageUrl": url_radar240.secure_url
+      "originalContentUrl": gfy.vidUrl,
+      "previewImageUrl": gfy.thumbUrl
     })
+    }
   }
 
 //!lotto <lottoNum>
@@ -431,6 +441,16 @@ function di2suanlum(lat, lng) {
     });
   });
 }
+
+// change service from Cloudinary to Gfycat
+new CronJob('56 1,11,21,31,41,51 * * * *', fetchImageAndVidFromGfy, null, true, 'Asia/Bangkok');
+function fetchImageAndVidFromGfy(){
+  console.log('You will see this message every 11 mins');
+  gfy.genWeatherImgAndVid().then(r => {
+    console.log('gfyStat '+gfy.gfyStat);
+    console.log('thumbUrl '+gfy.thumbUrl);
+  });
+}
 //Upload Radar Images to CLOUDINARY every 11th min
 new CronJob('56 1,11,21,31,41,51 * * * *', fetchImageAndVid, null, true, 'Asia/Bangkok');
 function fetchImageAndVid() { // sec min hr
@@ -476,7 +496,8 @@ function fetchImageAndVid() { // sec min hr
     });
 
 }
-fetchImageAndVid();
+fetchImageAndVidFromGfy();
+//fetchImageAndVid();
 app.get("*", function(req,res){
     res.send("Ong Line Bot");
 });
