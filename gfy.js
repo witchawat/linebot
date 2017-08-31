@@ -134,10 +134,12 @@ Gfy.prototype.genWeatherImgAndVid = async function () {
     if (checkCount == 10) {
       this.gfyStat = 'error';
     }
+    /*
     console.log(this.gfyStat);
     console.log(this.thumbUrl);
     console.log(this.imgUrl);
     console.log(this.vidUrl);
+    */
   } catch (e) {
     console.log('error genWeatherImgAndVid !!');
     console.log(e);
