@@ -452,7 +452,7 @@ function fetchImageAndVidFromGfy(){
   });
 }
 //Upload Radar Images to CLOUDINARY every 11th min
-new CronJob('56 1,11,21,31,41,51 * * * *', fetchImageAndVid, null, true, 'Asia/Bangkok');
+//new CronJob('56 1,11,21,31,41,51 * * * *', fetchImageAndVid, null, true, 'Asia/Bangkok');
 function fetchImageAndVid() { // sec min hr
     console.log('You will see this message every 11 mins');
     //DELETE OLD IMAGES & VID
