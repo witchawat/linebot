@@ -42,18 +42,11 @@ Gfy.prototype.getGfy = function (gfyname, token) {
       json: true
     }, function (err, _res, body) {
       if (err) reject('');
-      if (body) {
-        if (body.gfyItem.mobileUrl) {
-          _this.lastUpdate = new Date();
-          _this.imgUrl = body.gfyItem.posterUrl;
-          _this.thumbUrl = body.gfyItem.mobilePosterUrl;
-          _this.vidUrl = body.gfyItem.mobileUrl;
-          _this.gfyStat = 'ok';
-          resolve('');
-        } else {
-          _this.gfyStat = 'noVid';
-          reject('');
-        }
+      if (body.gfyItem) {
+        //console.log(body.gfyItem);
+        resolve(body.gfyItem);
+      } else {
+        reject('');
       }
     });
   });
@@ -84,10 +77,11 @@ Gfy.prototype.getGfyStat = function (gfyname, token) {
     });
   });
 }
-Gfy.prototype.gfyPost = function () {
+Gfy.prototype.gfyPost = function (url) {
   return new Promise((resolve, reject) => {
     var data = {
-      fetchUrl: "http://203.155.220.231/Radar/pics/nkradar.gif?v=" + (new Date().getTime()),
+      fetchUrl: url + "?v=" + (new Date().getTime()),
+      //fetchUrl: "http://203.155.220.231/Radar/pics/nkradar.gif?v=" + (new Date().getTime()),
       title: 'Bangkok Weather ' + (new Date().getTime())
     }
     request({
@@ -115,17 +109,20 @@ Gfy.prototype.init = function (i, s) {
 };
 Gfy.prototype.genWeatherImgAndVid = async function () {
   var gfyname, token, gfyObj;
-  var isDone = false;
+  var checkCount;
+  this.gfyStat = 'ok';
   try {
     token = await this.gfyAuth();
-    gfyname = await this.gfyPost();
-    var checkCount = 0;
+    //post vid
+    gfyname = await this.gfyPost('http://203.155.220.231/Radar/pics/nkradar.gif');
+    checkCount = 0;
     while (checkCount < 10) {
       checkCount++;
       try {
-        console.log(checkCount + '-- wait 4 gfy to process gif --');
+        console.log('-- wait 4 gfy to process gif --');
         gfyname = await this.getGfyStat(gfyname, token);
         gfyObj = await this.getGfy(gfyname, token);
+        this.vidUrl = gfyObj.mobileUrl;
         break;
       } catch (e) {
         await new Promise(resolve => setTimeout(resolve, 10000));
@@ -134,17 +131,33 @@ Gfy.prototype.genWeatherImgAndVid = async function () {
     if (checkCount == 10) {
       this.gfyStat = 'error';
     }
-    /*
-    console.log(this.gfyStat);
+    //post img
+    gfyname = await this.gfyPost('http://203.155.220.231/Radar/pics/nkzfiltered.jpg');
+    checkCount = 0;
+    while (checkCount < 10) {
+      checkCount++;
+      try {
+        console.log('-- wait 4 gfy to process img --');
+        gfyname = await this.getGfyStat(gfyname, token);
+        gfyObj = await this.getGfy(gfyname, token);
+        this.thumbUrl = gfyObj.miniPosterUrl;
+        this.imgUrl = gfyObj.mobilePosterUrl;
+        break;
+      } catch (e) {
+        await new Promise(resolve => setTimeout(resolve, 10000));
+      }
+    }
+    if (checkCount == 10) {
+      this.gfyStat = 'error';
+    }
     console.log(this.thumbUrl);
     console.log(this.imgUrl);
     console.log(this.vidUrl);
-    */
   } catch (e) {
     console.log('error genWeatherImgAndVid !!');
     console.log(e);
     return '';
   }
-  return gfyObj;
+  return 'ok';
 }
 module.exports = Gfy;
