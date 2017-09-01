@@ -616,3 +616,16 @@ var lottoCron = new CronJob({
   runOnInit: true
 });
 //beautify
+
+// self prevent sleep every min
+var sleepCron = new CronJob({
+  cronTime: '0 * * * * *',
+  onTick: function(){
+    var http = require('http');
+    http.get('https://linerain.herokuapp.com/');
+    console.log('-- prevent sleep cron --');
+  },
+  start: true,
+  timeZone: 'Asia/Bangkok',
+  runOnInit: true
+});
