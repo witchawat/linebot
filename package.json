@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev" : "nodemon app.js"
   },
   "engines": {
     "node": "^7.6"
@@ -13,21 +14,18 @@
   "license": "ISC",
   "dependencies": {
     "@line/bot-sdk": "^2.0.0",
-    "cloudconvert": "^1.1.2",
-    "cloudinary": "^1.9.0",
     "cron": "^1.2.1",
     "body-parser": "^1.17.2",
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
-    "image-downloader": "^3.2.2",
-    "resize-img": "^1.1.2",
-    "htmlparser2": "^3.9.2",
     "path": "^0.12.7",
     "redis": "^2.7.1",
     "request": "^2.81.0",
     "underscore": "^1.8.3",
     "urlbox": "^1.2.3",
     "cheerio": "^1.0.0-rc.2"
-    
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.0"
   }
 }
