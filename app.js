@@ -617,9 +617,9 @@ var lottoCron = new CronJob({
 });
 //beautify
 
-// self prevent sleep every min
+// self prevent sleep every 10 mins
 var sleepCron = new CronJob({
-  cronTime: '0 * * * * *',
+  cronTime: '* 0,10,20,30,40,50 * * * *',
   onTick: function(){
     var http = require('http');
     http.get('http://linerain.herokuapp.com/');
