@@ -29,7 +29,7 @@ function utmbRunner(bib, callback){
         km.push(runinfo.points[i].km);
       }
     }
-    if (runinfo.points[jsonsize] !== undefined){
+    if (jsonsize >= 1 ){
     runnerinfo =  "BIB: " + runinfo.identity.bib + 
                   "\nName: " + rname + " " + rsurname + 
                   "\nRace: " + runinfo.identity.race.toUpperCase() + 
