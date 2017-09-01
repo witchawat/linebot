@@ -29,6 +29,7 @@ function utmbRunner(bib, callback){
         km.push(runinfo.points[i].km);
       }
     }
+    if (runinfo.points[jsonsize-1].km){
     runnerinfo =  "BIB: " + runinfo.identity.bib + 
                   "\nName: " + rname + " " + rsurname + 
                   "\nRace: " + runinfo.identity.race.toUpperCase() + 
@@ -36,6 +37,12 @@ function utmbRunner(bib, callback){
                   "\nTime: " + _.last(cptime) +
                   "\n\nAt " +_.last(km) + "/" +runinfo.points[jsonsize-1].km +" km" +
                   "\nRank: " + rank + " | Cat :" + catrank;
+    } else {
+      runnerinfo = "BIB: " + runinfo.identity.bib + 
+                  "\nName: " + rname + " " + rsurname + 
+                  "\nRace: " + runinfo.identity.race.toUpperCase() + 
+                  "\n\nRace Detail Is Not Available Yet"
+    };
     callback(null, runnerinfo);
   } else { // resp != 200
     console.log('error');
