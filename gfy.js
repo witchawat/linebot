@@ -115,6 +115,7 @@ Gfy.prototype.genWeatherImgAndVid = async function () {
     //post vid
     gfyname = await this.gfyPost('http://203.155.220.231/Radar/pics/nkradar.gif');
     checkCount = 0;
+    //check 10 times
     while (checkCount < 10) {
       checkCount++;
       try {
