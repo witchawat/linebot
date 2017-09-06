@@ -166,7 +166,6 @@ function fetchImageAndVidFromGfy() {
   });
 }
 fetchImageAndVidFromGfy();
-//fetchImageAndVid();
 app.get("*", function (req, res) {
   res.send("Ong Line Bot");
 });
