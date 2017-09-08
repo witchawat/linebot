@@ -122,8 +122,8 @@ Gfy.prototype.genWeatherImgAndVid = async function () {
         console.log('-- wait 4 gfy to process gif --');
         gfyname = await this.getGfyStat(gfyname, token);
         gfyObj = await this.getGfy(gfyname, token);
-        console.log('got vid');
-        console.log(gfyObj);
+        //console.log('got vid');
+        //console.log(gfyObj);
         this.vidUrl = gfyObj.mobileUrl;
         break;
       } catch (e) {
@@ -142,9 +142,9 @@ Gfy.prototype.genWeatherImgAndVid = async function () {
         console.log('-- wait 4 gfy to process img --');
         gfyname = await this.getGfyStat(gfyname, token);
         gfyObj = await this.getGfy(gfyname, token);
-        console.log('got img');
-        console.log(gfyObj);
-        this.thumbUrl = gfyObj.miniPosterUrl;
+        //console.log('got img');
+        //console.log(gfyObj);
+        this.thumbUrl = gfyObj.mobilePosterUrl;
         this.imgUrl = gfyObj.posterUrl;
         break;
       } catch (e) {
