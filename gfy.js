@@ -140,6 +140,8 @@ Gfy.prototype.genWeatherImgAndVid = async function () {
         console.log('-- wait 4 gfy to process img --');
         gfyname = await this.getGfyStat(gfyname, token);
         gfyObj = await this.getGfy(gfyname, token);
+        console.log('got img');
+        console.log(gfyObj);
         this.thumbUrl = gfyObj.miniPosterUrl;
         this.imgUrl = gfyObj.posterUrl;
         break;
