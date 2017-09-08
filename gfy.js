@@ -122,6 +122,8 @@ Gfy.prototype.genWeatherImgAndVid = async function () {
         console.log('-- wait 4 gfy to process gif --');
         gfyname = await this.getGfyStat(gfyname, token);
         gfyObj = await this.getGfy(gfyname, token);
+        console.log('got vid');
+        console.log(gfyObj);
         this.vidUrl = gfyObj.mobileUrl;
         break;
       } catch (e) {
