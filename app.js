@@ -58,6 +58,7 @@ function handleEvent(event) {
   //!rain - jpg
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!rain')) {
     hasMatchedCommand = true;
+    console.log('gfy img stat '+gfy.imgStat);
     if (gfy.imgStat == 'error') {
       return client.replyMessage(event.replyToken, {
         "type": "text",
