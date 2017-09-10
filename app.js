@@ -58,11 +58,14 @@ function handleEvent(event) {
   //!rain - jpg
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!rain')) {
     hasMatchedCommand = true;
-    if (gfy.imgUrl != '') {
+    if (gfy.imgStat == 'error') {
+      return client.replyMessage(event.replyToken, {
+        "type": "text",
+        "text": "ไม่สามารถ load รูปได้ รบกวนไปดูเองที่\r\nhttp://203.155.220.231/Radar/pics/nkzfiltered.jpg"
+      });
+    } else {
       return client.replyMessage(event.replyToken, {
         "type": "image",
-        //"originalContentUrl": url_radar800.secure_url,
-        //"previewImageUrl": url_radar240.secure_url
         "originalContentUrl": gfy.imgUrl,
         "previewImageUrl": gfy.thumbUrl
       });
@@ -71,11 +74,13 @@ function handleEvent(event) {
   //!rainvid
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!rainvid')) {
     hasMatchedCommand = true;
-    if (gfy.vidUrl != '') {
+    if (gfy.vidStat == 'error') {
+      return client.replyMessage(event.replyToken, {
+        "type": "text",
+        "text": "ไม่สามารถ load gif ได้ รบกวนไปดูเองที่\r\nhttp://203.155.220.231/Radar/pics/nkradar.gif"
+      });} else {
       return client.replyMessage(event.replyToken, {
         "type": "video",
-        // "originalContentUrl": url_radarvid.secure_url.replace(".gif", ".mp4"),
-        // "previewImageUrl": url_radar240.secure_url
         "originalContentUrl": gfy.vidUrl,
         "previewImageUrl": gfy.thumbUrl
       })

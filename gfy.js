@@ -2,7 +2,8 @@ var request = require('request');
 var Gfy = function () {
   var gfyClientId, gfyClientSecret;
   var lastUpdate = new Date('2017-01-01'),
-    gfyStat = '',
+    vidStat = 'error',
+    imgStat = 'error',
     thumbUrl = '',
     imgUrl = '',
     vidUrl = '';
@@ -109,7 +110,7 @@ Gfy.prototype.init = function (i, s) {
 Gfy.prototype.genWeatherImgAndVid = async function () {
   var gfyname, token, gfyObj;
   var checkCount;
-  this.gfyStat = 'ok';
+  this.vidStat = 'ok';
   try {
     token = await this.gfyAuth();
     //post vid
@@ -131,8 +132,9 @@ Gfy.prototype.genWeatherImgAndVid = async function () {
       }
     }
     if (checkCount == 10) {
-      this.gfyStat = 'error';
+      this.vidStat = 'error';
     }
+    this.imgStat = 'ok';
     //post img
     gfyname = await this.gfyPost('http://203.155.220.231/Radar/pics/nkzfiltered.jpg');
     checkCount = 0;
@@ -152,7 +154,7 @@ Gfy.prototype.genWeatherImgAndVid = async function () {
       }
     }
     if (checkCount == 10) {
-      this.gfyStat = 'error';
+      this.imgStat = 'error';
     }
     /*
     console.log(this.thumbUrl);
