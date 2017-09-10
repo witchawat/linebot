@@ -110,7 +110,6 @@ Gfy.prototype.init = function (i, s) {
 Gfy.prototype.genWeatherImgAndVid = async function () {
   var gfyname, token, gfyObj;
   var checkCount;
-  this.vidStat = 'ok';
   try {
     token = await this.gfyAuth();
     //post vid
@@ -126,6 +125,7 @@ Gfy.prototype.genWeatherImgAndVid = async function () {
         //console.log('got vid');
         //console.log(gfyObj);
         this.vidUrl = gfyObj.mobileUrl;
+        this.vidStat = 'ok';
         break;
       } catch (e) {
         await new Promise(resolve => setTimeout(resolve, 20000));
@@ -134,7 +134,6 @@ Gfy.prototype.genWeatherImgAndVid = async function () {
     if (checkCount == 10) {
       this.vidStat = 'error';
     }
-    this.imgStat = 'ok';
     //post img
     gfyname = await this.gfyPost('http://203.155.220.231/Radar/pics/nkzfiltered.jpg');
     checkCount = 0;
@@ -148,6 +147,7 @@ Gfy.prototype.genWeatherImgAndVid = async function () {
         //console.log(gfyObj);
         this.thumbUrl = gfyObj.mobilePosterUrl;
         this.imgUrl = gfyObj.posterUrl;
+        this.imgStat = 'ok';
         break;
       } catch (e) {
         await new Promise(resolve => setTimeout(resolve, 20000));

@@ -78,7 +78,8 @@ function handleEvent(event) {
       return client.replyMessage(event.replyToken, {
         "type": "text",
         "text": "ไม่สามารถ load gif ได้ รบกวนไปดูเองที่\r\nhttp://203.155.220.231/Radar/pics/nkradar.gif"
-      });} else {
+      });
+    } else {
       return client.replyMessage(event.replyToken, {
         "type": "video",
         "originalContentUrl": gfy.vidUrl,
