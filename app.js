@@ -68,7 +68,7 @@ function handleEvent(event) {
       return client.replyMessage(event.replyToken, {
         "type": "image",
         "originalContentUrl": gfy.imgUrl,
-        "previewImageUrl": gfy.thumbUrl
+        "previewImageUrl": gfy.imgTmb
       });
     }
   }
@@ -85,7 +85,7 @@ function handleEvent(event) {
       return client.replyMessage(event.replyToken, {
         "type": "video",
         "originalContentUrl": gfy.vidUrl,
-        "previewImageUrl": gfy.thumbUrl
+        "previewImageUrl": gfy.vidTmb
       })
     }
   }

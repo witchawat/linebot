@@ -4,8 +4,9 @@ var Gfy = function () {
   var lastUpdate = new Date('2017-01-01'),
     vidStat = 'error',
     imgStat = 'error',
-    thumbUrl = '',
+    imgTmb = '',
     imgUrl = '',
+    vidTmb = '',
     vidUrl = '';
 };
 Gfy.prototype.gfyAuth = function () {
@@ -114,6 +115,28 @@ Gfy.prototype.genWeatherImgAndVid = async function () {
   var checkCount;
   try {
     token = await this.gfyAuth();
+    //post img
+    gfyname = await this.gfyPost('http://203.155.220.231/Radar/pics/nkzfiltered.jpg');
+    checkCount = 0;
+    while (checkCount < 10) {
+      checkCount++;
+      try {
+        console.log('-- wait 4 gfy to process img --');
+        gfyname = await this.getGfyStat(gfyname, token);
+        gfyObj = await this.getGfy(gfyname, token);
+        //console.log('got img');
+        //console.log(gfyObj);
+        this.imgTmb = gfyObj.mobilePosterUrl;
+        this.imgUrl = gfyObj.posterUrl;
+        this.imgStat = 'ok';
+        break;
+      } catch (e) {
+        await new Promise(resolve => setTimeout(resolve, 20000));
+      }
+    }
+    if (checkCount == 10) {
+      this.imgStat = 'error';
+    }
     //post vid
     gfyname = await this.gfyPost('http://203.155.220.231/Radar/pics/nkradar.gif');
     checkCount = 0;
@@ -127,6 +150,7 @@ Gfy.prototype.genWeatherImgAndVid = async function () {
         //console.log('got vid');
         //console.log(gfyObj);
         this.vidUrl = gfyObj.mobileUrl;
+        this.vidTmb = gfyObj.mobilePosterUrl;
         this.vidStat = 'ok';
         break;
       } catch (e) {
@@ -136,30 +160,8 @@ Gfy.prototype.genWeatherImgAndVid = async function () {
     if (checkCount == 10) {
       this.vidStat = 'error';
     }
-    //post img
-    gfyname = await this.gfyPost('http://203.155.220.231/Radar/pics/nkzfiltered.jpg');
-    checkCount = 0;
-    while (checkCount < 10) {
-      checkCount++;
-      try {
-        console.log('-- wait 4 gfy to process img --');
-        gfyname = await this.getGfyStat(gfyname, token);
-        gfyObj = await this.getGfy(gfyname, token);
-        //console.log('got img');
-        //console.log(gfyObj);
-        this.thumbUrl = gfyObj.mobilePosterUrl;
-        this.imgUrl = gfyObj.posterUrl;
-        this.imgStat = 'ok';
-        break;
-      } catch (e) {
-        await new Promise(resolve => setTimeout(resolve, 20000));
-      }
-    }
-    if (checkCount == 10) {
-      this.imgStat = 'error';
-    }
     /*
-    console.log(this.thumbUrl);
+    console.log(this.imgTmb);
     console.log(this.imgUrl);
     console.log(this.vidUrl);
     */
