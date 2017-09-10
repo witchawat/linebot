@@ -106,6 +106,8 @@ Gfy.prototype.gfyPost = function (url) {
 Gfy.prototype.init = function (i, s) {
   this.gfyClientId = i;
   this.gfyClientSecret = s;
+  this.vidStat = 'error';
+  this.imgStat = 'error';
 };
 Gfy.prototype.genWeatherImgAndVid = async function () {
   var gfyname, token, gfyObj;
