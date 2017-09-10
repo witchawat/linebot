@@ -58,7 +58,7 @@ function handleEvent(event) {
   //!rain - jpg
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!rain')) {
     hasMatchedCommand = true;
-    console.log('gfy img stat '+gfy.imgStat);
+    console.log('gfy img stat ' + gfy.imgStat);
     if (gfy.imgStat == 'error') {
       return client.replyMessage(event.replyToken, {
         "type": "text",
@@ -75,6 +75,7 @@ function handleEvent(event) {
   //!rainvid
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!rainvid')) {
     hasMatchedCommand = true;
+    console.log('gfy vid stat ' + gfy.vidStat);
     if (gfy.vidStat == 'error') {
       return client.replyMessage(event.replyToken, {
         "type": "text",
