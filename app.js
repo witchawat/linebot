@@ -85,7 +85,7 @@ function handleEvent(event) {
       return client.replyMessage(event.replyToken, {
         "type": "video",
         "originalContentUrl": gfy.vidUrl,
-        "previewImageUrl": gfy.vidTmb
+        "previewImageUrl": (gfy.imgStat == 'error') ? gfy.vidTmb : gfy.imgTmb
       })
     }
   }
