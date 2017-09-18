@@ -12,9 +12,6 @@ var CronJob = require('cron').CronJob;
 var request = require('request');
 var fs = require('fs');
 var path = require('path');
-var utmbRunner = require('./utmbrunner.js');
-var utmbImg = require('./utmbimg.js');
-var utmbVideo = require('./utmbVideo.js');
 var gfy = new(require('./gfy.js'));
 gfy.init(process.env.GFY_ID, process.env.GFY_SECRET);
 //================================
