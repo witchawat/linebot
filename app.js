@@ -89,62 +89,29 @@ function handleEvent(event) {
       })
     }
   }
-  //UTMB RUNNER
-  //!utmb <bib>
-  if (event.message.text) {
-    var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
-    if (!hasMatchedCommand && (lottoParam[0] == '!utmb')) {
+
+  //!solve <text>
+  if(event.message.text){
+  var txt = event.message.text.trim().toLowerCase();
+    if (!hasMatchedCommand && txt.indexOf('!solve')==0) {
       hasMatchedCommand = true;
-      var bib = event.message.text.replace('!utmb ', '');
-      utmbRunner(bib, function (err, runner) {
-        if (err) {
-          console.log(err);
-        } else {
-          return client.replyMessage(event.replyToken, {
-            type: 'text',
-            'text': runner
-          });
-        }
-      });
-    }
-  };
-  // end UTMB RUNNER
-  //UTMB VIDEO
-  //!utmbvid <bib>
-  if (event.message.text) {
-    var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
-    if (!hasMatchedCommand && (lottoParam[0] == '!utmbvid')) {
-      hasMatchedCommand = true;
-      var bib = event.message.text.replace('!utmbvid ', '');
-      return client.replyMessage(event.replyToken, {
-        "type": "video",
-        "originalContentUrl": utmbVideo(bib),
-        "previewImageUrl": ""
-      });
-    }
-  };
-  // end UTMB VIDEO
-  //UTMBimg - SCREENSHOT
-  //!utmbimg <bib>
-  if (event.message.text) {
-    var lottoParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
-    if (!hasMatchedCommand && (lottoParam[0] == '!utmbimg')) {
-      hasMatchedCommand = true;
-      var bib = event.message.text.replace('!utmbimg ', '');
-      utmbImg(bib, function (err, runnerImg) {
-        if (err) {
-          console.log(err);
-        } else {
+      txt=txt.replace('!solve','');
+      request.get('https://api.wolframalpha.com/v1/simple?i='+encodeURIComponent(txt)+'&appid=WYLR8V-YQWE8APE6A',{
+        encoding: 'binary'
+      }, function (err, response, body) {
+        var solveImg = 'solve_'+(new Date().getTime()) + '.png';
+        fs.writeFile(path.join(process.cwd(), '/./public/', solveImg), body, 'binary', function (err) {
+          if (err) return reject('');
           return client.replyMessage(event.replyToken, {
             "type": "image",
-            "originalContentUrl": 'https://linerain.herokuapp.com/' + runnerImg,
-            "previewImageUrl": 'https://linerain.herokuapp.com/' + runnerImg
-          });
-        }
+            "originalContentUrl": 'https://linerain.herokuapp.com/'+solveImg,
+            "previewImageUrl": 'https://linerain.herokuapp.com/'+solveImg
+          })
+        });
       });
     }
-  };
-  //END OF UTMBimg - SCREENSHOT
+  }
+  // end solve
   //!log
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!log')) {
     hasMatchedCommand = true;
