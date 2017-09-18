@@ -86,25 +86,31 @@ function handleEvent(event) {
       })
     }
   }
-
   //!solve <text>
-  if(event.message.text){
-  var txt = event.message.text.trim().toLowerCase();
-    if (!hasMatchedCommand && txt.indexOf('!solve')==0) {
+  if (event.message.text) {
+    var txt = event.message.text.trim().toLowerCase();
+    if (!hasMatchedCommand && txt.indexOf('!solve') == 0) {
       hasMatchedCommand = true;
-      txt=txt.replace('!solve','');
-      request.get('https://api.wolframalpha.com/v1/simple?i='+encodeURIComponent(txt)+'&appid=WYLR8V-YQWE8APE6A',{
+      txt = txt.replace('!solve', '');
+      request.get('https://api.wolframalpha.com/v1/simple?i=' + encodeURIComponent(txt) + '&appid=WYLR8V-YQWE8APE6A', {
         encoding: 'binary'
       }, function (err, response, body) {
-        var solveImg = 'solve_'+(new Date().getTime()) + '.png';
-        fs.writeFile(path.join(process.cwd(), '/./public/', solveImg), body, 'binary', function (err) {
-          if (err) return reject('');
+        if (body.length < 100) {
           return client.replyMessage(event.replyToken, {
-            "type": "image",
-            "originalContentUrl": 'https://linerain.herokuapp.com/'+solveImg,
-            "previewImageUrl": 'https://linerain.herokuapp.com/'+solveImg
-          })
-        });
+            "type": "text",
+            "text": ";)*"
+          });
+        } else {
+          var solveImg = 'solve_' + (new Date().getTime()) + '.png';
+          fs.writeFile(path.join(process.cwd(), '/./public/', solveImg), body, 'binary', function (err) {
+            if (err) return reject('');
+            return client.replyMessage(event.replyToken, {
+              "type": "image",
+              "originalContentUrl": 'https://linerain.herokuapp.com/' + solveImg,
+              "previewImageUrl": 'https://linerain.herokuapp.com/' + solveImg
+            })
+          });
+        }
       });
     }
   }
