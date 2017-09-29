@@ -139,7 +139,7 @@ function handleEvent(event) {
           "type": "carousel",
           "columns": [
             { //UT Mount Fuji
-              "thumbnailImageUrl": "https://i.imgur.com/TaA8vV4.jpg",
+              // "thumbnailImageUrl": "https://i.imgur.com/TaA8vV4.jpg",
               "title" : "UTMF Regis " + moment().to(registerTime.utmf),
               "text" : "UTMF 165K/7500m/46hr, STY 72K/3700m/20hr",
               "actions" : [
@@ -151,7 +151,7 @@ function handleEvent(event) {
               ]
             },
             { //UT Mont Blanc
-              "thumbnailImageUrl": "https://i.imgur.com/uHX9k1R.jpg",
+              // "thumbnailImageUrl": "https://i.imgur.com/uHX9k1R.jpg",
               "title" : "UTMB Regis " + moment().to(registerTime.utmb),
               "text" : "UTMB 171K/10300m, CCC 101K/6100m, TDS 119K/7200m, OCC 56K/3500m",
               "actions" : [
