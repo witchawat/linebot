@@ -128,8 +128,8 @@ function handleEvent(event) {
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!countdown')) {
     hasMatchedCommand = true;
     var registerTime = {
-      "utmf" : "2017-10-16 10:00+09:00", //JP Time Zone
-      "utmb" : "2017-12-14 08:00+01:00", //Swiss Time Zone
+      "utmf" : "2017-10-16 10:00+09", //JP Time Zone
+      "utmb" : "2017-12-14 08:00+01", //Swiss Time Zone
     }
 
     return client.replyMessage(event.replyToken, {
