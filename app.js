@@ -141,7 +141,7 @@ function handleEvent(event) {
             { //UT Mount Fuji
               "thumbnailImageUrl": "https://i.imgur.com/TaA8vV4.jpg",
               "title" : "UTMF Regis " + moment().to(registerTime.utmf),
-              "text" : "UTMF 165K/7500m/46hr,\nSTY 72K/3700m/20hr",
+              "text" : "UTMF 165K/7500m/46hr, STY 72K/3700m/20hr",
               "actions" : [
                 {
                   "type": "uri",
