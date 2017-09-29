@@ -162,11 +162,11 @@ function handleEvent(event) {
       "altText": "Race Registration Countdown",
       "template": {
           "type": "carousel",
-          "columns": raceData;
+          "columns": raceData
       }
     })
   }
-  /*End !sound*/
+  /*End !countdown*/
 };
 // change service from Cloudinary to Gfycat
 new CronJob('56 1,11,21,31,41,51 * * * *', fetchImageAndVidFromGfy, null, true, 'Asia/Bangkok');
