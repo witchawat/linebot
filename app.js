@@ -30,6 +30,7 @@ app.post('/webhook', line.middleware(config), (req, res) => {
   Promise.all(req.body.events.map(handleEvent)).then(
     (result) => res.json(result), (reject) => {
       console.log('handleEvent func rejected');
+      console.log(reject)
       res.send('');
     });
 });
