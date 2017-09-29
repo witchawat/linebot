@@ -131,38 +131,38 @@ function handleEvent(event) {
       "utmf" : "2017-10-16 10:00+09:00", //JP Time Zone
       "utmb" : "2017-12-14 08:00+01:00", //Swiss Time Zone
     }
-    var raceData = [
-      { //UT Mount Fuji
-        "thumbnailImageUrl": "https://talkultra.files.wordpress.com/2015/09/logo1.jpg",
-        "title" : "UTMF Regis " + moment().to(registerTime.utmf),
-        "text" : "UTMF 165K/7500m/46hr,\nSTY 72K/3700m/20hr",
-        "actions" : [
-          {
-            "type": "uri",
-            "label": "View detail",
-            "uri": "http://www.ultratrailmtfuji.com/en/about/regarding/"
-          }
-        ]
-      },
-      { //UT Mont Blanc
-        "thumbnailImageUrl": "https://static1.chamonet.com/image_uploader/photos/b0/medium/utmb-chamonix-mont-blanc-valley-337.jpg",
-        "title" : "UTMB Regis " + moment().to(registerTime.utmb),
-        "text" : "UTMB 171K/10300m, CCC 101K/6100m, TDS 119K/7200m, OCC 56K/3500m",
-        "actions" : [
-          {
-            "type": "uri",
-            "label": "View detail",
-            "uri": "http://utmbmontblanc.com/en/page/445/2018-enrolment.html"
-          }
-        ]
-      },
-    ]
+
     return client.replyMessage(event.replyToken, {
       "type": "template",
       "altText": "Race Registration Countdown",
       "template": {
           "type": "carousel",
-          "columns": raceData
+          "columns": [
+            { //UT Mount Fuji
+              "thumbnailImageUrl": "https://i.imgur.com/TaA8vV4.jpg",
+              "title" : "UTMF Regis " + moment().to(registerTime.utmf),
+              "text" : "UTMF 165K/7500m/46hr,\nSTY 72K/3700m/20hr",
+              "actions" : [
+                {
+                  "type": "uri",
+                  "label": "View detail",
+                  "uri": "http://www.ultratrailmtfuji.com/en/about/regarding/"
+                }
+              ]
+            },
+            { //UT Mont Blanc
+              "thumbnailImageUrl": "https://i.imgur.com/uHX9k1R.jpg",
+              "title" : "UTMB Regis " + moment().to(registerTime.utmb),
+              "text" : "UTMB 171K/10300m, CCC 101K/6100m, TDS 119K/7200m, OCC 56K/3500m",
+              "actions" : [
+                {
+                  "type": "uri",
+                  "label": "View detail",
+                  "uri": "http://utmbmontblanc.com/en/page/445/2018-enrolment.html"
+                }
+              ]
+            },
+          ]
       }
     })
   }
