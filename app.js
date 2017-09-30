@@ -159,7 +159,7 @@ function handleEvent(event) {
     if (!hasMatchedCommand && txt.indexOf('!pyt') == 0) {
       //!pyt with command
       hasMatchedCommand = true;
-      txt = txt.replace('!pyt', '');
+      txt = txt.replace('!pyt', '').trim();
       if (txt === "show"){
         console.log("Only !pyt");
         return client.replyMessage(event.replyToken, Race());
