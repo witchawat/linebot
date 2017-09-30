@@ -14,10 +14,10 @@ var Race = function(txt, uid, displayname){
   if (txt == "show" ){
     //Show PYT Registered User
     //Build Racer message
-    let racers = Pyt.find({}).sort({distance: -1, displayname: 1});
+    var racers = Pyt.find().sort({distance: -1, displayname: 1});
     var i = 1;
     console.log(typeof racers);
-    console.log(racers);
+    console.log(racers[0].distance);
 
     return {
       type: 'text',
