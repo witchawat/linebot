@@ -16,13 +16,12 @@ var Race = function(txt, uid, displayname){
     //Build Racer message
     let racers = Pyt.find({}).sort({distance: -1, displayname: 1});
     var i = 1;
+    console.log(typeof racers);
+    console.log(racers);
 
-    racers.forEach(function(r){
-      rdata = rdata + i + ". " + r.line_displayName + " " + distance + "K\n"
-    });
     return {
       type: 'text',
-      text: 'PYT Racers\n' + rdata
+      text: 'PYT Racers\n' + racers
   }
   } else {
     if (txt == "22" || txt == "44" || txt == "66" || txt == "100"){
