@@ -135,7 +135,7 @@ function handleEvent(event) {
 
     return client.replyMessage(event.replyToken, {
       type : "text",
-      text : "Race Registration Countdown\nUTMF " + moment().to(registerTime.utmf) + "\nUTMF 165K/7500m/46hr\nSTY 72K/3700m/20hr\nhttp://www.ultratrailmtfuji.com/en/about/regarding/\n\nUTMB " + moment().to(registerTime.utmb) + "\nUTMB 171K/10300m\nCCC 101K/6100m\nTDS 119K/7200m\nOCC 56K/3500m\nhttp://utmbmontblanc.com/en/page/445/2018-enrolment.html"
+      text : "Race Registration Countdown\nU+26F0UTMF " + moment().to(registerTime.utmf) + "\nUTMF 165K/7500m/46hr\nSTY 72K/3700m/20hr\nhttp://www.ultratrailmtfuji.com/en/about/regarding/\n\nU+26F0UTMB " + moment().to(registerTime.utmb) + "\nUTMB 171K/10300m\nCCC 101K/6100m\nTDS 119K/7200m\nOCC 56K/3500m\nhttp://utmbmontblanc.com/en/page/445/2018-enrolment.html"
     })
   }
   /*End !countdown*/
