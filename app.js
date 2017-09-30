@@ -161,7 +161,7 @@ function handleEvent(event) {
       hasMatchedCommand = true;
       txt = txt.replace('!pyt', '');
 
-      client.getProfile(events.source.userId)
+      client.getProfile(event.source.userId)
         .then((profile) => {
           console.log(profile.userId);
           console.log(profile.displayName);
