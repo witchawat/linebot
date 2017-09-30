@@ -13,7 +13,7 @@ var Race = function(txt, uid, displayname){
   if (txt == "show" ){
     //Show PYT Registered User
     //Build Racer message
-    let racers = Pyt.find({}).sort({distance: -1}, {displayname: 1});
+    let racers = Pyt.find({}).sort({distance: -1, displayname: 1});
     var i = 1;
     racers.each(function(r){
       rdata = rdata + i + ". " + r.line_displayName + " " + distance + "K\n"
