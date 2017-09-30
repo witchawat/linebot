@@ -15,6 +15,7 @@ var path = require('path');
 var gfy = new(require('./gfy.js'));
 var moment = require('moment');
 var mongoose = require('mongoose');
+require('./raceregis.js');
 gfy.init(process.env.GFY_ID, process.env.GFY_SECRET);
 //================================
 //        KEYS
@@ -49,12 +50,11 @@ if (app.get('env') == 'development') {
 // MONGO DB by mLab via mongoose
 ////////////////////
 var uristring = process.env.MONGODB_URI;
-mongoose.connect(uristring, function (err, res) {
-  if (err) {
-  console.log ('ERROR connecting to: mLAB MongoDB. ' + err);
-  } else {
-  console.log ('Succeeded connected to: mLAB MongoDB');
-  }
+mongoose.connect(uristring, { useMongoClient: true, promiseLibrary: global.Promise });
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log("Successfully connected to mLab Mongo DB.")
 });
 
 function handleEvent(event) {
@@ -151,6 +151,20 @@ function handleEvent(event) {
     })
   }
   /*End !countdown*/
+  // !pyt <cmd>
+  if (event.message.text) {
+    var txt = event.message.text.trim().toLowerCase();
+    if (!hasMatchedCommand && txt.indexOf('!pyt') == 0) {
+      //!pyt with command
+      hasMatchedCommand = true;
+      txt = txt.replace('!pyt', '');
+      return client.replyMessage(event.replyToken, pytRegis(txt));
+    }
+    // only !pyt
+    else {
+      return client.replyMessage(event.replyToken, pytShow());
+    }
+  }
 };
 // change service from Cloudinary to Gfycat
 new CronJob('56 1,11,21,31,41,51 * * * *', fetchImageAndVidFromGfy, null, true, 'Asia/Bangkok');
