@@ -14,6 +14,7 @@ var fs = require('fs');
 var path = require('path');
 var gfy = new(require('./gfy.js'));
 var moment = require('moment');
+var mongoose = require('mongoose');
 gfy.init(process.env.GFY_ID, process.env.GFY_SECRET);
 //================================
 //        KEYS
@@ -44,6 +45,17 @@ if (app.get('env') == 'development') {
     no_ready_check: true
   });
 }
+////////////////////
+// MONGO DB by mLab via mongoose
+////////////////////
+var uristring = process.env.MONGODB_URI;
+mongoose.connect(uristring, function (err, res) {
+  if (err) {
+  console.log ('ERROR connecting to: mLAB MongoDB. ' + err);
+  } else {
+  console.log ('Succeeded connected to: mLAB MongoDB');
+  }
+});
 
 function handleEvent(event) {
   //console.log('--- handleEvent ---');
