@@ -134,37 +134,21 @@ function handleEvent(event) {
     }
 
     return client.replyMessage(event.replyToken, {
-      "type": "template",
-      "altText": "Race Registration Countdown",
-      "template": {
-          "type": "carousel",
-          "columns": [
-            { //UT Mount Fuji
-              // "thumbnailImageUrl": "https://i.imgur.com/TaA8vV4.jpg",
-              "title" : "UTMF Regis " + moment().to(registerTime.utmf),
-              "text" : "UTMF 165K/7500m/46hr, STY 72K/3700m/20hr",
-              "actions" : [
-                {
-                  "type": "uri",
-                  "label": "View detail",
-                  "uri": "http://www.ultratrailmtfuji.com/en/about/regarding/"
-                }
-              ]
-            },
-            { //UT Mont Blanc
-              // "thumbnailImageUrl": "https://i.imgur.com/uHX9k1R.jpg",
-              "title" : "UTMB Regis " + moment().to(registerTime.utmb),
-              "text" : "UTMB 171K/10300m, CCC 101K/6100m, TDS 119K/7200m, OCC 56K/3500m",
-              "actions" : [
-                {
-                  "type": "uri",
-                  "label": "View detail",
-                  "uri": "http://utmbmontblanc.com/en/page/445/2018-enrolment.html"
-                }
-              ]
-            },
-          ]
-      }
+      "type": "text",
+      "text":
+        "Race Registration Countdown\n
+        UTMF " + moment().to(registerTime.utmf) "\n
+        UTMF 165K/7500m/46hr\n
+        STY 72K/3700m/20hr\n
+        http://www.ultratrailmtfuji.com/en/about/regarding/\n\n
+
+        UTMB " + moment().to(registerTime.utmb) "\n
+        UTMB 171K/10300m\n
+        CCC 101K/6100m\n
+        TDS 119K/7200m\n
+        OCC 56K/3500m\n
+        http://utmbmontblanc.com/en/page/445/2018-enrolment.html
+        "
     })
   }
   /*End !countdown*/
