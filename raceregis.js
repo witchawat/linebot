@@ -25,6 +25,7 @@ var Race = function(txt, uid, displayname){
 
       });
       setTimeout(function(){
+        console.log(rdata);
         return {
           type: 'text',
           text: 'PYT Racers\n' + rdata
