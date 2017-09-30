@@ -22,14 +22,16 @@ var Race = function(txt, uid, displayname){
         console.log(res);
         rdata = rdata + ii + ". " + res.line_displayName + " " + res.distance + "K\n"
         ii++;
+        if (ii == results.length + 1){
+          return {
+            type: 'text',
+            text: 'PYT Racers\n' + rdata
+        }
+        }
       });
 
     })
 
-    return {
-      type: 'text',
-      text: 'PYT Racers\n' + rdata
-  }
   } else {
     if (txt == "22" || txt == "44" || txt == "66" || txt == "100"){
       Pyt.update({line_userId: uid}, {$set: {line_userId: uid, line_displayName: displayname, distance: txt}}, {upsert: true}, function(err, result){
