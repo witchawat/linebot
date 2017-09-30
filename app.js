@@ -167,7 +167,7 @@ function handleEvent(event) {
           console.log(profile.displayName);
           console.log("!pyt with >>", txt);
           return client.replyMessage(event.replyToken, Race(txt));
-        }
+        })
     }
     // only !pyt
     else {
