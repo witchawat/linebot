@@ -15,7 +15,8 @@ var path = require('path');
 var gfy = new(require('./gfy.js'));
 var moment = require('moment');
 var mongoose = require('mongoose');
-require('./raceregis.js');
+var Race = require('./raceregis.js');
+
 gfy.init(process.env.GFY_ID, process.env.GFY_SECRET);
 //================================
 //        KEYS
@@ -56,6 +57,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("Successfully connected to mLab Mongo DB.")
 });
+
 
 function handleEvent(event) {
   //console.log('--- handleEvent ---');
@@ -158,11 +160,19 @@ function handleEvent(event) {
       //!pyt with command
       hasMatchedCommand = true;
       txt = txt.replace('!pyt', '');
-      return client.replyMessage(event.replyToken, pytRegis(txt));
+
+      client.getProfile(events.source.userId)
+        .then((profile) => {
+          console.log(profile.userId);
+          console.log(profile.displayName);
+          console.log("!pyt with >>", txt);
+          return client.replyMessage(event.replyToken, Race(txt));
+        }
     }
     // only !pyt
     else {
-      return client.replyMessage(event.replyToken, pytShow());
+      console.log("Only !pyt");
+      return client.replyMessage(event.replyToken, Race());
     }
   }
 };

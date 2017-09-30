@@ -9,16 +9,22 @@ var pytSchema = new Schema({
 
 var Pyt = mongoose.model('Pyt', pytSchema);
 
-function pytRegis(txt){
-  return {
-    type : "text",
-    text : "Reply with " + txt
+var Race = function(txt){
+  if (txt === undefined ){
+    //Show PYT Registered User
+    return {
+      type: 'text',
+      text: 'ZERO'
   }
-}
+  } else {
+    //PYT Command
+    return  {
+      type: 'text',
+      text: 'pyt with cmd'
+  }
+  }
 
-function pytShow(){
-  return {
-    type : "text",
-    text : "SHOW"
-  }
-}
+};
+
+
+module.exports = Race;
