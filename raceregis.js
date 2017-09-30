@@ -14,14 +14,21 @@ var Race = function(txt, uid, displayname){
   if (txt == "show" ){
     //Show PYT Registered User
     //Build Racer message
-    var racers = Pyt.find().sort({distance: -1, displayname: 1});
-    var i = 1;
-    console.log(typeof racers);
-    console.log(racers[0].distance);
+    var rdata = "";
+    var ii = 1;
+    var racers = Pyt.find({}, function(err, results){
+      console.log(results)
+      results.forEach(function(res){
+        console.log(res);
+        rdata = rdata + ii + ". " + res.line_displayName + " " + distance + "K\n"
+        ii++;
+      });
+
+    })
 
     return {
       type: 'text',
-      text: 'PYT Racers\n' + racers
+      text: 'PYT Racers\n' + rdata
   }
   } else {
     if (txt == "22" || txt == "44" || txt == "66" || txt == "100"){
