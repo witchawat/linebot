@@ -17,7 +17,7 @@ var Race = function(txt, uid, displayname){
       text: 'ZERO'
   }
   } else {
-    if (txt !== "22" || txt !== "44" || txt !== "66" || txt !== "100"){
+    if (txt == "22" || txt == "44" || txt == "66" || txt == "100"){
       Pyt.update({line_userId: uid}, {$set: {line_userId: uid, line_displayName: displayname, distance: txt}}, {upsert: true}, function(err, result){
         if (err) {
           console.log("Upsert Error")
