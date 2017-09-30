@@ -22,15 +22,14 @@ var Race = function(txt, uid, displayname){
         console.log(res);
         rdata = rdata + ii + ". " + res.line_displayName + " " + res.distance + "K\n"
         ii++;
-
+        if (ii == results.length +1){
+          return {
+            type: 'text',
+            text: 'PYT Racers\n' + rdata
+        }
+        }
       });
-      setTimeout(function(){
-        console.log(rdata);
-        return {
-          type: 'text',
-          text: 'PYT Racers\n' + rdata
-      }
-    }, 2000);
+
 
     })
 
