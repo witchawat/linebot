@@ -9,8 +9,8 @@ var pytSchema = new Schema({
 
 var Pyt = mongoose.model('Pyt', pytSchema);
 
-var Race = function(txt){
-  if (txt === "show" ){
+var Race = function(txt, uid, displayname){
+  if (txt == "show" ){
     //Show PYT Registered User
     return {
       type: 'text',
