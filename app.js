@@ -160,20 +160,16 @@ function handleEvent(event) {
       //!pyt with command
       hasMatchedCommand = true;
       txt = txt.replace('!pyt', '').trim();
-      if (txt === "show"){
-        console.log("Only !pyt");
-        return client.replyMessage(event.replyToken, Race());
-      } else {
-        client.getProfile(event.source.userId)
-          .then((profile) => {
-            console.log(profile.userId);
-            console.log(profile.displayName);
-            console.log("!pyt with >>", txt);
-            return client.replyMessage(event.replyToken, Race(txt, profile.userId, profile.displayName));
-          })
-      }
+      client.getProfile(event.source.userId)
+        .then((profile) => {
+          console.log(profile.userId);
+          console.log(profile.displayName);
+          console.log("!pyt with >>", txt);
+          return client.replyMessage(event.replyToken, Race(txt, profile.userId, profile.displayName));
+        })
     }
   }
+//End !pyt <cmd>
 };
 // change service from Cloudinary to Gfycat
 new CronJob('56 1,11,21,31,41,51 * * * *', fetchImageAndVidFromGfy, null, true, 'Asia/Bangkok');

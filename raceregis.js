@@ -20,7 +20,7 @@ var Race = function(txt, uid, displayname){
     //PYT Command
     return  {
       type: 'text',
-      text: 'pyt with cmd'
+      text: 'pyt with ' + txt + ' ' + uid + ' ' + displayname
   }
   }
 
