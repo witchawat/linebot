@@ -12,9 +12,15 @@ var Pyt = mongoose.model('Pyt', pytSchema);
 var Race = function(txt, uid, displayname){
   if (txt == "show" ){
     //Show PYT Registered User
+    //Build Racer message
+    let racers = Pyt.find({}).sort({distance: -1}, {displayname: 1});
+    var i = 1;
+    racers.each(function(r){
+      rdata = rdata + i + ". " + r.line_displayName + " " + distance + "K\n"
+    });
     return {
       type: 'text',
-      text: 'ZERO'
+      text: 'PYT Racers\n' + rdata
   }
   } else {
     if (txt == "22" || txt == "44" || txt == "66" || txt == "100"){
@@ -22,6 +28,7 @@ var Race = function(txt, uid, displayname){
         if (err) {
           console.log("Upsert Error")
           console.log(err);
+          resolve(null)
         } else {
           console.log("Success >> " , result);
           return  {
