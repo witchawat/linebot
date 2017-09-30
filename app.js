@@ -160,19 +160,18 @@ function handleEvent(event) {
       //!pyt with command
       hasMatchedCommand = true;
       txt = txt.replace('!pyt', '');
-
-      client.getProfile(event.source.userId)
-        .then((profile) => {
-          console.log(profile.userId);
-          console.log(profile.displayName);
-          console.log("!pyt with >>", txt);
-          return client.replyMessage(event.replyToken, Race(txt));
-        })
-    }
-    // only !pyt
-    else {
-      console.log("Only !pyt");
-      return client.replyMessage(event.replyToken, Race());
+      if (txt === "show"){
+        console.log("Only !pyt");
+        return client.replyMessage(event.replyToken, Race());
+      } else {
+        client.getProfile(event.source.userId)
+          .then((profile) => {
+            console.log(profile.userId);
+            console.log(profile.displayName);
+            console.log("!pyt with >>", txt);
+            return client.replyMessage(event.replyToken, Race(txt));
+          })
+      }
     }
   }
 };
