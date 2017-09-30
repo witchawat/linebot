@@ -17,18 +17,19 @@ var Race = function(txt, uid, displayname){
     var rdata = "";
     var ii = 1;
     var racers = Pyt.find({}, function(err, results){
-      console.log(results)
+      console.log(results.length)
       results.forEach(function(res){
         console.log(res);
         rdata = rdata + ii + ". " + res.line_displayName + " " + res.distance + "K\n"
         ii++;
-        if (ii == results.length + 1){
-          return {
-            type: 'text',
-            text: 'PYT Racers\n' + rdata
-        }
-        }
+
       });
+      setTimeout(function(){
+        return {
+          type: 'text',
+          text: 'PYT Racers\n' + rdata
+      }
+    }, 4000);
 
     })
 
@@ -56,6 +57,7 @@ var Race = function(txt, uid, displayname){
   }
 };
 
-
+var ss = {fs: "h"};
+console.log(ss.length)
 
 module.exports = Race;
