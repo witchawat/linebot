@@ -30,7 +30,7 @@ var Race = function(txt, uid, displayname){
           type: 'text',
           text: 'PYT Racers\n' + rdata
       }
-    }, 4000);
+    }, 2000);
 
     })
 
@@ -58,7 +58,5 @@ var Race = function(txt, uid, displayname){
   }
 };
 
-var ss = {fs: "h"};
-console.log(ss.length)
 
 module.exports = Race;
