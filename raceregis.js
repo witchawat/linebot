@@ -20,7 +20,7 @@ var Race = function(txt, uid, displayname){
       console.log(results)
       results.forEach(function(res){
         console.log(res);
-        rdata = rdata + ii + ". " + res.line_displayName + " " + distance + "K\n"
+        rdata = rdata + ii + ". " + res.line_displayName + " " + res.distance + "K\n"
         ii++;
       });
 
