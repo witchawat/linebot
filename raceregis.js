@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+
 var pytSchema = new Schema({
   line_userId: String,
   line_displayName: String,
@@ -15,7 +16,8 @@ var Race = function(txt, uid, displayname){
     //Build Racer message
     let racers = Pyt.find({}).sort({distance: -1, displayname: 1});
     var i = 1;
-    racers.each(function(r){
+
+    racers.forEach(function(r){
       rdata = rdata + i + ". " + r.line_displayName + " " + distance + "K\n"
     });
     return {
