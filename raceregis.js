@@ -17,7 +17,7 @@ var Race = async function(txt, uid, displayname){
     var rdata = "";
     var ii = 1;
 
-    const dbresult = Pyt.find({}).sort({distance: -1, line_displayName: 1});
+    const dbresult = await Pyt.find({}).sort({distance: -1, line_displayName: 1});
     const cursor = dbresult.cursor();
     for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
       rdata = rdata + ii + ". " + doc.line_displayName + " " + doc.distance + "K\n"
@@ -48,14 +48,14 @@ var Race = async function(txt, uid, displayname){
 
   } else {
     if (txt == "22" || txt == "44" || txt == "66" || txt == "100"){
-      await Pyt.update({line_userId: uid}, {$set: {line_userId: uid, line_displayName: displayname, distance: txt}}, {upsert: true}, function(err, result){
+      Pyt.update({line_userId: uid}, {$set: {line_userId: uid, line_displayName: displayname, distance: txt}}, {upsert: true}, function(err, result){
         if (err) {
           console.log("Upsert Error")
           console.log(err);
           return undefined;
         } else {
           console.log("Success >> " , result);
-          return  {
+          return {
             type: 'text',
             text: 'เพิ่ม ' + displayname + ' ใน PYT ' + txt +'K แล้ว'
         }

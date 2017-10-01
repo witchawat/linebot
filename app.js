@@ -168,7 +168,7 @@ function handleEvent(event) {
           console.log("!pyt with >>", txt);
           //Build Race Object
           Race(txt, profile.userId, profile.displayName).then((result) =>{
-            console.log(result);
+            console.log("Race result >", result);
             return client.replyMessage(event.replyToken, result);
           })
         })
