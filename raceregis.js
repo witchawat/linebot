@@ -16,22 +16,35 @@ var Race = async function(txt, uid, displayname){
     //Build Racer message
     var rdata = "";
     var ii = 1;
-    var racers = await Pyt.find({}, function(err, results){
-      console.log(results.length)
-      results.forEach(function(res){
-        console.log(res);
-        rdata = rdata + ii + ". " + res.line_displayName + " " + res.distance + "K\n"
-        ii++;
-        if (ii == results.length +1){
-          return {
-            type: 'text',
-            text: 'PYT Racers\n' + rdata
-        }
-        }
-      });
 
+    const dbresult = Pyt.find({}).sort({distance: -1, line_displayName: 1});
+    const cursor = dbresult.cursor();
+    for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
+      rdata = rdata + ii + ". " + res.line_displayName + " " + res.distance + "K\n"
+      ii++;
+      if(ii == dbresult.count()){
+        console.log(rdata);
+        return {
+          type: 'text',
+          text: 'PYT Racers\n' + rdata
+        }
+      }
+    }
 
-    })
+    // var racers = await Pyt.find({}, function(err, results){
+    //   console.log(results.length)
+    //   results.forEach(function(res){
+    //     console.log(res);
+    //     rdata = rdata + ii + ". " + res.line_displayName + " " + res.distance + "K\n"
+    //     ii++;
+    //     if (ii == results.length +1){
+    //       return {
+    //         type: 'text',
+    //         text: 'PYT Racers\n' + rdata
+    //     }
+    //     }
+    //   });
+    // })
 
   } else {
     if (txt == "22" || txt == "44" || txt == "66" || txt == "100"){
