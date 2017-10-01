@@ -20,7 +20,7 @@ var Race = async function(txt, uid, displayname){
     const dbresult = Pyt.find({}).sort({distance: -1, line_displayName: 1});
     const cursor = dbresult.cursor();
     for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
-      rdata = rdata + ii + ". " + res.line_displayName + " " + res.distance + "K\n"
+      rdata = rdata + ii + ". " + doc.line_displayName + " " + doc.distance + "K\n"
       ii++;
       if(ii == dbresult.count()){
         console.log(rdata);
