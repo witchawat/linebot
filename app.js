@@ -50,6 +50,7 @@ if (app.get('env') == 'development') {
 ////////////////////
 // MONGO DB by mLab via mongoose
 ////////////////////
+mongoose.Promise = global.Promise;
 var uristring = process.env.MONGODB_URI;
 mongoose.connect(uristring, { useMongoClient: true, promiseLibrary: global.Promise });
 var db = mongoose.connection;

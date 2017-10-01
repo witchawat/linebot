@@ -52,6 +52,7 @@ var Race = async function(txt, uid, displayname){
         if (err) {
           console.log("Upsert Error")
           console.log(err);
+          return undefined;
         } else {
           console.log("Success >> " , result);
           return  {
