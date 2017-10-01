@@ -165,7 +165,10 @@ function handleEvent(event) {
           console.log(profile.userId);
           console.log(profile.displayName);
           console.log("!pyt with >>", txt);
-          return client.replyMessage(event.replyToken, Race(txt, profile.userId, profile.displayName));
+          //Build Race Object
+          Race(txt, profile.userId, profile.displayName).then((result) =>{
+            return client.replyMessage(event.replyToken, result);
+          })
         })
     }
   }

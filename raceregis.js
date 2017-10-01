@@ -10,13 +10,13 @@ var pytSchema = new Schema({
 
 var Pyt = mongoose.model('Pyt', pytSchema);
 
-var Race = function(txt, uid, displayname){
+var Race = async function(txt, uid, displayname){
   if (txt == "show" ){
     //Show PYT Registered User
     //Build Racer message
     var rdata = "";
     var ii = 1;
-    var racers = Pyt.find({}, function(err, results){
+    var racers = await Pyt.find({}, function(err, results){
       console.log(results.length)
       results.forEach(function(res){
         console.log(res);
@@ -35,11 +35,10 @@ var Race = function(txt, uid, displayname){
 
   } else {
     if (txt == "22" || txt == "44" || txt == "66" || txt == "100"){
-      Pyt.update({line_userId: uid}, {$set: {line_userId: uid, line_displayName: displayname, distance: txt}}, {upsert: true}, function(err, result){
+      await Pyt.update({line_userId: uid}, {$set: {line_userId: uid, line_displayName: displayname, distance: txt}}, {upsert: true}, function(err, result){
         if (err) {
           console.log("Upsert Error")
           console.log(err);
-          resolve(null)
         } else {
           console.log("Success >> " , result);
           return  {
