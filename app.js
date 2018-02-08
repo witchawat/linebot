@@ -191,9 +191,9 @@ function handleEvent(event) {
         type : "text",
         text : "API Call to AQICN Error"
       });
-    }
-    })
-
+    });
+    };
+  
   /*End !air*/
   // !pyt <cmd>
   if (event.message.text) {
