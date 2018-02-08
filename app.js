@@ -145,21 +145,23 @@ function handleEvent(event) {
   /*!air */
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!air')) {
     hasMatchedCommand = true;
-    airInfo().then(r =>
+    airInfo().then(r => {
       return client.replyMessage(event.replyToken, {
         type: "text",
         text: r
-      }));
+      })
+    });
   }
   /*End !air*/
   /*air by location */
   if (!hasMatchedCommand && (event.type == 'message' && event.message.type == 'location')) {
     hasMatchedCommand = true;
-    airInfo(event.message.latitude, event.message.longitude).then(r =>
+    airInfo(event.message.latitude, event.message.longitude).then(r => {
       return client.replyMessage(event.replyToken, {
         type: "text",
         text: r
-      }));
+      })
+    });
   }
   /*End air by location */
 }
