@@ -63,9 +63,8 @@ const client = new line.Client(config);
 //   console.log("Successfully connected to mLab Mongo DB.")
 // });
 function handleEvent(event) {
-  //console.log('--- handleEvent ---');
-  //console.log(event);
-  //!สล
+  console.log('--- handleEvent ---');
+  console.log(event);
   var hasMatchedCommand = false;
   if (!hasMatchedCommand && (event.type !== 'message' || event.message.type !== 'text')) {
     hasMatchedCommand = true;
@@ -154,7 +153,6 @@ function handleEvent(event) {
   }
   /*End !air*/
   /*air by location */
-  console.log(event);//////////
   if (!hasMatchedCommand && (event.type == 'message' && event.message.type == 'location')) {
     hasMatchedCommand = true;
     airInfo(event.message.latitude, event.message.longitude).then(r => {
