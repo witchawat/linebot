@@ -17,11 +17,10 @@ var gfy = new(require('./gfy.js'));
 var moment = require('moment');
 // var mongoose = require('mongoose');
 var rp = require('request-promise-native');
+var axios = require('axios');
 var emoji = require('node-emoji');
-
 const AIRQUALITY_TOKEN = process.env.AIRQUALITY_TOKEN;
 const UVINDEX_TOKEN = process.env.OPENWEATHERMAP_API_KEY;
-
 gfy.init(process.env.GFY_ID, process.env.GFY_SECRET);
 //================================
 //        KEYS
@@ -63,8 +62,6 @@ const client = new line.Client(config);
 // db.once('open', function() {
 //   console.log("Successfully connected to mLab Mongo DB.")
 // });
-
-
 function handleEvent(event) {
   //console.log('--- handleEvent ---');
   //console.log(event);
@@ -148,90 +145,84 @@ function handleEvent(event) {
   /*!air */
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!air')) {
     hasMatchedCommand = true;
-    var airOptions = {
-      uri: 'https://api.waqi.info/feed/geo:13.73;100.54/',
-      qs: {
-          token: AIRQUALITY_TOKEN // -> uri + '?token=xxxxx%20xxxxx'
-      },
-      headers: {
-          'User-Agent': 'Request-Promise'
-      },
-      json: true
-    };
-    // var uvOptions = {
-    //   uri: 'http://api.openweathermap.org/data/2.5/uvi?appid='+UVINDEX_TOKEN+'&lat=13.73&lon=100.54',
-    //   headers: {
-    //       'User-Agent': 'Request-Promise'
-    //   },
-    //   json: true
-    // };
-    // rp(uvOptions).then(function(r){
-    //   var uvindex = parseInt(r.value,10);
-    //   var uvindex_warning = `${emoji.get(':white_check_mark:')} Low`;
+    airInfo().then(r =>
+      return client.replyMessage(event.replyToken, {
+        type: "text",
+        text: r
+      }));
+  }
+  /*End !air*/
+  /*air by location */
+  if (!hasMatchedCommand && (event.type == 'message' && event.message.type == 'location')) {
+    hasMatchedCommand = true;
+    airInfo(event.message.latitude, event.message.longitude).then(r =>
+      return client.replyMessage(event.replyToken, {
+        type: "text",
+        text: r
+      }));
+  }
+  /*End air by location */
+}
 
-    //   if(uvindex > 3) {
-    //     uvindex_warning = `${emoji.get(':small_orange_diamond:')} Moderate`;
-    //   };
-    //   if (uvindex > 6){
-    //     uvindex_warning = `${emoji.get(':large_orange_diamond:')} High`;
-    //   };
-    //   if (uvindex > 8){
-    //     uvindex_warning = `${emoji.get(':bangbang:')} Very High`;
-    //   };
-    //   if (uvindex > 11){
-    //     uvindex_warning = `${emoji.get(':sos:')} Extreme`;
-    //   };
-    // })
-
-    rp(airOptions).then(function(r){
-      let city = r.data.city.name,
-          city_url = r.data.city.url,
-          pm25 = parseInt(r.data.iaqi.pm25.v,10),
-          temp = r.data.iaqi.t.v,
-          humidity = r.data.iaqi.h.v,
-          time = r.data.time.s,
-          pm25_warning = `${emoji.get(':white_check_mark:')} Good`;
-
-      if(pm25 > 51) {
+function airInfo(lat, lng) {
+  lat = lat || 13.73;
+  lng = lng || 100.5;
+  return axios.all(
+    [
+      axios.get('https://api.waqi.info/feed/geo:' + lat + ';' + lng + '/?token=' + AIRQUALITY_TOKEN),
+      axios.get('http://api.openweathermap.org/data/2.5/uvi?appid=' + UVINDEX_TOKEN + '&lat=' + lat + '&lon=' + lng)
+    ]).then(axios.spread(
+    (air, uv) => {
+      let airData = air.data.data,
+        uvindex = uv.data.value * 1,
+        uvindex_warning = `${emoji.get(':white_check_mark:')} Low`,
+        city = airData.city.name,
+        city_url = airData.city.url,
+        pm25 = parseInt(airData.iaqi.pm25.v, 10),
+        temp = airData.iaqi.t.v,
+        humidity = airData.iaqi.h.v,
+        time = airData.time.s,
+        pm25_warning = `${emoji.get(':white_check_mark:')} Good`;
+      if (pm25 > 51) {
         pm25_warning = `${emoji.get(':small_orange_diamond:')} Moderate`;
       };
-      if (pm25 > 101){
+      if (pm25 > 101) {
         pm25_warning = `${emoji.get(':large_orange_diamond:')} Unhealthy for Sensitive Groups`;
       };
-      if (pm25 > 151){
+      if (pm25 > 151) {
         pm25_warning = `${emoji.get(':bangbang:')} Unhealthy`;
       };
-      if (pm25 > 201){
+      if (pm25 > 201) {
         pm25_warning = `${emoji.get(':sos:')} Very Unhealthy`;
       };
-      if (pm25 > 300){
+      if (pm25 > 300) {
         pm25_warning = `${emoji.get(':skull:')} Hazardous`;
       };
-
-      // UV Index ${uvindex} ${uvindex_warning}
-
-      return client.replyMessage(event.replyToken, {
-        type : "text",
-        text : 
-`Air Quality Index by AQICN
+      if (uvindex > 3) {
+        uvindex_warning = `${emoji.get(':small_orange_diamond:')} Moderate`;
+      };
+      if (uvindex > 6) {
+        uvindex_warning = `${emoji.get(':large_orange_diamond:')} High`;
+      };
+      if (uvindex > 8) {
+        uvindex_warning = `${emoji.get(':bangbang:')} Very High`;
+      };
+      if (uvindex > 11) {
+        uvindex_warning = `${emoji.get(':sos:')} Extreme`;
+      };
+      return `Air Quality Index by AQICN
 ${emoji.get(':house:')} ${city}
 
 ${emoji.get(':vertical_traffic_light:')} PM2.5 = ${pm25} ${pm25_warning}
 
 ${emoji.get('thermometer')} ${temp}°C  Humidity = ${humidity}
-Updated At ${emoji.get(':clock2:')} ${time}`
-      });
-    })
-    .catch(function(err){
-      return client.replyMessage(event.replyToken, {
-        type : "text",
-        text : "API Call to AQICN Error"
-      });
-    });
-    };
-  
-  /*End !air*/
-};
+${emoji.get('sunglasses')} UV Index ${uvindex} ${uvindex_warning}
+
+Updated At ${emoji.get(':clock2:')} ${time}`;
+    })).catch(err => {
+    return 'API Error'
+  });
+}
 // change service from Cloudinary to Gfycat
 new CronJob('56 1,11,21,31,41,51 * * * *', fetchImageAndVidFromGfy, null, true, 'Asia/Bangkok');
 
