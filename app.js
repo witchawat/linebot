@@ -154,7 +154,7 @@ function handleEvent(event) {
     var airParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
     if (!hasMatchedCommand && (airParam[0] == '!air')) {
       hasMatchedCommand = true;
-      axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURI(airParam[1]) + '&key='+STATIC_MAP_API_KEY+'&language=th').then(r => {
+      axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURI(event.message.text.trim().toLowerCase().replace('!air ','') + '&key='+STATIC_MAP_API_KEY+'&language=th').then(r => {
         if (r.data.results.length) {
           airInfo(r.data.results[0].geometry.location.lat, r.data.results[0].geometry.location.lng).then(r => {
             return client.replyMessage(event.replyToken, {
