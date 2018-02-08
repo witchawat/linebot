@@ -148,6 +148,24 @@ function handleEvent(event) {
     });
   }
   /*End !air*/
+  /* !air <locationName> */
+  if (event.message.text) {
+    var airParam = event.message.text.trim().replace(/\s\s+/g, ' ').toLowerCase().split(' ');
+    if (!hasMatchedCommand && (airParam[0] == '!air')) {
+      hasMatchedCommand = true;
+      axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURI(airParam[1]) + '&key=AIzaSyDJQ3f8DxNjNkokV7T5PoV-EA1_iUUFCw8&language=th').then(r => {
+        if (r.data.results.length) {
+          airInfo(r.data.results[0].geometry.location.lat, r.data.results[0].geometry.location.lng).then(r => {
+            return client.replyMessage(event.replyToken, {
+              type: "text",
+              text: r
+            })
+          });
+        }
+      }).catch();
+    }
+  }
+  /*end !air <locationName> */
   /*air by location */
   if (!hasMatchedCommand && (event.type == 'message' && event.message.type == 'location')) {
     hasMatchedCommand = true;
@@ -159,7 +177,6 @@ function handleEvent(event) {
     });
   }
   /*End air by location */
-
   // no matched
   if (!hasMatchedCommand) {
     return Promise.resolve(null);
