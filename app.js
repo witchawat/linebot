@@ -20,6 +20,8 @@ var rp = require('request-promise-native');
 var emoji = require('node-emoji');
 
 const AIRQUALITY_TOKEN = process.env.AIRQUALITY_TOKEN;
+const UVINDEX_TOKEN = process.env.OPENWEATHERMAP_API_KEY;
+
 gfy.init(process.env.GFY_ID, process.env.GFY_SECRET);
 //================================
 //        KEYS
@@ -156,6 +158,28 @@ function handleEvent(event) {
       },
       json: true
     };
+    var uvOptions = {
+      uri: 'http://api.openweathermap.org/data/2.5/uvi?appid='+UVINDEX_TOKEN+'&lat=13.73&lon=100.54',
+      headers: {
+          'User-Agent': 'Request-Promise'
+      },
+      json: true
+    };
+    rp(uvOptions).then(function(r){
+      var uvindex = parseInt(r.value,10);
+      var uvindex_warning = `${emoji.get(':white_check_mark:')} Low`;
+
+      if(uvindex > 3) {
+        uvindex_warning = `${emoji.get(':small_orange_diamond:')} Moderate`;
+      } else if (uvindex > 6){
+        uvindex_warning = `${emoji.get(':large_orange_diamond:')} High`;
+      } else if (uvindex > 8){
+        uvindex_warning = `${emoji.get(':bangbang:')} Very High`;
+      }else if (uvindex > 11){
+        uvindex_warning = `${emoji.get(':sos:')} Extreme`;
+      };
+    })
+
     rp(airOptions).then(function(r){
       let city = r.data.city.name,
           city_url = r.data.city.url,
@@ -166,7 +190,7 @@ function handleEvent(event) {
           pm25_warning = `${emoji.get(':white_check_mark:')}Good`;
 
       if(pm25 > 51) {
-        pm25_warning = `${emoji.get(':white_check_mark:')}Moderate`;
+        pm25_warning = `${emoji.get(':small_orange_diamond:')}Moderate`;
       } else if (pm25 > 101){
         pm25_warning = `${emoji.get(':large_orange_diamond:')}Unhealthy for Sensitive Groups`;
       } else if (pm25 > 151){
@@ -182,10 +206,11 @@ function handleEvent(event) {
         text : 
 `Air Quality Index by AQICN
 ${emoji.get(':house:')} ${city}
-${emoji.get(':vertical_traffic_light:')} PM2.5 = ${pm25}
-${pm25_warning}
-${emoji.get('thermometer')} ${temp}°C  Humidity = ${humidity}
 
+${emoji.get(':vertical_traffic_light:')} PM2.5 = ${pm25} ${pm25_warning}
+
+UV Index ${uvindex} ${uvindex_warning}
+${emoji.get('thermometer')} ${temp}°C  Humidity = ${humidity}
 Updated At ${emoji.get(':clock2:')} ${time}`
       });
     })
