@@ -185,7 +185,7 @@ function handleEvent(event) {
 ${pm25_warning}
 \u1F321 ${temp} °C Humidity = ${humidity}
 
-Updated At ${time}`
+Updated At \uDBC0\uDC84${time}`
       });
     })
     .catch(function(err){
