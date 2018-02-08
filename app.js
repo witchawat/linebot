@@ -142,7 +142,7 @@ function handleEvent(event) {
   }
   // end log
   /*!countdown*/
-  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!countdown')) {
+  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!countdownxxx')) {
     hasMatchedCommand = true;
     var registerTime = {
       "utmf" : "2017-10-16 10:00+09", //JP Time Zone
