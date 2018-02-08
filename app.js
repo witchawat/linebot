@@ -156,10 +156,11 @@ function handleEvent(event) {
       hasMatchedCommand = true;
       axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURI(event.message.text.trim().toLowerCase().replace('!air ','')) + '&key='+STATIC_MAP_API_KEY+'&language=th').then(r => {
         if (r.data.results.length) {
+          var formatted_address= r.data.results[0].formatted_address;
           airInfo(r.data.results[0].geometry.location.lat, r.data.results[0].geometry.location.lng).then(r => {
             return client.replyMessage(event.replyToken, {
               type: "text",
-              text: r.data.results[0].formatted_address+"\n\n"+r
+              text: formatted_address+"\n\n"+r
             })
           });
         }
