@@ -154,6 +154,7 @@ function handleEvent(event) {
   }
   /*End !air*/
   /*air by location */
+  console.log(event);//////////
   if (!hasMatchedCommand && (event.type == 'message' && event.message.type == 'location')) {
     hasMatchedCommand = true;
     airInfo(event.message.latitude, event.message.longitude).then(r => {
