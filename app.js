@@ -163,30 +163,30 @@ function handleEvent(event) {
           temp = r.data.iaqi.t.v,
           humidity = r.data.iaqi.h.v,
           time = r.data.time.s,
-          pm25_warning = "\u2705Good";
+          pm25_warning = `${emoji.get(':white_check_mark:')}Good`;
 
       if(pm25 > 51) {
-        pm25_warning = "\u1F536Moderate";
+        pm25_warning = `${emoji.get(':white_check_mark:')}Moderate`;
       } else if (pm25 > 101){
-        pm25_warning = "\u2049Unhealthy for Sensitive Groups";
+        pm25_warning = `${emoji.get(':large_orange_diamond:')}Unhealthy for Sensitive Groups`;
       } else if (pm25 > 151){
-        pm25_warning = "\u203CUnhealthy";
+        pm25_warning = `${emoji.get(':bangbang:')}Unhealthy`;
       }else if (pm25 > 201){
-        pm25_warning = "\u1F6ABVery Unhealthy";
+        pm25_warning = `${emoji.get(':sos:')}Very Unhealthy`;
       }else if (pm25 > 300){
-        pm25_warning = "\u2623Hazardous";
+        pm25_warning = `${emoji.get(':skull:')}Hazardous`;
       };
 
       return client.replyMessage(event.replyToken, {
         type : "text",
         text : 
 `Air Quality Index by AQICN
-${emoji.get(':house:')}${city}
-\u1F32BPM2.5 = ${pm25}
+${emoji.get(':house:')} ${city}
+${emoji.get(':vertical_traffic_light:')} PM2.5 = ${pm25}
 ${pm25_warning}
-\u1F321 ${temp} °C Humidity = ${humidity}
+${emoji.get('thermometer')} ${temp}°C  Humidity = ${humidity}
 
-Updated At \uDBC0\uDC84${time}`
+Updated At ${emoji.get(':clock2:')} ${time}`
       });
     })
     .catch(function(err){
