@@ -181,7 +181,7 @@ function handleEvent(event) {
         type : "text",
         text : 
 `Air Quality Index by AQICN
-{emoji.get(':house:')}${city}
+${emoji.get(':house:')}${city}
 \u1F32BPM2.5 = ${pm25}
 ${pm25_warning}
 \u1F321 ${temp} °C Humidity = ${humidity}
