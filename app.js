@@ -17,6 +17,7 @@ var gfy = new(require('./gfy.js'));
 var moment = require('moment');
 // var mongoose = require('mongoose');
 var rp = require('request-promise-native');
+var emoji = require('node-emoji');
 
 const AIRQUALITY_TOKEN = process.env.AIRQUALITY_TOKEN;
 gfy.init(process.env.GFY_ID, process.env.GFY_SECRET);
@@ -180,7 +181,7 @@ function handleEvent(event) {
         type : "text",
         text : 
 `Air Quality Index by AQICN
-\u1F3E2${city}
+{emoji.get(':house:')}${city}
 \u1F32BPM2.5 = ${pm25}
 ${pm25_warning}
 \u1F321 ${temp} °C Humidity = ${humidity}
