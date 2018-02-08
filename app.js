@@ -200,8 +200,8 @@ function airInfo(lat, lng) {
         city = airData.city.name,
         city_url = airData.city.url,
         pm25 = (airData.iaqi.pm25) ? airData.iaqi.pm25.v * 1 : 0,
-        temp = airData.iaqi.t.v,
-        humidity = airData.iaqi.h.v,
+        temp = (airData.iaqi.t) ? airData.iaqi.t.v : 'no data ',
+        humidity = (airData.iaqi.h) ? airData.iaqi.h.v : 'no data',
         time = airData.time.s,
         pm25_warning = `${emoji.get(':white_check_mark:')} Good`;
       if (pm25 > 51) {
