@@ -158,30 +158,30 @@ function handleEvent(event) {
       },
       json: true
     };
-    var uvOptions = {
-      uri: 'http://api.openweathermap.org/data/2.5/uvi?appid='+UVINDEX_TOKEN+'&lat=13.73&lon=100.54',
-      headers: {
-          'User-Agent': 'Request-Promise'
-      },
-      json: true
-    };
-    rp(uvOptions).then(function(r){
-      var uvindex = parseInt(r.value,10);
-      var uvindex_warning = `${emoji.get(':white_check_mark:')} Low`;
+    // var uvOptions = {
+    //   uri: 'http://api.openweathermap.org/data/2.5/uvi?appid='+UVINDEX_TOKEN+'&lat=13.73&lon=100.54',
+    //   headers: {
+    //       'User-Agent': 'Request-Promise'
+    //   },
+    //   json: true
+    // };
+    // rp(uvOptions).then(function(r){
+    //   var uvindex = parseInt(r.value,10);
+    //   var uvindex_warning = `${emoji.get(':white_check_mark:')} Low`;
 
-      if(uvindex > 3) {
-        uvindex_warning = `${emoji.get(':small_orange_diamond:')} Moderate`;
-      };
-      if (uvindex > 6){
-        uvindex_warning = `${emoji.get(':large_orange_diamond:')} High`;
-      };
-      if (uvindex > 8){
-        uvindex_warning = `${emoji.get(':bangbang:')} Very High`;
-      };
-      if (uvindex > 11){
-        uvindex_warning = `${emoji.get(':sos:')} Extreme`;
-      };
-    })
+    //   if(uvindex > 3) {
+    //     uvindex_warning = `${emoji.get(':small_orange_diamond:')} Moderate`;
+    //   };
+    //   if (uvindex > 6){
+    //     uvindex_warning = `${emoji.get(':large_orange_diamond:')} High`;
+    //   };
+    //   if (uvindex > 8){
+    //     uvindex_warning = `${emoji.get(':bangbang:')} Very High`;
+    //   };
+    //   if (uvindex > 11){
+    //     uvindex_warning = `${emoji.get(':sos:')} Extreme`;
+    //   };
+    // })
 
     rp(airOptions).then(function(r){
       let city = r.data.city.name,
@@ -190,23 +190,25 @@ function handleEvent(event) {
           temp = r.data.iaqi.t.v,
           humidity = r.data.iaqi.h.v,
           time = r.data.time.s,
-          pm25_warning = `${emoji.get(':white_check_mark:')}Good`;
+          pm25_warning = `${emoji.get(':white_check_mark:')} Good`;
 
       if(pm25 > 51) {
-        pm25_warning = `${emoji.get(':small_orange_diamond:')}Moderate`;
+        pm25_warning = `${emoji.get(':small_orange_diamond:')} Moderate`;
       };
       if (pm25 > 101){
-        pm25_warning = `${emoji.get(':large_orange_diamond:')}Unhealthy for Sensitive Groups`;
+        pm25_warning = `${emoji.get(':large_orange_diamond:')} Unhealthy for Sensitive Groups`;
       };
       if (pm25 > 151){
-        pm25_warning = `${emoji.get(':bangbang:')}Unhealthy`;
+        pm25_warning = `${emoji.get(':bangbang:')}mUnhealthy`;
       };
       if (pm25 > 201){
-        pm25_warning = `${emoji.get(':sos:')}Very Unhealthy`;
+        pm25_warning = `${emoji.get(':sos:')} Very Unhealthy`;
       };
       if (pm25 > 300){
-        pm25_warning = `${emoji.get(':skull:')}Hazardous`;
+        pm25_warning = `${emoji.get(':skull:')} Hazardous`;
       };
+
+      // UV Index ${uvindex} ${uvindex_warning}
 
       return client.replyMessage(event.replyToken, {
         type : "text",
@@ -216,7 +218,6 @@ ${emoji.get(':house:')} ${city}
 
 ${emoji.get(':vertical_traffic_light:')} PM2.5 = ${pm25} ${pm25_warning}
 
-UV Index ${uvindex} ${uvindex_warning}
 ${emoji.get('thermometer')} ${temp}°C  Humidity = ${humidity}
 Updated At ${emoji.get(':clock2:')} ${time}`
       });
