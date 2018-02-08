@@ -158,19 +158,34 @@ function handleEvent(event) {
     rp(airOptions).then(function(r){
       let city = r.data.city.name,
           city_url = r.data.city.url,
-          pm25 = r.data.iaqi.pm25.v,
+          pm25 = parseInt(r.data.iaqi.pm25.v,10),
           temp = r.data.iaqi.t.v,
           humidity = r.data.iaqi.h.v,
-          time = r.data.time.s;
+          time = r.data.time.s,
+          pm25_warning = "\u2705Good";
+
+      if(pm25 > 51) {
+        pm25_warning = "\u1F536Moderate";
+      } else if (pm25 > 101){
+        pm25_warning = "\u2049Unhealthy for Sensitive Groups";
+      } else if (pm25 > 151){
+        pm25_warning = "\u203CUnhealthy";
+      }else if (pm25 > 201){
+        pm25_warning = "\u1F6ABVery Unhealthy";
+      }else if (pm25 > 300){
+        pm25_warning = "\u2623Hazardous";
+      };
+
       return client.replyMessage(event.replyToken, {
         type : "text",
-        text : `Air Quality Index by AQICN.org
-        ${city}
-        ${city_url}
-        PM2.5 = ${pm25}
-        ${temp} ${humidity}
-        Updated At ${time}
-        `
+        text : 
+`Air Quality Index by AQICN
+\u1F3E2${city}
+\u1F32BPM2.5 = ${pm25}
+${pm25_warning}
+\u1F321 ${temp} °C Humidity = ${humidity}
+
+Updated At ${time}`
       });
     })
     .catch(function(err){
