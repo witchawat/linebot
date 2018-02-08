@@ -199,7 +199,7 @@ function handleEvent(event) {
         pm25_warning = `${emoji.get(':large_orange_diamond:')} Unhealthy for Sensitive Groups`;
       };
       if (pm25 > 151){
-        pm25_warning = `${emoji.get(':bangbang:')}mUnhealthy`;
+        pm25_warning = `${emoji.get(':bangbang:')} Unhealthy`;
       };
       if (pm25 > 201){
         pm25_warning = `${emoji.get(':sos:')} Very Unhealthy`;
