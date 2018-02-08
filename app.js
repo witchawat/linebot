@@ -160,7 +160,7 @@ function handleEvent(event) {
           airInfo(r.data.results[0].geometry.location.lat, r.data.results[0].geometry.location.lng).then(r => {
             return client.replyMessage(event.replyToken, {
               type: "text",
-              text: formatted_address+"\n\n"+r
+              text: `[ ${formatted_address} ]\n\n`+r
             })
           });
         }
