@@ -15,8 +15,9 @@ var path = require('path');
 var gfy = new(require('./gfy.js'));
 var moment = require('moment');
 var mongoose = require('mongoose');
-var Race = require('./raceregis.js');
+var rp = require('request-promise-native');
 
+const AIRQUALITY_TOKEN = process.env.AIRQUALITY_TOKEN;
 gfy.init(process.env.GFY_ID, process.env.GFY_SECRET);
 //================================
 //        KEYS
@@ -154,6 +155,46 @@ function handleEvent(event) {
     })
   }
   /*End !countdown*/
+  /*!air */
+  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!air')) {
+    hasMatchedCommand = true;
+    var airOptions = {
+      uri: 'https://api.waqi.info/feed/geo:13.73;100.54/',
+      qs: {
+          token: AIRQUALITY_TOKEN // -> uri + '?token=xxxxx%20xxxxx'
+      },
+      headers: {
+          'User-Agent': 'Request-Promise'
+      },
+      json: true
+    };
+    rp(airOptions).then(function(r){
+      let city = r.data.city.name,
+          city_url = r.data.city.url,
+          pm25 = r.data.iaqi.pm25.v,
+          temp = r.data.iaqi.t.v,
+          humidity = r.data.iaqi.h.v,
+          time = r.data.time.s;
+      return client.replyMessage(event.replyToken, {
+        type : "text",
+        text : `Air Quality Index by AQICN.org
+        ${city}
+        ${city_url}
+        PM2.5 = ${pm25}
+        ${temp} ${humidity}
+        Updated At ${time}
+        `
+      });
+    })
+    .catch(function(err){
+      return client.replyMessage(event.replyToken, {
+        type : "text",
+        text : "API Call to AQICN Error"
+      });
+    }
+    })
+
+  /*End !air*/
   // !pyt <cmd>
   if (event.message.text) {
     var txt = event.message.text.trim().toLowerCase();
