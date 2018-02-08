@@ -15,7 +15,7 @@ var fs = require('fs');
 var path = require('path');
 var gfy = new(require('./gfy.js'));
 var moment = require('moment');
-var mongoose = require('mongoose');
+// var mongoose = require('mongoose');
 var rp = require('request-promise-native');
 
 const AIRQUALITY_TOKEN = process.env.AIRQUALITY_TOKEN;
@@ -40,26 +40,26 @@ app.post('/webhook', line.middleware(config), (req, res) => {
     });
 });
 const client = new line.Client(config);
-const redis = require("redis");
-var redisClient;
-if (app.get('env') == 'development') {
-  redisClient = redis.createClient();
-} else {
-  redisClient = redis.createClient(process.env.REDISCLOUD_URL, {
-    no_ready_check: true
-  });
-}
+// const redis = require("redis");
+// var redisClient;
+// if (app.get('env') == 'development') {
+//   redisClient = redis.createClient();
+// } else {
+//   redisClient = redis.createClient(process.env.REDISCLOUD_URL, {
+//     no_ready_check: true
+//   });
+// }
 ////////////////////
 // MONGO DB by mLab via mongoose
 ////////////////////
-mongoose.Promise = global.Promise;
-var uristring = process.env.MONGODB_URI;
-mongoose.connect(uristring, { useMongoClient: true, promiseLibrary: global.Promise });
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log("Successfully connected to mLab Mongo DB.")
-});
+// mongoose.Promise = global.Promise;
+// var uristring = process.env.MONGODB_URI;
+// mongoose.connect(uristring, { useMongoClient: true, promiseLibrary: global.Promise });
+// var db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'connection error:'));
+// db.once('open', function() {
+//   console.log("Successfully connected to mLab Mongo DB.")
+// });
 
 
 function handleEvent(event) {
@@ -142,20 +142,6 @@ function handleEvent(event) {
     return Promise.resolve(null);
   }
   // end log
-  /*!countdown*/
-  if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!countdownxxx')) {
-    hasMatchedCommand = true;
-    var registerTime = {
-      "utmf" : "2017-10-16 10:00+09", //JP Time Zone
-      "utmb" : "2017-12-14 08:00+01", //Swiss Time Zone
-    }
-
-    return client.replyMessage(event.replyToken, {
-      type : "text",
-      text : "Race Registration Countdown\n\u26F0UTMF " + moment().to(registerTime.utmf) + "\nUTMF 165K/7500m/46hr\nSTY 92K/3700m/20hr\nhttp://www.ultratrailmtfuji.com/en/about/regarding/\n\n\u26F0UTMB " + moment().to(registerTime.utmb) + "\nUTMB 171K/10300m\nCCC 101K/6100m\nTDS 119K/7200m\nOCC 56K/3500m\nhttp://utmbmontblanc.com/en/page/445/2018-enrolment.html"
-    })
-  }
-  /*End !countdown*/
   /*!air */
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!air')) {
     hasMatchedCommand = true;
@@ -196,27 +182,6 @@ function handleEvent(event) {
     };
   
   /*End !air*/
-  // !pyt <cmd>
-  if (event.message.text) {
-    var txt = event.message.text.trim().toLowerCase();
-    if (!hasMatchedCommand && txt.indexOf('!pyt') == 0) {
-      //!pyt with command
-      hasMatchedCommand = true;
-      txt = txt.replace('!pyt', '').trim();
-      client.getProfile(event.source.userId)
-        .then((profile) => {
-          console.log(profile.userId);
-          console.log(profile.displayName);
-          console.log("!pyt with >>", txt);
-          //Build Race Object
-          Race(txt, profile.userId, profile.displayName).then((result) =>{
-            console.log("Race result >", result);
-            return client.replyMessage(event.replyToken, result);
-          })
-        })
-    }
-  }
-//End !pyt <cmd>
 };
 // change service from Cloudinary to Gfycat
 new CronJob('56 1,11,21,31,41,51 * * * *', fetchImageAndVidFromGfy, null, true, 'Asia/Bangkok');
@@ -235,15 +200,15 @@ app.get("*", function (req, res) {
 app.listen(app.get('port'), function () {
   console.log('Node app is running on port', app.get('port'));
 });
-// self prevent sleep every 10 mins
-var sleepCron = new CronJob({
-  cronTime: '0 0,10,20,30,40,50 * * * *',
-  onTick: function () {
-    var http = require('http');
-    http.get('http://linerain.herokuapp.com/');
-    console.log('-- prevent sleep cron --');
-  },
-  start: true,
-  timeZone: 'Asia/Bangkok',
-  runOnInit: true
-});
+// // self prevent sleep every 10 mins
+// var sleepCron = new CronJob({
+//   cronTime: '0 0,10,20,30,40,50 * * * *',
+//   onTick: function () {
+//     var http = require('http');
+//     http.get('http://linerain.herokuapp.com/');
+//     console.log('-- prevent sleep cron --');
+//   },
+//   start: true,
+//   timeZone: 'Asia/Bangkok',
+//   runOnInit: true
+// });
