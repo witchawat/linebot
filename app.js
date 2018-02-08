@@ -63,13 +63,9 @@ const client = new line.Client(config);
 //   console.log("Successfully connected to mLab Mongo DB.")
 // });
 function handleEvent(event) {
-  console.log('--- handleEvent ---');
-  console.log(event);
+  // console.log('--- handleEvent ---');
+  // console.log(event);
   var hasMatchedCommand = false;
-  if (!hasMatchedCommand && (event.type !== 'message' || event.message.type !== 'text')) {
-    hasMatchedCommand = true;
-    return Promise.resolve(null);
-  }
   //!rain - jpg
   if (!hasMatchedCommand && (event.type == 'message' && event.message.text == '!rain')) {
     hasMatchedCommand = true;
@@ -163,6 +159,11 @@ function handleEvent(event) {
     });
   }
   /*End air by location */
+
+  // no matched
+  if (!hasMatchedCommand) {
+    return Promise.resolve(null);
+  }
 }
 
 function airInfo(lat, lng) {
