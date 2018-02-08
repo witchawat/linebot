@@ -171,11 +171,14 @@ function handleEvent(event) {
 
       if(uvindex > 3) {
         uvindex_warning = `${emoji.get(':small_orange_diamond:')} Moderate`;
-      } else if (uvindex > 6){
+      };
+      if (uvindex > 6){
         uvindex_warning = `${emoji.get(':large_orange_diamond:')} High`;
-      } else if (uvindex > 8){
+      };
+      if (uvindex > 8){
         uvindex_warning = `${emoji.get(':bangbang:')} Very High`;
-      }else if (uvindex > 11){
+      };
+      if (uvindex > 11){
         uvindex_warning = `${emoji.get(':sos:')} Extreme`;
       };
     })
@@ -191,13 +194,17 @@ function handleEvent(event) {
 
       if(pm25 > 51) {
         pm25_warning = `${emoji.get(':small_orange_diamond:')}Moderate`;
-      } else if (pm25 > 101){
+      };
+      if (pm25 > 101){
         pm25_warning = `${emoji.get(':large_orange_diamond:')}Unhealthy for Sensitive Groups`;
-      } else if (pm25 > 151){
+      };
+      if (pm25 > 151){
         pm25_warning = `${emoji.get(':bangbang:')}Unhealthy`;
-      }else if (pm25 > 201){
+      };
+      if (pm25 > 201){
         pm25_warning = `${emoji.get(':sos:')}Very Unhealthy`;
-      }else if (pm25 > 300){
+      };
+      if (pm25 > 300){
         pm25_warning = `${emoji.get(':skull:')}Hazardous`;
       };
 
