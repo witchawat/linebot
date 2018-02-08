@@ -181,7 +181,7 @@ function airInfo(lat, lng) {
         uvindex_warning = `${emoji.get(':white_check_mark:')} Low`,
         city = airData.city.name,
         city_url = airData.city.url,
-        pm25 = parseInt(airData.iaqi.pm25.v, 10),
+        pm25 = (airData.iaqi.pm25) ? airData.iaqi.pm25.v * 1 : 0,
         temp = airData.iaqi.t.v,
         humidity = airData.iaqi.h.v,
         time = airData.time.s,
@@ -200,6 +200,10 @@ function airInfo(lat, lng) {
       };
       if (pm25 > 300) {
         pm25_warning = `${emoji.get(':skull:')} Hazardous`;
+      };
+      if (pm25 == 0) {
+        pm25_warning = '';
+        pm25 = 'no data';
       };
       if (uvindex > 3) {
         uvindex_warning = `${emoji.get(':small_orange_diamond:')} Moderate`;
