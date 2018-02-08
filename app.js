@@ -167,8 +167,9 @@ function handleEvent(event) {
 }
 
 function airInfo(lat, lng) {
-  lat = lat || 13.73;
-  lng = lng || 100.5;
+  //default is สวนลุม
+  lat = lat || 13.730575;
+  lng = lng || 100.541372;
   return axios.all(
     [
       axios.get('https://api.waqi.info/feed/geo:' + lat + ';' + lng + '/?token=' + AIRQUALITY_TOKEN),
