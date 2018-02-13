@@ -41,7 +41,7 @@ const Cmd = function () {
     return axios.all(
       [
         axios.get('https://api.waqi.info/feed/geo:' + lat + ';' + lng + '/?token=' + process.env.AIRQUALITY_TOKEN),
-        axios.get('http://api.openweathermap.org/data/2.5/uvi?appid=' + process.env.UVINDEX_TOKEN + '&lat=' + lat + '&lon=' + lng)
+        axios.get('http://api.openweathermap.org/data/2.5/uvi?appid=' + process.env.OPENWEATHERMAP_API_KEY + '&lat=' + lat + '&lon=' + lng)
       ]).then(axios.spread(
       (air, uv) => {
         let airData = air.data.data,
