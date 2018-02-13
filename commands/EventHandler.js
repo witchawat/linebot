@@ -43,7 +43,7 @@ const EventHandler = function (_client) {
   function isCmdMatched(evt, r) {
     if (evt.type != r.type) return;
     if (r.type == 'message') {
-      if (!event.message || !event.message.text || evt.message.text.toLowerCase().indexOf(r.cmd) != 0) return;
+      if (!evt.message || !evt.message.text || evt.message.text.toLowerCase().indexOf(r.cmd) != 0) return;
       r.handler.handleEvent(evt, r.cmd, evt.message.text.slice(r.cmd.length).trim());
     }
   }
