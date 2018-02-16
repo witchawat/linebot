@@ -23,7 +23,7 @@ const config = {
 };
 const client = new line.Client(config);
 var eventHandler = new LineEventHandler(client);
-eventHandler.add(["rain", 'rainvid'], new Rain());
+eventHandler.add(['rain', 'rainvid'], new Rain());
 eventHandler.add('air', new Air());
 eventHandler.add('log', new MyLog());
 eventHandler.add('solve', new WolframSolve());
