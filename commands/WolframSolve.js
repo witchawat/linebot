@@ -7,6 +7,7 @@ const Cmd = function () {
   events.EventEmitter.call(this);
   const _this = this;
   this.handleEvent = function (evt, cmd, param) {
+    if (!param) return;
     axios.get('https://api.wolframalpha.com/v1/simple?i=' + encodeURIComponent(param) + '&appid=WYLR8V-YQWE8APE6A', {
       responseType: 'arraybuffer'
     }).then(r => {

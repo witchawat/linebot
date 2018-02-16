@@ -6,7 +6,7 @@ const Cmd = function () {
   events.EventEmitter.call(this);
   const _this = this;
   this.handleEvent = function (evt, cmd, param) {
-    if (param == '') {
+    if (!param) {
       airInfo().then(r => {
         _this.emit('replyMessage', {
           replyToken: evt.replyToken,
