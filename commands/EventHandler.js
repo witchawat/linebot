@@ -45,7 +45,7 @@ const EventHandler = function (_client) {
     if (r.type == 'message') {
       if (!evt.message || !evt.message.text || evt.message.text.charAt(0) != '!') return;
       var msg = evt.message.text.trim();
-      var regTest = RegExp('^\\!(' + cmd + '$|' + cmd + '[\\s]+(.*)*)', 'i').exec(msg);
+      var regTest = RegExp('^\\!(' + r.cmd + '$|' + r.cmd + '[\\s]+(.*)*)', 'i').exec(msg);
       if (retTest) r.handler.handleEvent(evt, r.cmd, regTest[2]);
     }
   }
