@@ -46,7 +46,7 @@ const EventHandler = function (_client) {
       if (!evt.message || !evt.message.text || evt.message.text.charAt(0) != '!') return;
       var msg = evt.message.text.trim();
       var regTest = RegExp('^\\!(' + r.cmd + '$|' + r.cmd + '[\\s]+(.*)*)', 'i').exec(msg);
-      if (retTest) r.handler.handleEvent(evt, r.cmd, regTest[2]);
+      if (regTest) r.handler.handleEvent(evt, r.cmd, regTest[2]);
     }
   }
   //ตอนนี้จัดกา่รเฉพาะ message, พวกรูปกับ location ยังไม่ได้คิด
