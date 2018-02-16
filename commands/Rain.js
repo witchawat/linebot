@@ -14,7 +14,7 @@ const Cmd = function () {
   const _this = this;
   this.handleEvent = function (evt, cmd, param) {
     var ret = {};
-    if (cmd == '!rain') {
+    if (cmd == 'rain') {
       if (imgStat == 'error') ret = {
         "type": 'text',
         'text': 'ไม่สามารถ load รูปได้ รบกวนไปดูเองที่\r\nhttp://203.155.220.231/Radar/pics/nkzfiltered.jpg'
@@ -25,7 +25,7 @@ const Cmd = function () {
         "previewImageUrl": imgTmb
       }
     }
-    if (cmd == '!rainvid') {
+    if (cmd == 'rainvid') {
       if (vidStat == 'error') ret = {
         "type": 'text',
         "text": "ไม่สามารถ load gif ได้ รบกวนไปดูเองที่\r\nhttp://203.155.220.231/Radar/pics/nkradar.gif"

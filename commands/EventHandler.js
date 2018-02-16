@@ -43,8 +43,10 @@ const EventHandler = function (_client) {
   function isCmdMatched(evt, r) {
     if (evt.type != r.type) return;
     if (r.type == 'message') {
-      if (!evt.message || !evt.message.text || evt.message.text.toLowerCase().indexOf(r.cmd) != 0) return;
-      r.handler.handleEvent(evt, r.cmd, evt.message.text.slice(r.cmd.length).trim());
+      if (!evt.message || !evt.message.text || evt.message.text.charAt(0) != '!') return;
+      var msg = evt.message.text.trim();
+      var regTest = RegExp('^\\!(' + cmd + '$|' + cmd + '[\\s]+(.*)*)', 'i').exec(msg);
+      if (retTest) r.handler.handleEvent(evt, r.cmd, regTest[2]);
     }
   }
   //ตอนนี้จัดกา่รเฉพาะ message, พวกรูปกับ location ยังไม่ได้คิด

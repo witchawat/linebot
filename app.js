@@ -1,5 +1,12 @@
 'use strict';
 require('dotenv').config()
+
+const LineEventHandler = require('./commands/EventHandler.js');
+const Rain = require('./commands/Rain.js');
+const Air = require('./commands/Air.js');
+const MyLog = require('./commands/MyLog.js');
+const WolframSolve = require('./commands/WolframSolve.js');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({
@@ -15,11 +22,11 @@ const config = {
   channelSecret: process.env.LINESECRET
 };
 const client = new line.Client(config);
-var eventHandler = new(require('./commands/EventHandler.js'))(client);
-eventHandler.add(["!rain", '!rainvid'], new(require('./commands/Rain.js')));
-eventHandler.add('!air', new(require('./commands/Air.js')));
-eventHandler.add('!log', new(require('./commands/MyLog.js')));
-eventHandler.add('!solve', new(require('./commands/WolframSolve.js')));
+var eventHandler = new LineEventHandler(client);
+eventHandler.add(["rain", 'rainvid'], new Rain());
+eventHandler.add('air', new Air());
+eventHandler.add('log', new MyLog());
+eventHandler.add('solve', new WolframSolve());
 const app = express();
 app.use(express.static('public'))
 app.set('port', (process.env.PORT || 5000));
