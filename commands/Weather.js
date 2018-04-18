@@ -42,7 +42,7 @@ const Cmd = function () {
     lng = lng || 100.6801283;
     return axios.get("http://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat="+lat+"&lon="+lng+"&fields=tc,wd10m,cond&duration=5").then(resp => {
         return resp.data.WeatherForecasts[0].forecasts.map(v=>forecast2string(v)).join(', ');
-      })).catch(err => {
+      }).catch(err => {
       return 'API Error'
     });
   }
