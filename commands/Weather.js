@@ -8,8 +8,14 @@ const Cmd = function() {
 
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + process.env.TMD_TOKEN;
   this.handleEvent = function(evt, cmd, param) {
+    var duration=1;
+    duration=(cmd=='w2')?2:duration;
+    duration=(cmd=='w3')?3:duration;
+    duration=(cmd=='w4')?4:duration;
+    duration=(cmd=='w5')?5:duration;
+    duration=(cmd=='w6')?6:duration;
     if (!param) {
-      weatherInfo().then(r => {
+      weatherInfo(duration).then(r => {
         _this.emit('replyMessage', {
           replyToken: evt.replyToken,
           message: {
@@ -22,7 +28,7 @@ const Cmd = function() {
       axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURI(param) + '&key=' + process.env.STATIC_MAP_API_KEY + '&language=th').then(r => {
         if (r.data.results.length) {
           var formatted_address = r.data.results[0].formatted_address;
-          weatherInfo(r.data.results[0].geometry.location.lat, r.data.results[0].geometry.location.lng).then(r => {
+          weatherInfo(duration,r.data.results[0].geometry.location.lat, r.data.results[0].geometry.location.lng).then(r => {
             _this.emit('replyMessage', {
               replyToken: evt.replyToken,
               message: {
@@ -36,11 +42,11 @@ const Cmd = function() {
     }
   }
 
-  function weatherInfo(lat, lng) {
+  function weatherInfo(duration,lat, lng) {
     //default is บ่อขยะอ่อนนุช
     lat = lat || 13.7070603;
     lng = lng || 100.6801283;
-    return axios.get("http://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat=" + lat + "&lon=" + lng + "&fields=tc,wd10m,cond&duration=5").then(resp => {
+    return axios.get("http://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat=" + lat + "&lon=" + lng + "&fields=tc,wd10m,cond&duration="+duration).then(resp => {
       return resp.data.WeatherForecasts[0].forecasts.map(v => forecast2string(v)).join(`\n`);
     }).catch(err => {
       return 'API Error'
@@ -52,7 +58,7 @@ const Cmd = function() {
       t, dir, sunnyEmoji;
     dir = inp.data.wd10m / 22.5;
     t = (new Date(inp.time)).getHours();
-    sunnyEmoji = (6 <= t && t < 18) ? emoji.get('sunny') : emoji.get('night_with_stars');
+    sunnyEmoji = (6 <= t && t <= 18) ? emoji.get('sunny') : emoji.get('night_with_stars');
     t %= 12;
     t = (t < 1) ? 12 : t;
     ret += emoji.get('clock' + t) + ' ';

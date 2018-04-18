@@ -28,7 +28,7 @@ eventHandler.add(['rain', 'rainvid'], new Rain());
 eventHandler.add('air', new Air());
 eventHandler.add('log', new MyLog());
 eventHandler.add('solve', new WolframSolve());
-eventHandler.add('weather', new Weather());
+eventHandler.add(['weather','w2','w3','w4','w5','w6'], new Weather());
 const app = express();
 app.use(express.static('public'))
 app.set('port', (process.env.PORT || 5000));
