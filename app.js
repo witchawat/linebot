@@ -28,7 +28,7 @@ eventHandler.add(['rain', 'rainvid'], new Rain());
 eventHandler.add('air', new Air());
 eventHandler.add('log', new MyLog());
 eventHandler.add('solve', new WolframSolve());
-eventHandler.add(['weather','w2','w3','w4','w5','w6'], new Weather());
+eventHandler.add(['weather', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6'], new Weather());
 const app = express();
 app.use(express.static('public'))
 app.set('port', (process.env.PORT || 5000));
@@ -36,10 +36,10 @@ app.post('/webhook', line.middleware(config), (req, res) => {
   req.body.events.forEach(evt => eventHandler.handleEvent(evt));
   res.send('');
 });
-app.get("*", function (req, res) {
+app.get("*", function(req, res) {
   res.send("Ong Line Bot");
 });
 //Heroku setting
-app.listen(app.get('port'), function () {
+app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
