@@ -50,11 +50,10 @@ tmp+=emoji.get('cloud');
 tmp+=emoji.get('partly_sunny_rain');
 tmp+=emoji.get('rain_cloud');
 tmp+=emoji.get('thunder_cloud_and_rain');
-tmp+=emoji.get('snow');
 tmp+=emoji.get('lightning');
+tmp+=emoji.get('ice');
+tmp+=emoji.get('cold_sweat');
 tmp+=emoji.get('fire');
-tmp+=emoji.get('cool');
-tmp+=emoji.get('snow');
 tmp+=`\n\n`;
         return tmp+resp.data.WeatherForecasts[0].forecasts.map(v=>forecast2string(v)).join(', ');
       }).catch(err => {
@@ -72,6 +71,11 @@ function forecast2string(inp){
   ret+=(inp.data.cond==2)?emoji.get('mostly_sunny'):'';
   ret+=(inp.data.cond==3)?emoji.get('barely_sunny'):'';
   ret+=(inp.data.cond==4)?emoji.get('cloud'):'';
+  ret+=(inp.data.cond==5)?emoji.get('partly_sunny_rain'):'';
+  ret+=(inp.data.cond==6)?emoji.get('rain_cloud'):'';
+  ret+=(inp.data.cond==7)?emoji.get('thunder_cloud_and_rain'):'';
+  ret+=(inp.data.cond==8)?emoji.get('lightning'):'';
+  ret+=(inp.data.cond==9)?emoji.get('cold_sweat'):'';
   ret+=' ';
   ret+=(dir>=15||dir<1)?emoji.get('arrow_down'):'';
   ret+=(1<=dir&&dir<3)?emoji.get('arrow_lower_left'):'';
