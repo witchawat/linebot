@@ -6,6 +6,7 @@ const Rain = require('./commands/Rain.js');
 const Air = require('./commands/Air.js');
 const MyLog = require('./commands/MyLog.js');
 const WolframSolve = require('./commands/WolframSolve.js');
+const Weather = require('./commands/Weather.js');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -27,6 +28,7 @@ eventHandler.add(['rain', 'rainvid'], new Rain());
 eventHandler.add('air', new Air());
 eventHandler.add('log', new MyLog());
 eventHandler.add('solve', new WolframSolve());
+eventHandler.add('weather', new Weather());
 const app = express();
 app.use(express.static('public'))
 app.set('port', (process.env.PORT || 5000));
