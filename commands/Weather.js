@@ -41,7 +41,23 @@ const Cmd = function () {
     lat = lat || 13.7070603;
     lng = lng || 100.6801283;
     return axios.get("http://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat="+lat+"&lon="+lng+"&fields=tc,wd10m,cond&duration=5").then(resp => {
-        return resp.data.WeatherForecasts[0].forecasts.map(v=>forecast2string(v)).join(', ');
+var tmp='';
+
+tmp+=emoji.get('sunny');
+tmp+=emoji.get('mostly_sunny');
+tmp+=emoji.get('sun_small_cloud');
+tmp+=emoji.get('barely_sunny');
+tmp+=emoji.get('sun_behind_cloud');
+tmp+=emoji.get('partly_sunny_rain');
+tmp+=emoji.get('sun_behind_rain_cloud');
+tmp+=emoji.get('rain_cloud');
+tmp+=emoji.get('snow_cloud');
+tmp+=emoji.get('lightning');
+tmp+=emoji.get('lightning_cloud');
+tmp+=emoji.get('tornado');
+tmp+=emoji.get('tornado_cloud');
+tmp+=`\n\n`;
+        return tmp+resp.data.WeatherForecasts[0].forecasts.map(v=>forecast2string(v)).join(', ');
       }).catch(err => {
       return 'API Error'
     });
