@@ -47,6 +47,7 @@ const Cmd = function() {
     lat = lat || 13.7070603;
     lng = lng || 100.6801283;
     return axios.get("http://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat=" + lat + "&lon=" + lng + "&fields=tc,wd10m,cond&duration=" + duration).then(resp => {
+      console.log(JSON.stringify(resp.data, null, 2));
       return resp.data.WeatherForecasts[0].forecasts.map(v => forecast2string(v)).join(`\n`);
     }).catch(err => {
       return 'API Error'
