@@ -59,7 +59,7 @@ const Cmd = function() {
       t, dir, sunnyEmoji;
     dir = inp.data.wd10m / 22.5;
     t = (new Date(inp.time)).getHours();
-    sunnyEmoji = (6 <= t && t <= 18) ? emoji.get('sunny') : emoji.get('full_moon');
+    sunnyEmoji = (6 <= t && t <= 18) ? emoji.get('sunny') : emoji.get('moon');
     t %= 12;
     t = (t < 1) ? 12 : t;
     ret += emoji.get('clock' + t) + ' ';
