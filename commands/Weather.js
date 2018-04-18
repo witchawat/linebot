@@ -49,12 +49,14 @@ const Cmd = function() {
 
   function forecast2string(inp) {
     var ret = '',
-      t, dir, dirEmoji;
+      t, dir, sunnyEmoji;
     dir = inp.data.wd10m / 22.5;
-    t = (new Date(inp.time)).getHours() % 12;
+    t = (new Date(inp.time)).getHours();
+    sunnyEmoji = (6 <= t && t < 18) ? emoji.get('sunny') : emoji.get('night_with_stars');
+    t %= 12;
     t = (t < 1) ? 12 : t;
     ret += emoji.get('clock' + t) + ' ';
-    ret += (inp.data.cond == 1) ? emoji.get('sunny') : '';
+    ret += (inp.data.cond == 1) ? sunnyEmoji : '';
     ret += (inp.data.cond == 2) ? emoji.get('mostly_sunny') : '';
     ret += (inp.data.cond == 3) ? emoji.get('barely_sunny') : '';
     ret += (inp.data.cond == 4) ? emoji.get('cloud') : '';
@@ -62,7 +64,7 @@ const Cmd = function() {
     ret += (inp.data.cond == 6) ? emoji.get('rain_cloud') : '';
     ret += (inp.data.cond == 7) ? emoji.get('lightning') : '';
     ret += (inp.data.cond == 8) ? emoji.emojify(':lightning::lightning:') : '';
-    ret += (inp.data.cond <= 9 || resp.data.cond <= 11) ? emoji.get('snowflake') : '';
+    ret += (9 <= inp.data.cond && resp.data.cond <= 11) ? emoji.get('snowflake') : '';
     ret += (inp.data.cond == 12) ? emoji.get('fire') : '';
     ret += ' ';
     ret += (dir >= 15 || dir < 1) ? emoji.get('arrow_down') : '';
