@@ -19,12 +19,13 @@ const Cmd = function() {
           'https://linerain.herokuapp.com/utmfRunner?bib=' + encodeURI(param)
         )
         .then(r => {
+          console.log(r);
           if (r) {
             _this.emit('replyMessage', {
               replyToken: evt.replyToken,
               message: {
                 type: 'text',
-                text: `${runner.name}`
+                text: `${r.runner.name}`
               }
             });
           }
