@@ -11,11 +11,29 @@ const Weather = require('./commands/Weather.js');
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 
+var admin = require('firebase-admin');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({
   extended: false
 });
+
+//================================
+// GOOGLE FIREBASE DB
+//================================
+admin.initializeApp({
+  credential: admin.credential.cert({
+    projectId: 'utmfrunner',
+    clientEmail: 'firebase-adminsdk-a8jpt@utmfrunner.iam.gserviceaccount.com',
+    privateKey: process.env.FIREBASESECRET
+  }),
+  databaseURL: 'https://utmfrunner.firebaseio.com'
+});
+
+var fdb = admin.firestore();
+//================================
+
 const line = require('@line/bot-sdk');
 //================================
 //        KEYS
@@ -43,9 +61,12 @@ app.post('/webhook', line.middleware(config), (req, res) => {
   res.send('');
 });
 
-app.get('/utmfRunner', function(req, res) {
-  // let url = 'https://utmb.livetrail.net/coureur.php?rech=' + req.query.bib;
-  let url = 'https://utmf.livetrail.net/coureur.php?rech=' + req.query.bib;
+utmfRunner(2967);
+utmfRunner(2966);
+
+function utmfRunner(bib) {
+  // let url = 'https://utmb.livetrail.net/coureur.php?rech=' + bib;
+  let url = 'https://utmf.livetrail.net/coureur.php?rech=' + bib;
 
   console.log(url);
 
@@ -98,12 +119,24 @@ app.get('/utmfRunner', function(req, res) {
       };
 
       res.status(200).json({ runner, data: cp });
+
+      fdb
+        .collection('runners')
+        .doc(bib)
+        .get()
+        .then(doc => {
+          if (!doc.exists || doc.runner.last != last) {
+            fdb
+              .collection('runners')
+              .doc(bib)
+              .set({ runner, data: cp });
+          }
+        });
     })
     .catch(error => {
       console.log(error);
-      res.status(500).json(error);
     });
-});
+}
 
 app.get('*', function(req, res) {
   res.send('Ong Line Bot');
