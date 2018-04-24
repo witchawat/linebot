@@ -129,7 +129,7 @@ function utmfRunner(bib) {
         last_update: cp[last] || undefined
       };
 
-      res.status(200).json({ runner, data: cp });
+      // res.status(200).json({ runner, data: cp });
 
       fdb
         .collection('runners')
