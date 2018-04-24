@@ -7,6 +7,7 @@ const Air = require('./commands/Air.js');
 const MyLog = require('./commands/MyLog.js');
 const WolframSolve = require('./commands/WolframSolve.js');
 const Weather = require('./commands/Weather.js');
+const UTMF = require('./commands/Utmf.js');
 
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
@@ -36,6 +37,8 @@ eventHandler.add(
   ['weather', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6'],
   new Weather()
 );
+eventHandler.add('utmf', new UTMF());
+
 const app = express();
 app.use(express.static('public'));
 app.set('port', process.env.PORT || 5000);
