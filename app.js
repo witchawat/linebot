@@ -22,12 +22,22 @@ var urlencodedParser = bodyParser.urlencoded({
 //================================
 // GOOGLE FIREBASE DB
 //================================
+let serviceAccount = {
+  type: 'service_account',
+  project_id: 'utmfrunner',
+  private_key_id: '2af9d65de17e84704a7d0476afbabf5618756694',
+  private_key: process.env.FIREBASESECRET,
+  client_email: 'firebase-adminsdk-a8jpt@utmfrunner.iam.gserviceaccount.com',
+  client_id: '113018207591293193319',
+  auth_uri: 'https://accounts.google.com/o/oauth2/auth',
+  token_uri: 'https://accounts.google.com/o/oauth2/token',
+  auth_provider_x509_cert_url: 'https://www.googleapis.com/oauth2/v1/certs',
+  client_x509_cert_url:
+    'https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-a8jpt%40utmfrunner.iam.gserviceaccount.com'
+};
+
 admin.initializeApp({
-  credential: admin.credential.cert({
-    projectId: 'utmfrunner',
-    clientEmail: 'firebase-adminsdk-a8jpt@utmfrunner.iam.gserviceaccount.com',
-    privateKey: process.env.FIREBASESECRET
-  }),
+  credential: admin.credential.cert(serviceAccount),
   databaseURL: 'https://utmfrunner.firebaseio.com'
 });
 
