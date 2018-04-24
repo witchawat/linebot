@@ -45,8 +45,8 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 });
 
 app.get('/utmfRunner', (req, res) => {
-  // let url = 'https://utmb.livetrail.net/coureur.php?rech=' + req.params.bib;
-  let url = 'https://utmf.livetrail.net/coureur.php?rech=' + req.params.bib;
+  // let url = 'https://utmb.livetrail.net/coureur.php?rech=' + req.query.bib;
+  let url = 'https://utmf.livetrail.net/coureur.php?rech=' + req.query.bib;
 
   console.log(url);
 
