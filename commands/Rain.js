@@ -208,7 +208,8 @@ const Cmd = function () {
     cronTime: '56 1,11,21,31,41,51 * * * *',
     onTick: genWeatherImgAndVid,
     start: true,
-    timeZone: 'Asia/Bangkok'
+    timeZone: 'Asia/Bangkok',
+    runOnInit: true
   });
   //genWeatherImgAndVid();
 }

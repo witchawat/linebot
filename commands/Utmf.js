@@ -5,6 +5,7 @@ const jsdom = require('jsdom');
 const {
   JSDOM
 } = jsdom;
+var CronJob = require('cron').CronJob;
 const redis = require("redis");
 var redisClient = redis.createClient(process.env.REDISCLOUD_URL, {
   no_ready_check: true
@@ -145,9 +146,32 @@ const Cmd = function () {
       });
     });
   }
-function updateRunnersInfo(){
 
-}
+  function updateRunnersInfo() {
+    console.log('updateRunnersInfo');
+    _this.emit('pushMessage', {
+      to: 'R979b9c8c9cbeb900948ded9998e8da8c',
+      message: {
+        type: 'text',
+        text: 'to room'
+      }
+    });
+    _this.emit('pushMessage', {
+      to: 'Ud099a65459ece49825a844abef4a2dfc',
+      message: {
+        type: 'text',
+        text: 'to mai'
+      }
+    });
+    _this.emit('pushMessage', {
+      to: 'Cbde7a88eb2c97ee78a8c26fbd4c46a45',
+      message: {
+        type: 'text',
+        text: 'to group'
+      }
+    });
+  }
+
   function runnerInfo(_bib) {
     return new Promise((resolve, reject) => {
       let bib = encodeURI(_bib);
@@ -203,6 +227,12 @@ function updateRunnersInfo(){
       });
     });
   }
+  new CronJob({
+    cronTime: '56 1,11,21,31,41,51 * * * *',
+    onTick: updateRunnersInfo,
+    start: true,
+    timeZone: 'Asia/Bangkok'
+  });
   util.inherits(Cmd, events.EventEmitter);
 };
 module.exports = Cmd;
