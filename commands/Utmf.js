@@ -145,7 +145,9 @@ const Cmd = function () {
       });
     });
   }
+function updateRunnersInfo(){
 
+}
   function runnerInfo(_bib) {
     return new Promise((resolve, reject) => {
       let bib = encodeURI(_bib);
