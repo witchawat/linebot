@@ -75,7 +75,6 @@ const Cmd = function () {
           var trackingBibs = [];
           for (var k in settings) {
             if (settings[k].indexOf(replyId) !== -1) trackingBibs.push(k);
-            console.log(k);
           }
           var trackingRunners = await Promise.all(trackingBibs.map(async _ => {
             return await runnerInfo(_);
@@ -84,10 +83,9 @@ const Cmd = function () {
             ret.push('Tracking...');
             trackingRunners.map(_ => ret.push(_.runner.bib + ' ' + _.runner.name));
           }
-          //console.log(trackingRunners);
         }
         if (isSettingChange) {
-          console.log('settings ' + JSON.stringify(settings, null, 2));
+          console.log('settings changed to ' + JSON.stringify(settings, null, 2));
           redisClient.set('utmf', JSON.stringify(settings), 'EX', 30 * 24 * 60 * 60);
         }
         if (!ret.length) return;
@@ -146,9 +144,32 @@ const Cmd = function () {
       });
     });
   }
-
-  function updateRunnersInfo() {
+  async function updateRunnersInfo() {
     console.log(' -=* updateRunnersInfo *=- ');
+    var settings = await getSettings();
+    var runners = await getRunnersInfo();
+    var bibs = [];
+    var isRunnersChange = false;
+    for (var k in settings) bibs.push(k);
+    console.log(bibs);
+    var currInfo = await Promise.all(bibs.map(async _ => {
+      return await runnerInfo(_);
+    }));
+    console.log(JSON.stringify(currInfo,null,1));
+    currInfo.map(info=>{
+      var bib=info.runner.bib;
+      console.log(info.runner);
+      // new runner, แบบว่าเพิ่ง check ครั้งแรกงี้
+      if(!runners[bib]||runners[bib].idpt!=info.runner.idpt||runners[bib].status!=info.runner.status){
+        isRunnersChange=true;
+        runners[bib]=info;
+        notify(info,settings[bib]);
+      }
+    });
+    if (isRunnersChange) {
+      console.log('runners changed to ' + JSON.stringify(runners, null, 2));
+      redisClient.set('utmfRunnerInfo', JSON.stringify(runners), 'EX', 30 * 24 * 60 * 60);
+    }
     return;
     _this.emit('pushMessage', {
       to: 'R979b9c8c9cbeb900948ded9998e8da8c',
@@ -172,7 +193,10 @@ const Cmd = function () {
       }
     });
   }
-
+  // notify to subscribers
+  function notify(info,replyIds){
+    console.log('notifying ',info,replyIds);
+  }
   function runnerInfo(_bib) {
     return new Promise((resolve, reject) => {
       let bib = encodeURI(_bib);
@@ -189,7 +213,7 @@ const Cmd = function () {
         } else if (state === 'f') {
           state = 'FINISHED';
         } else {
-          state = null;
+          state = 'UNKNOWN';
         }
         let last = -1;
         let cp = [];
@@ -217,11 +241,12 @@ const Cmd = function () {
           course: data.querySelector('fiche').getAttribute('c').toUpperCase(),
           country: data.querySelector('identite').getAttribute('nat'),
           status: state,
+          idpt:last,
           last_update: cp[last] || undefined
         };
         resolve({
-          runner,
-          data: cp
+          runner
+          //,data: cp
         });
       }).catch(error => {
         resolve({});
@@ -232,7 +257,8 @@ const Cmd = function () {
     cronTime: '56 1,11,21,31,41,51 * * * *',
     onTick: updateRunnersInfo,
     start: true,
-    timeZone: 'Asia/Bangkok'
+    timeZone: 'Asia/Bangkok',
+    runOnInit: true
   });
   util.inherits(Cmd, events.EventEmitter);
 };

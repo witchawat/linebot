@@ -152,7 +152,7 @@ const Cmd = function () {
       while (checkCount < 10) {
         checkCount++;
         try {
-          console.log('-- wait 4 gfy to process img --');
+          //console.log('-- wait 4 gfy to process img --');
           gfyname = await getGfyStat(gfyname, token);
           gfyObj = await getGfy(gfyname, token);
           //console.log('got img');
@@ -175,7 +175,7 @@ const Cmd = function () {
       while (checkCount < 10) {
         checkCount++;
         try {
-          console.log('-- wait 4 gfy to process gif --');
+          //console.log('-- wait 4 gfy to process gif --');
           gfyname = await getGfyStat(gfyname, token);
           gfyObj = await getGfy(gfyname, token);
           //console.log('got vid');

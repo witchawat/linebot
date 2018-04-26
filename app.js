@@ -48,7 +48,7 @@ app.get('/test/:q', (req, res) => {
       type: 'message',
       replyToken: '0',
       source: {
-        userId: '11',
+        userId: '1',
         type: 'user'
       },
       timestamp: 1524631288368,

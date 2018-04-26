@@ -81,6 +81,7 @@ const Cmd = function() {
   }
 
   function forecast2string(inp) {
+    if(!inp) return;
     var ret = '',
       t,
       dir,
