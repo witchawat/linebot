@@ -149,6 +149,7 @@ const Cmd = function () {
 
   function updateRunnersInfo() {
     console.log(' -=* updateRunnersInfo *=- ');
+    return;
     _this.emit('pushMessage', {
       to: 'R979b9c8c9cbeb900948ded9998e8da8c',
       message: {
