@@ -210,7 +210,7 @@ const Cmd = function () {
     var warningEmoji = emoji.get('warning');
     // var pinEmoji = emoji.get('pushpin');
     // var pinEmoji = emoji.get('world_map');
-    var pinEmoji = emoji.get('globe_with_meridians');
+    var pinEmoji = emoji.get('pushpin');
     var clockEmoji = emoji.get('stopwatch');
     var rankEmoji = emoji.get('trophy');
     console.log('formatInfo');
@@ -225,7 +225,7 @@ const Cmd = function () {
       'rank': 123
     };
     var ret = `[${runner.bib}] ${runnerEmoji} ${runner.name} (${runner.course})`;
-    ret += (runner.status) ? ` -- ${runnerEmoji}[${runner.status}]` : '';
+    ret += (runner.status) ? ` -- ${warningEmoji}[${runner.status}]` : '';
     if (runner.last_update) {
       ret += `
 ${pinEmoji} (${runner.idpt}) ${runner.last_update.n} [${runner.last_update.km} km]
