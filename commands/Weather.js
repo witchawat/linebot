@@ -81,7 +81,7 @@ const Cmd = function() {
   }
 
   function forecast2string(inp) {
-    if(!inp) return;
+    if(!inp) return 'ไม่มีข้อมูล';
     var ret = '',
       t,
       dir,
