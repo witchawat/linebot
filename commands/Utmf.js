@@ -207,8 +207,7 @@ const Cmd = function () {
   function formatInfo(info) {
     var runner = info.runner;
     var runnerEmoji = emoji.get('runner');
-    var warningEmoji = emoji.get('warning');
-    // var pinEmoji = emoji.get('pushpin');
+    // var pinEmoji = emoji.get('globe_with_meridians');
     // var pinEmoji = emoji.get('world_map');
     var pinEmoji = emoji.get('pushpin');
     var clockEmoji = emoji.get('stopwatch');
@@ -225,7 +224,7 @@ const Cmd = function () {
       'rank': 123
     };
     var ret = `[${runner.bib}] ${runnerEmoji} ${runner.name} (${runner.course})`;
-    ret += (runner.status) ? ` -- ${warningEmoji}[${runner.status}]` : '';
+    ret += (runner.status) ? ` -- ${runner.status}` : '';
     if (runner.last_update) {
       ret += `
 ${pinEmoji} (${runner.idpt}) ${runner.last_update.n} [${runner.last_update.km} km]
