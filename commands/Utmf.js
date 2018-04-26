@@ -71,7 +71,7 @@ const Cmd = function () {
             if (!settings[bib]) return;
             var idx = settings[bib].indexOf(replyId);
             if (idx !== -1) {
-              ret.push('deleted :: ' + ((runners[bib] != undefined) ? (runners[bib].runner.bib + ' ' + runners[bib].runner.name) : bib));
+              ret.push('deleted :: ' + ((runners[bib] != undefined) ? `[${runners[bib].runner.bib}] ${runners[bib].runner.name}` : bib));
               settings[bib].splice(idx, 1);
               if (settings[bib].length == 0) delete(settings[bib]);
               isSettingChange = true;
@@ -88,7 +88,7 @@ const Cmd = function () {
           }));
           if (trackingRunners.length) {
             ret.push('Tracking...');
-            trackingRunners.map(_ => ret.push(_.runner.bib + ' ' + _.runner.name));
+            trackingRunners.map(_ => ret.push(`[${_.runner.bib}] ${_.runner.name}`));
           } else {
             ret.push('Tracking list is empty');
           }
