@@ -17,8 +17,6 @@ const Cmd = function() {
     duration = cmd == 'w6' ? 6 : duration;
     if (!param) {
       weatherInfo(duration).then(r => {
-        console.log('debug !!! ');
-        console.log(r);
         _this.emit('replyMessage', {
           replyToken: evt.replyToken,
           message: {
@@ -76,7 +74,7 @@ const Cmd = function() {
         var ret=resp.data.WeatherForecasts[0].forecasts
           .map(v => forecast2string(v))
           .join(`\n`);
-          return ret||'tmd.go.th failed';
+          return ret||'no forecast data from tmd.go.th';
       })
       .catch(err => {
         console.log('api error naja');
