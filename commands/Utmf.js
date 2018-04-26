@@ -41,6 +41,7 @@ const Cmd = function () {
       replyId = (evt.source.groupId) ? evt.source.groupId : replyId;
       if (['add', 'list', 'del'].indexOf(utmfCmd) >= 0) {
         var settings = await getSettings();
+        var runners = await getRunnersInfo();
         var isSettingChange = false;
         var ret = [];
         console.log('settings ' + JSON.stringify(settings, null, 2));
@@ -64,7 +65,8 @@ const Cmd = function () {
             if (!settings[bib]) return;
             var idx = settings[bib].indexOf(replyId);
             if (idx !== -1) {
-              ret.push('deleted :: ' + bib);
+              console.log(runners[bib]);
+              ret.push('deleted :: ' + ((runners[bib] != undefined) ? (runners[bib].runner.bib + ' ' + runners[bib].runner.name) : bib));
               settings[bib].splice(idx, 1);
               if (settings[bib].length == 0) delete(settings[bib]);
               isSettingChange = true;
@@ -82,6 +84,8 @@ const Cmd = function () {
           if (trackingRunners.length) {
             ret.push('Tracking...');
             trackingRunners.map(_ => ret.push(_.runner.bib + ' ' + _.runner.name));
+          } else {
+            ret.push('Tracking list is empty');
           }
         }
         if (isSettingChange) {
@@ -150,21 +154,20 @@ const Cmd = function () {
     var runners = await getRunnersInfo();
     var bibs = [];
     var isRunnersChange = false;
-    console.log(runners);
+    //console.log(runners);
     for (var k in settings) bibs.push(k);
-    console.log(bibs);
+    //console.log(bibs);
     var currInfo = await Promise.all(bibs.map(async _ => {
       return await runnerInfo(_);
     }));
-    console.log(JSON.stringify(currInfo,null,1));
-    currInfo.map(info=>{
-      var bib=info.runner.bib;
-      console.log(info.runner);
+    //console.log(JSON.stringify(currInfo,null,1));
+    currInfo.map(info => {
+      var bib = info.runner.bib;
       // new runner, แบบว่าเพิ่ง check ครั้งแรกงี้
-      if(!runners[bib]||runners[bib].idpt!=info.runner.idpt||runners[bib].status!=info.runner.status){
-        isRunnersChange=true;
-        runners[bib]=info;
-        notify(info,settings[bib]);
+      if (!runners[bib] || runners[bib].runner.idpt != info.runner.idpt || runners[bib].runner.status != info.runner.status) {
+        isRunnersChange = true;
+        runners[bib] = info;
+        notify(info, settings[bib]);
       }
     });
     if (isRunnersChange) {
@@ -195,9 +198,10 @@ const Cmd = function () {
     });
   }
   // notify to subscribers
-  function notify(info,replyIds){
-    console.log('notifying ',info,replyIds);
+  function notify(info, replyIds) {
+    console.log('notifying ', info, replyIds);
   }
+
   function runnerInfo(_bib) {
     return new Promise((resolve, reject) => {
       let bib = encodeURI(_bib);
@@ -242,7 +246,7 @@ const Cmd = function () {
           course: data.querySelector('fiche').getAttribute('c').toUpperCase(),
           country: data.querySelector('identite').getAttribute('nat'),
           status: state,
-          idpt:last,
+          idpt: last,
           last_update: cp[last] || undefined
         };
         resolve({
