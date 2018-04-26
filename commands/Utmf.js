@@ -306,8 +306,8 @@ ${rankEmoji}   #${runner.last_update.rank} ${clockEmoji} ${runner.last_update.ra
     });
   }
   new CronJob({
-    cronTime: '0 0 * * * *',
-    cronTime: '0 0,5,10,15,20,25,30,35,40,45,50,55 * * * *',
+    cronTime: '0 * * * * *',
+    cronTime: '0 0,10,20,30,40,50 * * * *',
     onTick: updateRunnersInfo,
     start: true,
     timeZone: 'Asia/Bangkok',
