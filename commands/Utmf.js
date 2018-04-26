@@ -201,7 +201,17 @@ const Cmd = function () {
   }
   // notify to subscribers
   function notify(info, replyIds) {
-    console.log('notifying ', formatInfo(info), replyIds);
+    var replyTxt = formatInfo(info);
+    replyIds.map(replyId => {
+      _this.emit('pushMessage', {
+        to: replyId,
+        message: {
+          type: 'text',
+          text: replyTxt
+        }
+      });
+    });
+    console.log('notifying ', info.runner.name, replyIds);
   }
 
   function formatInfo(info) {
@@ -212,17 +222,15 @@ const Cmd = function () {
     var pinEmoji = emoji.get('pushpin');
     var clockEmoji = emoji.get('stopwatch');
     var rankEmoji = emoji.get('trophy');
-    console.log('formatInfo');
-    console.log(runner);
-    runner.status = 'FINISHED';
-    runner.idpt = 9;
-    runner.last_update = {
-      'idpt': 9,
-      'n': 'Lac Combal',
-      'km': 65.64,
-      'racetime': '14:26:48',
-      'rank': 123
-    };
+    // runner.status = 'FINISHED';
+    // runner.idpt = 9;
+    // runner.last_update = {
+    //   'idpt': 9,
+    //   'n': 'Lac Combal',
+    //   'km': 65.64,
+    //   'racetime': '14:26:48',
+    //   'rank': 123
+    // };
     var ret = `[${runner.bib}] ${runnerEmoji} ${runner.name} (${runner.course})`;
     ret += (runner.status) ? ` -- ${runner.status}` : '';
     if (runner.last_update) {
@@ -290,6 +298,7 @@ ${rankEmoji}   #${runner.last_update.rank} ${clockEmoji} ${runner.last_update.ra
     });
   }
   new CronJob({
+    cronTime: '56 * * * * *',
     cronTime: '56 1,11,21,31,41,51 * * * *',
     onTick: updateRunnersInfo,
     start: true,
