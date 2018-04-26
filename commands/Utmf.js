@@ -45,7 +45,7 @@ const Cmd = function () {
         var runners = await getRunnersInfo();
         var isSettingChange = false;
         var ret = [];
-        console.log('settings ' + JSON.stringify(settings, null, 2));
+        //console.log('settings ' + JSON.stringify(settings, null, 2));
         if (utmfCmd == 'add') {
           var checkedBibs = await Promise.all(bibs.map(async _ => {
             return await runnerInfo(_);
@@ -66,7 +66,6 @@ const Cmd = function () {
             if (!settings[bib]) return;
             var idx = settings[bib].indexOf(replyId);
             if (idx !== -1) {
-              console.log(runners[bib]);
               ret.push('deleted :: ' + ((runners[bib] != undefined) ? (runners[bib].runner.bib + ' ' + runners[bib].runner.name) : bib));
               settings[bib].splice(idx, 1);
               if (settings[bib].length == 0) delete(settings[bib]);
