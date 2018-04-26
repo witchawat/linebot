@@ -154,7 +154,10 @@ const Cmd = function () {
     var isRunnersChange = false;
     for (var k in settings) bibs.push(k);
     for (var k in runners)
-      if (!settings[k]){ isRunnersChange=true;delete(runners[k]);}
+      if (!settings[k]) {
+        isRunnersChange = true;
+        delete(runners[k]);
+      }
     var currInfo = await Promise.all(bibs.map(async _ => {
       return await runnerInfo(_);
     }));
@@ -202,21 +205,29 @@ const Cmd = function () {
   }
 
   function formatInfo(info) {
-    var runner=info.runner;
-    var runnerEmoji=emoji.get('runner');
-    var pinEmoji=emoji.get('world_map');
-    var clockEmoji=emoji.get('stopwatch');
-    var rankEmoji=emoji.get('chart_with_upwards_trend');
-
+    var runner = info.runner;
+    var runnerEmoji = emoji.get('runner');
+    var warningEmoji = emoji.get('warning');
+    // var pinEmoji = emoji.get('pushpin');
+    // var pinEmoji = emoji.get('world_map');
+    var pinEmoji = emoji.get('globe_with_meridians');
+    var clockEmoji = emoji.get('stopwatch');
+    var rankEmoji = emoji.get('trophy');
     console.log('formatInfo');
     console.log(runner);
-    runner.status='FINISHED';
-    runner.idpt=9;
-    runner.last_update={'idpt':9,'n':'Lac Combal','km':65.64,'racetime':'14:26:48','rank':123};
+    runner.status = 'FINISHED';
+    runner.idpt = 9;
+    runner.last_update = {
+      'idpt': 9,
+      'n': 'Lac Combal',
+      'km': 65.64,
+      'racetime': '14:26:48',
+      'rank': 123
+    };
     var ret = `[${runner.bib}] ${runnerEmoji} ${runner.name} (${runner.course})`;
-    ret += (runner.status) ? ` --${runner.status}` : '';
-    if(runner.last_update){
-      ret+=`
+    ret += (runner.status) ? ` -- ${runnerEmoji}[${runner.status}]` : '';
+    if (runner.last_update) {
+      ret += `
 ${pinEmoji} (${runner.idpt}) ${runner.last_update.n} [${runner.last_update.km} km]
 ${rankEmoji}   #${runner.last_update.rank} ${clockEmoji} ${runner.last_update.racetime}`;
     }
