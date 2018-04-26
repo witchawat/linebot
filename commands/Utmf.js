@@ -44,6 +44,7 @@ const Cmd = function () {
         var settings = await getSettings();
         var runners = await getRunnersInfo();
         var isSettingChange = false;
+        var isRunnersChange = false;
         var ret = [];
         //console.log('settings ' + JSON.stringify(settings, null, 2));
         if (utmfCmd == 'add') {
@@ -55,9 +56,13 @@ const Cmd = function () {
             var bib = _.runner.bib;
             settings[bib] = settings[bib] || [];
             if (settings[bib].indexOf(replyId) === -1) {
-              ret.push('added :: ' + _.runner.bib + ' ' + _.runner.name);
+              ret.push('added :: ' +formatInfo(_));
               settings[bib].push(replyId);
               isSettingChange = true;
+            }
+            if(!runners[bib]){
+              isRunnersChange = true;
+              runners[bib] = _;
             }
           });
         }
@@ -91,6 +96,10 @@ const Cmd = function () {
         if (isSettingChange) {
           console.log('settings changed to ' + JSON.stringify(settings, null, 2));
           redisClient.set('utmf', JSON.stringify(settings), 'EX', 30 * 24 * 60 * 60);
+        }
+        if (isRunnersChange) {
+          console.log('runners changed to ' + JSON.stringify(runners, null, 2));
+          redisClient.set('utmfRunnerInfo', JSON.stringify(runners), 'EX', 30 * 24 * 60 * 60);
         }
         if (!ret.length) return;
         _this.emit('replyMessage', {
