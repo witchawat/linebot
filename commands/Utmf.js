@@ -204,12 +204,13 @@ const Cmd = function () {
   function formatInfo(info) {
     var runner=info.runner;
     var runnerEmoji=emoji.get('runner');
-    var pinEmoji=emoji.get('pushpin');
+    var pinEmoji=emoji.get('world_map');
     var clockEmoji=emoji.get('stopwatch');
     var rankEmoji=emoji.get('chart_with_upwards_trend');
 
     console.log('formatInfo');
     console.log(runner);
+    runner.status='FINISHED';
     runner.idpt=9;
     runner.last_update={'idpt':9,'n':'Lac Combal','km':65.64,'racetime':'14:26:48','rank':123};
     var ret = `[${runner.bib}] ${runnerEmoji} ${runner.name} (${runner.course})`;
@@ -217,7 +218,7 @@ const Cmd = function () {
     if(runner.last_update){
       ret+=`
 ${pinEmoji} (${runner.idpt}) ${runner.last_update.n} [${runner.last_update.km} km]
-${rankEmoji}  #${runner.last_update.rank} ${clockEmoji} ${runner.last_update.racetime}`;
+${rankEmoji}   #${runner.last_update.rank} ${clockEmoji} ${runner.last_update.racetime}`;
     }
     return ret;
   }
