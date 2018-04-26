@@ -56,11 +56,11 @@ const Cmd = function () {
             var bib = _.runner.bib;
             settings[bib] = settings[bib] || [];
             if (settings[bib].indexOf(replyId) === -1) {
-              ret.push('added :: ' +formatInfo(_));
+              ret.push('added :: ' + formatInfo(_));
               settings[bib].push(replyId);
               isSettingChange = true;
             }
-            if(!runners[bib]){
+            if (!runners[bib]) {
               isRunnersChange = true;
               runners[bib] = _;
             }
@@ -306,8 +306,8 @@ ${rankEmoji}   #${runner.last_update.rank} ${clockEmoji} ${runner.last_update.ra
     });
   }
   new CronJob({
-    cronTime: '56 * * * * *',
-    cronTime: '56 1,11,21,31,41,51 * * * *',
+    cronTime: '0 0 * * * *',
+    cronTime: '0 0,5,10,15,20,25,30,35,40,45,50,55 * * * *',
     onTick: updateRunnersInfo,
     start: true,
     timeZone: 'Asia/Bangkok',
