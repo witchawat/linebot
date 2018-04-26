@@ -94,11 +94,11 @@ const Cmd = function () {
           }
         }
         if (isSettingChange) {
-          console.log('settings changed to ' + JSON.stringify(settings, null, 2));
+          //console.log('settings changed to ' + JSON.stringify(settings, null, 2));
           redisClient.set('utmf', JSON.stringify(settings), 'EX', 30 * 24 * 60 * 60);
         }
         if (isRunnersChange) {
-          console.log('runners changed to ' + JSON.stringify(runners, null, 2));
+          //console.log('runners changed to ' + JSON.stringify(runners, null, 2));
           redisClient.set('utmfRunnerInfo', JSON.stringify(runners), 'EX', 30 * 24 * 60 * 60);
         }
         if (!ret.length) return;
@@ -180,7 +180,7 @@ const Cmd = function () {
       }
     });
     if (isRunnersChange) {
-      console.log('runners changed to ' + JSON.stringify(runners, null, 2));
+      //console.log('runners changed to ' + JSON.stringify(runners, null, 2));
       redisClient.set('utmfRunnerInfo', JSON.stringify(runners), 'EX', 30 * 24 * 60 * 60);
     }
     console.log(' -=* updateRunnersInfo *=- ');
