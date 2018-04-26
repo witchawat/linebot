@@ -150,6 +150,7 @@ const Cmd = function () {
     var runners = await getRunnersInfo();
     var bibs = [];
     var isRunnersChange = false;
+    console.log(runners);
     for (var k in settings) bibs.push(k);
     console.log(bibs);
     var currInfo = await Promise.all(bibs.map(async _ => {
