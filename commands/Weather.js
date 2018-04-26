@@ -73,9 +73,10 @@ const Cmd = function() {
       )
       .then(resp => {
         console.log(JSON.stringify(resp.data, null, 2));
-        return resp.data.WeatherForecasts[0].forecasts
+        var ret=resp.data.WeatherForecasts[0].forecasts
           .map(v => forecast2string(v))
           .join(`\n`);
+          return ret||'tmd.go.th failed';
       })
       .catch(err => {
         console.log('api error naja');
