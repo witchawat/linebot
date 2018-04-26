@@ -17,6 +17,8 @@ const Cmd = function() {
     duration = cmd == 'w6' ? 6 : duration;
     if (!param) {
       weatherInfo(duration).then(r => {
+        console.log('debug !!! ');
+        console.log(r);
         _this.emit('replyMessage', {
           replyToken: evt.replyToken,
           message: {
@@ -76,6 +78,7 @@ const Cmd = function() {
           .join(`\n`);
       })
       .catch(err => {
+        console.log('api error naja');
         return 'API Error';
       });
   }
