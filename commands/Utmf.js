@@ -5,6 +5,7 @@ const jsdom = require('jsdom');
 const {
   JSDOM
 } = jsdom;
+var emoji = require('node-emoji');
 var CronJob = require('cron').CronJob;
 const redis = require("redis");
 var redisClient = redis.createClient(process.env.REDISCLOUD_URL, {
@@ -107,9 +108,7 @@ const Cmd = function () {
             replyToken: evt.replyToken,
             message: {
               type: 'text',
-              text: `${info.runner.name}
-                ${info.runner.course}
-                STATUS >> ${info.runner.status}`
+              text: formatInfo(info)
             }
           });
         }
@@ -149,14 +148,13 @@ const Cmd = function () {
     });
   }
   async function updateRunnersInfo() {
-    console.log(' -=* updateRunnersInfo *=- ');
     var settings = await getSettings();
     var runners = await getRunnersInfo();
     var bibs = [];
     var isRunnersChange = false;
-    //console.log(runners);
     for (var k in settings) bibs.push(k);
-    //console.log(bibs);
+    for (var k in runners)
+      if (!settings[k]){ isRunnersChange=true;delete(runners[k]);}
     var currInfo = await Promise.all(bibs.map(async _ => {
       return await runnerInfo(_);
     }));
@@ -174,6 +172,7 @@ const Cmd = function () {
       console.log('runners changed to ' + JSON.stringify(runners, null, 2));
       redisClient.set('utmfRunnerInfo', JSON.stringify(runners), 'EX', 30 * 24 * 60 * 60);
     }
+    console.log(' -=* updateRunnersInfo *=- ');
     return;
     _this.emit('pushMessage', {
       to: 'R979b9c8c9cbeb900948ded9998e8da8c',
@@ -199,7 +198,26 @@ const Cmd = function () {
   }
   // notify to subscribers
   function notify(info, replyIds) {
-    console.log('notifying ', info, replyIds);
+    console.log('notifying ', formatInfo(info), replyIds);
+  }
+
+  function formatInfo(info) {
+    var runner=info.runner;
+    var pin=emoji.get('pushpin');
+    var clock=emoji.get('stopwatch');
+    var rank=emoji.get('chart_with_upwards_trend');
+
+    console.log('formatInfo');
+    console.log(runner);
+    runner.last_update={'idpt':9,'n':'Lac Combal','km':65.64,'racetime':'14:26:48','rank':123};
+    var ret = `${runner.bib} ${runner.name} (${runner.course})`;
+    ret += (runner.status) ? ` [${runner.status}]` : '';
+    if(runner.last_update){
+      ret+=`
+${pin} (${runner.idpt}) ${runner.last_update.n} ${runner.last_update.km} km
+${rank} #${runner.last_update.rank} ${clock} ${runner.last_update.racetime}`;
+    }
+    return ret;
   }
 
   function runnerInfo(_bib) {
@@ -218,7 +236,7 @@ const Cmd = function () {
         } else if (state === 'f') {
           state = 'FINISHED';
         } else {
-          state = 'UNKNOWN';
+          state = '';
         }
         let last = -1;
         let cp = [];
