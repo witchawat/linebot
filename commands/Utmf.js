@@ -210,6 +210,7 @@ const Cmd = function () {
 
     console.log('formatInfo');
     console.log(runner);
+    runner.idpt=9;
     runner.last_update={'idpt':9,'n':'Lac Combal','km':65.64,'racetime':'14:26:48','rank':123};
     var ret = `${runner.bib} ${runnerEmoji} ${runner.name} (${runner.course})`;
     ret += (runner.status) ? ` [${runner.status}]` : '';
