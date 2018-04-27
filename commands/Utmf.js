@@ -171,6 +171,7 @@ const Cmd = function () {
     }));
     //console.log(JSON.stringify(currInfo,null,1));
     currInfo.map(info => {
+      if(!info||!info.runner)return;
       var bib = info.runner.bib;
       // new runner, แบบว่าเพิ่ง check ครั้งแรกงี้
       if (!runners[bib] || runners[bib].runner.idpt != info.runner.idpt || runners[bib].runner.status != info.runner.status) {
