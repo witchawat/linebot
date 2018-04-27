@@ -243,7 +243,7 @@ const Cmd = function () {
     ret += (runner.status) ? ` -- ${runner.status}` : '';
     if (runner.last_update) {
       ret += `
-${pinEmoji} (${runner.idpt}) ${runner.last_update.n} [${runner.last_update.km} km]
+${pinEmoji} (${runner.idpt}) ${runner.last_update.n} [${runner.last_update.km} / ${runner.maxKM} km]
 ${rankEmoji}   #${runner.last_update.rank} ${clockEmoji} ${runner.last_update.racetime}`;
     }
     return ret;
@@ -267,9 +267,15 @@ ${rankEmoji}   #${runner.last_update.rank} ${clockEmoji} ${runner.last_update.ra
         } else {
           state = '';
         }
+        let maxKM = 0;
+        let maxCP = -1;
         let last = -1;
         let cp = [];
         let pts = data.querySelectorAll('pts pt').forEach(row => {
+          if (row.getAttribute('idpt') * 1 > maxCP) {
+            maxCP = row.getAttribute('idpt') * 1;
+            maxKM = row.getAttribute('km');
+          }
           cp.push({
             idpt: row.getAttribute('idpt'),
             n: row.getAttribute('n'),
@@ -294,8 +300,11 @@ ${rankEmoji}   #${runner.last_update.rank} ${clockEmoji} ${runner.last_update.ra
           country: data.querySelector('identite').getAttribute('nat'),
           status: state,
           idpt: last,
+          maxKM:maxKM,
           last_update: cp[last] || undefined
         };
+        //console.log(cp);
+        //console.log(runner);
         resolve({
           runner
           //,data: cp
@@ -306,8 +315,8 @@ ${rankEmoji}   #${runner.last_update.rank} ${clockEmoji} ${runner.last_update.ra
     });
   }
   new CronJob({
-    cronTime: '0 * * * * *',
-    cronTime: '0 0,10,20,30,40,50 * * * *',
+    cronTime: '59 * * * * *',
+    //cronTime: '0 0,10,20,30,40,50 * * * *',
     onTick: updateRunnersInfo,
     start: true,
     timeZone: 'Asia/Bangkok',
