@@ -183,29 +183,7 @@ const Cmd = function () {
       //console.log('runners changed to ' + JSON.stringify(runners, null, 2));
       redisClient.set('utmfRunnerInfo', JSON.stringify(runners), 'EX', 30 * 24 * 60 * 60);
     }
-    console.log(' -=* updateRunnersInfo *=- ');
-    return;
-    _this.emit('pushMessage', {
-      to: 'R979b9c8c9cbeb900948ded9998e8da8c',
-      message: {
-        type: 'text',
-        text: 'to room'
-      }
-    });
-    _this.emit('pushMessage', {
-      to: 'Ud099a65459ece49825a844abef4a2dfc',
-      message: {
-        type: 'text',
-        text: 'to mai'
-      }
-    });
-    _this.emit('pushMessage', {
-      to: 'Cbde7a88eb2c97ee78a8c26fbd4c46a45',
-      message: {
-        type: 'text',
-        text: 'to group'
-      }
-    });
+    console.log(' -=* updateRunnersInfo *=- '+bibs.length);
   }
   // notify to subscribers
   function notify(info, replyIds) {
