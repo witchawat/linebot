@@ -294,7 +294,7 @@ ${rankEmoji}   #${runner.last_update.rank} ${clockEmoji} ${runner.last_update.ra
         });
         // Last CP REACHED
         let runner = {
-          bib: bib,
+          bib: data.querySelector('fiche').getAttribute('doss'),
           name: data.querySelector('identite').getAttribute('prenom') + ' ' + data.querySelector('identite').getAttribute('nom'),
           course: data.querySelector('fiche').getAttribute('c').toUpperCase(),
           country: data.querySelector('identite').getAttribute('nat'),
