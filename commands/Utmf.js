@@ -23,10 +23,10 @@ source:
 
 source: { userId: 'Ud099a65459ece49825a844abef4a2dfc', type: 'user' },
 */
-const Cmd = function () {
+const Cmd = function() {
   events.EventEmitter.call(this);
   const _this = this;
-  this.handleEvent = async function (evt, cmd, param) {
+  this.handleEvent = async function(evt, cmd, param) {
     if (!param) {
       _this.emit('replyMessage', {
         replyToken: evt.replyToken,
@@ -126,7 +126,7 @@ const Cmd = function () {
 
   function getSettings() {
     return new Promise((resolve, reject) => {
-      redisClient.get('utmf', function (err, _) {
+      redisClient.get('utmf', function(err, _) {
         if (err || !_) {
           resolve({});
           return;
@@ -142,7 +142,7 @@ const Cmd = function () {
 
   function getRunnersInfo() {
     return new Promise((resolve, reject) => {
-      redisClient.get('utmfRunnerInfo', function (err, _) {
+      redisClient.get('utmfRunnerInfo', function(err, _) {
         if (err || !_) {
           resolve({});
           return;
@@ -156,35 +156,39 @@ const Cmd = function () {
     });
   }
   async function updateRunnersInfo() {
-    var settings = await getSettings();
-    var runners = await getRunnersInfo();
-    var bibs = [];
-    var isRunnersChange = false;
-    for (var k in settings) bibs.push(k);
-    for (var k in runners)
-      if (!settings[k]) {
-        isRunnersChange = true;
-        delete(runners[k]);
+    try {
+      var settings = await getSettings();
+      var runners = await getRunnersInfo();
+      var bibs = [];
+      var isRunnersChange = false;
+      for (var k in settings) bibs.push(k);
+      for (var k in runners)
+        if (!settings[k]) {
+          isRunnersChange = true;
+          delete(runners[k]);
+        }
+      var currInfo = await Promise.all(bibs.map(async _ => {
+        return await runnerInfo(_);
+      }));
+      //console.log(JSON.stringify(currInfo,null,1));
+      currInfo.map(info => {
+        if (!info || !info.runner) return;
+        var bib = info.runner.bib;
+        // new runner, แบบว่าเพิ่ง check ครั้งแรกงี้
+        if (!runners[bib] || runners[bib].runner.idpt != info.runner.idpt || runners[bib].runner.status != info.runner.status) {
+          isRunnersChange = true;
+          runners[bib] = info;
+          notify(info, settings[bib]);
+        }
+      });
+      if (isRunnersChange) {
+        //console.log('runners changed to ' + JSON.stringify(runners, null, 2));
+        redisClient.set('utmfRunnerInfo', JSON.stringify(runners), 'EX', 30 * 24 * 60 * 60);
       }
-    var currInfo = await Promise.all(bibs.map(async _ => {
-      return await runnerInfo(_);
-    }));
-    //console.log(JSON.stringify(currInfo,null,1));
-    currInfo.map(info => {
-      if(!info||!info.runner)return;
-      var bib = info.runner.bib;
-      // new runner, แบบว่าเพิ่ง check ครั้งแรกงี้
-      if (!runners[bib] || runners[bib].runner.idpt != info.runner.idpt || runners[bib].runner.status != info.runner.status) {
-        isRunnersChange = true;
-        runners[bib] = info;
-        notify(info, settings[bib]);
-      }
-    });
-    if (isRunnersChange) {
-      //console.log('runners changed to ' + JSON.stringify(runners, null, 2));
-      redisClient.set('utmfRunnerInfo', JSON.stringify(runners), 'EX', 30 * 24 * 60 * 60);
+    } catch (e) {
+      console.log(' -=* Error UpdateRunnersInfo *=- ');
     }
-    console.log(' -=* updateRunnersInfo *=- '+bibs.length);
+    console.log(' -=* updateRunnersInfo *=- ' + bibs.length);
   }
   // notify to subscribers
   function notify(info, replyIds) {
@@ -279,7 +283,7 @@ ${rankEmoji}   #${runner.last_update.rank} ${clockEmoji} ${runner.last_update.ra
           country: data.querySelector('identite').getAttribute('nat'),
           status: state,
           idpt: last,
-          maxKM:maxKM,
+          maxKM: maxKM,
           last_update: cp[last] || undefined
         };
         //console.log(cp);
