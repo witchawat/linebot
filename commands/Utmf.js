@@ -161,6 +161,8 @@ const Cmd = function() {
       var runners = await getRunnersInfo();
       var bibs = [];
       var isRunnersChange = false;
+        console.log(runners);
+        console.log(settings);
       for (var k in settings){
         console.log('x'+runners[k].status+'x');
         if (!runners[k] || runners[k].status == '') bibs.push(k);}
