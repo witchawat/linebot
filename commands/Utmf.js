@@ -164,8 +164,8 @@ const Cmd = function() {
         console.log(runners);
         console.log(settings);
       for (var k in settings){
-        console.log('x'+runners[k].status+'x');
-        if (!runners[k] || runners[k].status == '') bibs.push(k);}
+        console.log('x'+runners[k].runner.status+'x');
+        if (!runners[k] || runners[k].runner.status == '') bibs.push(k);}
       for (var k in runners)
         if (!settings[k]) {
           isRunnersChange = true;
