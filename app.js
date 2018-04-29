@@ -123,14 +123,14 @@ app.get('*', function (req, res) {
 app.listen(app.get('port'), function () {
   console.log('Node app is running on port', app.get('port'));
 });
-new CronJob({
-  cronTime: '0 0,10,20,30,40,50 * * * *',
-  onTick: function(){
-    var http = require('http');
-    http.get('http://linerain.herokuapp.com/');
-    console.log('-- prevent sleep cron --');
-  },
-  start: true,
-  timeZone: 'Asia/Bangkok',
-  runOnInit: true
-});
+// new CronJob({
+//   cronTime: '0 0,10,20,30,40,50 * * * *',
+//   onTick: function(){
+//     var http = require('http');
+//     http.get('http://linerain.herokuapp.com/');
+//     console.log('-- prevent sleep cron --');
+//   },
+//   start: true,
+//   timeZone: 'Asia/Bangkok',
+//   runOnInit: true
+// });

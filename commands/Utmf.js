@@ -300,14 +300,13 @@ ${rankEmoji}   #${runner.last_update.rank} ${clockEmoji} ${runner.last_update.ra
       });
     });
   }
-  new CronJob({
-    cronTime: '59 * * * * *',
-    //cronTime: '0 0,10,20,30,40,50 * * * *',
-    onTick: updateRunnersInfo,
-    start: true,
-    timeZone: 'Asia/Bangkok',
-    runOnInit: true
-  });
+  // new CronJob({
+  //   cronTime: '59 * * * * *',
+  //   onTick: updateRunnersInfo,
+  //   start: true,
+  //   timeZone: 'Asia/Bangkok',
+  //   runOnInit: true
+  // });
   util.inherits(Cmd, events.EventEmitter);
 };
 module.exports = Cmd;
