@@ -9,16 +9,17 @@ const Cmd = function() {
     axios
       .get('https://bx.in.th/api/')
       .then(res => {
-        console.log(res);
         let zmn = res.data[32];
-        console.log(zmn);
+        let last24 = Math.floor(zmn.volume_24hours).toLocaleString();
         _this.emit('replyMessage', {
           replyToken: evt.replyToken,
           message: {
             type: 'text',
-            text: `ZMN
-              Last: ${zmn.last_price}
-              24Hr Vol: ${zmn.volume_24hours}`
+            text: emoji.emojify(
+              `:beginner:ZMN\nLast: ${zmn.last_price}\nChange: ${
+                zmn.change
+              }%\n24Hr Vol: ${last24} ZMN`
+            )
           }
         });
       })
