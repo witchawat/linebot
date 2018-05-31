@@ -9,7 +9,9 @@ const Cmd = function() {
     axios
       .get('https://bx.in.th/api/')
       .then(data => {
+        console.log(data);
         let zmn = data[32];
+        console.log(zmn);
         _this.emit('replyMessage', {
           replyToken: evt.replyToken,
           message: {
@@ -20,7 +22,7 @@ const Cmd = function() {
           }
         });
       })
-      .catch();
+      .catch(console.log('ZMN CMD ERROR'));
   };
 
   util.inherits(Cmd, events.EventEmitter);
