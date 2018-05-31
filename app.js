@@ -7,10 +7,9 @@ const MyLog = require('./commands/MyLog.js');
 const WolframSolve = require('./commands/WolframSolve.js');
 const Weather = require('./commands/Weather.js');
 const UTMF = require('./commands/Utmf.js');
+const Zmn = require('./commands/Zmn.js');
 const jsdom = require('jsdom');
-const {
-  JSDOM
-} = jsdom;
+const { JSDOM } = jsdom;
 const express = require('express');
 const bodyParser = require('body-parser');
 var CronJob = require('cron').CronJob;
@@ -33,8 +32,12 @@ eventHandler.add('air', new Air());
 eventHandler.add('log', new MyLog());
 eventHandler.add('solve', new WolframSolve());
 eventHandler.add(
-  ['weather', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6'], new Weather());
+  ['weather', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6'],
+  new Weather()
+);
 eventHandler.add('utmf', new UTMF());
+eventHandler.add('zmn', new Zmn());
+
 const app = express();
 app.use(express.static('public'));
 app.set('port', process.env.PORT || 5000);
@@ -65,62 +68,70 @@ app.get('/utmfRunner', (req, res) => {
   // let url = 'https://utmb.livetrail.net/coureur.php?rech=' + req.query.bib;
   let url = 'https://utmf.livetrail.net/coureur.php?rech=' + req.query.bib;
   console.log(url);
-  let web = JSDOM.fromURL(url).then(dom => {
-    console.log(dom.window.document);
-    let data = dom.window.document;
-    if (!data.querySelector('state')) {
-      res.status(404).send(';)');
-      console.log('not found');
-      return;
-    }
-    let state = data.querySelector('state').getAttribute('code');
-    if (state === 'a') {
-      state = 'DNF';
-    } else if (state === 'f') {
-      state = 'FINISHED';
-    } else {
-      state = null;
-    }
-    let last = -1;
-    let cp = [];
-    let pts = data.querySelectorAll('pts pt').forEach(row => {
-      cp.push({
-        idpt: row.getAttribute('idpt'),
-        n: row.getAttribute('n'),
-        nc: row.getAttribute('nc'),
-        km: row.getAttribute('km'),
-        nc: row.getAttribute('nc')
+  let web = JSDOM.fromURL(url)
+    .then(dom => {
+      console.log(dom.window.document);
+      let data = dom.window.document;
+      if (!data.querySelector('state')) {
+        res.status(404).send(';)');
+        console.log('not found');
+        return;
+      }
+      let state = data.querySelector('state').getAttribute('code');
+      if (state === 'a') {
+        state = 'DNF';
+      } else if (state === 'f') {
+        state = 'FINISHED';
+      } else {
+        state = null;
+      }
+      let last = -1;
+      let cp = [];
+      let pts = data.querySelectorAll('pts pt').forEach(row => {
+        cp.push({
+          idpt: row.getAttribute('idpt'),
+          n: row.getAttribute('n'),
+          nc: row.getAttribute('nc'),
+          km: row.getAttribute('km'),
+          nc: row.getAttribute('nc')
+        });
       });
-    });
-    let pass = data.querySelectorAll('pass e').forEach((row, i) => {
-      Object.assign(cp[i], {
-        racetime: row.getAttribute('tps'),
-        rank: row.getAttribute('clt'),
-        worldtime: row.getAttribute('hd') || row.getAttribute('ha')
+      let pass = data.querySelectorAll('pass e').forEach((row, i) => {
+        Object.assign(cp[i], {
+          racetime: row.getAttribute('tps'),
+          rank: row.getAttribute('clt'),
+          worldtime: row.getAttribute('hd') || row.getAttribute('ha')
+        });
+        last = i;
       });
-      last = i;
+      // Last CP REACHED
+      let runner = {
+        name:
+          data.querySelector('identite').getAttribute('prenom') +
+          ' ' +
+          data.querySelector('identite').getAttribute('nom'),
+        course: data
+          .querySelector('fiche')
+          .getAttribute('c')
+          .toUpperCase(),
+        country: data.querySelector('identite').getAttribute('nat'),
+        status: state,
+        last_update: cp[last] || undefined
+      };
+      res.status(200).json({
+        runner,
+        data: cp
+      });
+    })
+    .catch(error => {
+      console.log(error);
     });
-    // Last CP REACHED
-    let runner = {
-      name: data.querySelector('identite').getAttribute('prenom') + ' ' + data.querySelector('identite').getAttribute('nom'),
-      course: data.querySelector('fiche').getAttribute('c').toUpperCase(),
-      country: data.querySelector('identite').getAttribute('nat'),
-      status: state,
-      last_update: cp[last] || undefined
-    };
-    res.status(200).json({
-      runner,
-      data: cp
-    });
-  }).catch(error => {
-    console.log(error);
-  });
 });
-app.get('*', function (req, res) {
+app.get('*', function(req, res) {
   res.send('Ong Line Bot');
 });
 //Heroku setting
-app.listen(app.get('port'), function () {
+app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 // new CronJob({
