@@ -11,7 +11,7 @@ const Cmd = function() {
       .then(res => {
         let zmn = res.data[32];
         let last24 = Math.floor(zmn.volume_24hours).toLocaleString();
-        let sign = zmn.last_price < 0 ? ':bangbang:' : ':smile::smile:';
+        let sign = zmn.change < 0 ? ':bangbang:' : ':smile::smile:';
         _this.emit('replyMessage', {
           replyToken: evt.replyToken,
           message: {
