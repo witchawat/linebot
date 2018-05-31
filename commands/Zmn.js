@@ -11,6 +11,7 @@ const Cmd = function() {
       .then(res => {
         let zmn = res.data[32];
         let last24 = Math.floor(zmn.volume_24hours).toLocaleString();
+        let sign = zmn.last_price < 0 ? ':bangbang:' : ':smile::smile:';
         _this.emit('replyMessage', {
           replyToken: evt.replyToken,
           message: {
@@ -18,7 +19,7 @@ const Cmd = function() {
             text: emoji.emojify(
               `:beginner:ZMN\nLast: ${zmn.last_price}\nChange: ${
                 zmn.change
-              }%\n24Hr Vol: ${last24} ZMN`
+              }% ${sign}\n24Hr Vol: ${last24} ZMN`
             )
           }
         });
