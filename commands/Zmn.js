@@ -8,9 +8,9 @@ const Cmd = function() {
   this.handleEvent = function(evt, cmd, param) {
     axios
       .get('https://bx.in.th/api/')
-      .then(data => {
-        console.log(data);
-        let zmn = data[32];
+      .then(res => {
+        console.log(res);
+        let zmn = res.data[32];
         console.log(zmn);
         _this.emit('replyMessage', {
           replyToken: evt.replyToken,
