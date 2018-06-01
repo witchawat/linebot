@@ -90,16 +90,17 @@ const Cmd = function() {
                 zmnTick.last
               }\nChange: ${zmnTick.change}%`
             );
+
+            _this.emit('pushMessage', {
+              // to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
+              to: 'Uf1763382b8cc53af0669ca2d44f880a0', // to Ong
+              message: {
+                type: 'text',
+                text: zmnMsg
+              }
+            });
           }
 
-          _this.emit('pushMessage', {
-            // to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
-            to: 'Uf1763382b8cc53af0669ca2d44f880a0', // to Ong
-            message: {
-              type: 'text',
-              text: zmnMsg
-            }
-          });
           // set nearest bound for next loop
         })
         .catch();
