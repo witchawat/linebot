@@ -51,7 +51,7 @@ const Cmd = function() {
           };
           //lower than lower bound or higher than higher bound
           for (let i of ZMN_ALERT_LOW_PRICE) {
-            if (zmnTick.last <= i) {
+            if (zmnTick.last <= i && last_tick_price != i) {
               last_tick_price = i; //Set zmnP to LOW_PRICE
               price_alert = true;
               break;
@@ -59,7 +59,7 @@ const Cmd = function() {
           }
 
           for (let i of ZMN_ALERT_HIGH_PRICE) {
-            if (zmnTick.last >= i) {
+            if (zmnTick.last >= i && last_tick_price != i) {
               last_tick_price = i;
               price_alert = true;
               break;
