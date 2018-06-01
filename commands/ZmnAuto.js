@@ -44,7 +44,6 @@ const Cmd = function() {
       axios
         .get('https://bx.in.th/api/')
         .then(res => {
-          console.log(res);
           let zmnTick = {
             last: res.data[32].last_price,
             change: res.data[32].change
@@ -86,7 +85,7 @@ const Cmd = function() {
           console.log(zmnTick);
           if (price_alert) {
             price_alert = false;
-            let zmnMsg = emoji.emojify(
+            var zmnMsg = emoji.emojify(
               `:money_with_wings::money_with_wings::money_with_wings::money_with_wings::money_with_wings: \nZMN Auto Price Alert\nLast: ${
                 zmnTick.last
               }\nChange: ${zmnTick.change}%`
