@@ -8,6 +8,7 @@ const WolframSolve = require('./commands/WolframSolve.js');
 const Weather = require('./commands/Weather.js');
 const UTMF = require('./commands/Utmf.js');
 const Zmn = require('./commands/Zmn.js');
+const ZmnAuto = require('./commands/ZmnAuto.js');
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 const express = require('express');
@@ -37,6 +38,7 @@ eventHandler.add(
 );
 eventHandler.add('utmf', new UTMF());
 eventHandler.add('zmn', new Zmn());
+eventHandler.add('zmnauto', new ZmnAuto());
 
 const app = express();
 app.use(express.static('public'));
