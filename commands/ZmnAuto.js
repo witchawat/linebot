@@ -44,6 +44,7 @@ const Cmd = function() {
       axios
         .get('https://bx.in.th/api')
         .then(res => {
+          console.log(res);
           let zmnTick = {
             last: res.data[32].last_price,
             change: res.data[32].change
@@ -84,13 +85,13 @@ const Cmd = function() {
           //send msg
           console.log(zmnTick);
 
-          _this.emit('pushMessage', {
-            to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
-            message: {
-              type: 'text',
-              text: 'Alert!'
-            }
-          });
+          // _this.emit('pushMessage', {
+          //   to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
+          //   message: {
+          //     type: 'text',
+          //     text: 'Alert!'
+          //   }
+          // });
           // set nearest bound for next loop
         })
         .catch();
