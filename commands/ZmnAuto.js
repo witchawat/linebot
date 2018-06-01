@@ -42,7 +42,7 @@ const Cmd = function() {
     cronTime: '59 * * * * *',
     onTick: function() {
       axios
-        .get('https://bx.in.th/api')
+        .get('https://bx.in.th/api/')
         .then(res => {
           console.log(res);
           let zmnTick = {
@@ -85,13 +85,14 @@ const Cmd = function() {
           //send msg
           console.log(zmnTick);
 
-          // _this.emit('pushMessage', {
-          //   to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
-          //   message: {
-          //     type: 'text',
-          //     text: 'Alert!'
-          //   }
-          // });
+          _this.emit('pushMessage', {
+            // to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
+            to: 'Uf1763382b8cc53af0669ca2d44f880a0', // to Ong
+            message: {
+              type: 'text',
+              text: 'Alert!'
+            }
+          });
           // set nearest bound for next loop
         })
         .catch();
