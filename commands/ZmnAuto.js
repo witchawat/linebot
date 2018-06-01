@@ -14,6 +14,8 @@ var last_tick_change = 0;
 var price_alert = false;
 var change_alert = false;
 
+// EE Classified groupId = C9484e01ebf9cc46a2f17a523354704f9
+
 const Cmd = function() {
   events.EventEmitter.call(this);
   const _this = this;
@@ -22,6 +24,11 @@ const Cmd = function() {
     let zmnMsg = ZMN_PRICE_TRACK
       ? 'ZMN Auto Price Track: ACTIVATE'
       : 'ZMN Auto Price Track: DISABLE';
+    if (ZMN_PRICE_TRACK) {
+      zmnJob.start();
+    } else {
+      zmnJob.stop();
+    }
     _this.emit('replyMessage', {
       replyToken: evt.replyToken,
       message: {
@@ -73,7 +80,13 @@ const Cmd = function() {
           }
         }
         //send msg
-
+        _this.emit('pushMessage', {
+          to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
+          message: {
+            type: 'text',
+            text: alertMsg || 'Alert!'
+          }
+        });
         // set nearest bound for next loop
       });
     },
