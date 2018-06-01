@@ -5,7 +5,7 @@ const events = require('events');
 var cron = require('cron');
 
 var ZMN_PRICE_TRACK = false;
-var ZMN_ALERT_LOW_PRICE = [3, 3.5]; //LOWER BOUND , Lowest value to High
+var ZMN_ALERT_LOW_PRICE = [3, 3.5, 3.7]; //LOWER BOUND , Lowest value to High
 var ZMN_ALERT_HIGH_PRICE = [6, 5, 4]; //HIGHER BOUND, Highest value to Low
 var ZMN_ALERT_LOW_CHANGE = [-10, -5];
 var ZMN_ALERT_HIGH_CHANGE = [10, 5];
@@ -66,31 +66,39 @@ const Cmd = function() {
             }
           }
 
-          for (let i of ZMN_ALERT_LOW_CHANGE) {
-            if (zmnTick.change <= i) {
-              //Low % Change Alert
-              last_tick_change = i;
-              change_alert = true;
-              break;
-            }
-          }
+          // for (let i of ZMN_ALERT_LOW_CHANGE) {
+          //   if (zmnTick.change <= i) {
+          //     //Low % Change Alert
+          //     last_tick_change = i;
+          //     change_alert = true;
+          //     break;
+          //   }
+          // }
 
-          for (let i of ZMN_ALERT_HIGH_CHANGE) {
-            if (zmnTick.change >= i) {
-              last_tick_change = i;
-              change_alert = true;
-              break;
-            }
-          }
+          // for (let i of ZMN_ALERT_HIGH_CHANGE) {
+          //   if (zmnTick.change >= i) {
+          //     last_tick_change = i;
+          //     change_alert = true;
+          //     break;
+          //   }
+          // }
           //send msg
           console.log(zmnTick);
+          if (price_alert) {
+            price_alert = false;
+            let zmnMsg = emoji.emojify(
+              `:money_with_wings::money_with_wings::money_with_wings::money_with_wings::money_with_wings: \nZMN Auto Price Alert\nLast: ${
+                zmnTick.last
+              }\nChange: ${zmnTick.change}%`
+            );
+          }
 
           _this.emit('pushMessage', {
             // to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
             to: 'Uf1763382b8cc53af0669ca2d44f880a0', // to Ong
             message: {
               type: 'text',
-              text: 'Alert!'
+              text: zmnMsg
             }
           });
           // set nearest bound for next loop
