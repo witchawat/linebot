@@ -41,54 +41,59 @@ const Cmd = function() {
   var zmnJob = new cron.CronJob({
     cronTime: '59 * * * * *',
     onTick: function() {
-      axios.get('https://bx.in.th/api').then(res => {
-        let zmnTick = {
-          last: res.data[32].last_price,
-          change: res.data[32].change
-        };
-        //lower than lower bound or higher than higher bound
-        for (let i of ZMN_ALERT_LOW_PRICE) {
-          if (zmnTick.last <= i) {
-            last_tick_price = i; //Set zmnP to LOW_PRICE
-            price_alert = true;
-            break;
+      axios
+        .get('https://bx.in.th/api')
+        .then(res => {
+          let zmnTick = {
+            last: res.data[32].last_price,
+            change: res.data[32].change
+          };
+          //lower than lower bound or higher than higher bound
+          for (let i of ZMN_ALERT_LOW_PRICE) {
+            if (zmnTick.last <= i) {
+              last_tick_price = i; //Set zmnP to LOW_PRICE
+              price_alert = true;
+              break;
+            }
           }
-        }
 
-        for (let i of ZMN_ALERT_HIGH_PRICE) {
-          if (zmnTick.last >= i) {
-            last_tick_price = i;
-            price_alert = true;
-            break;
+          for (let i of ZMN_ALERT_HIGH_PRICE) {
+            if (zmnTick.last >= i) {
+              last_tick_price = i;
+              price_alert = true;
+              break;
+            }
           }
-        }
 
-        for (let i of ZMN_ALERT_LOW_CHANGE) {
-          if (zmnTick.change <= i) {
-            //Low % Change Alert
-            last_tick_change = i;
-            change_alert = true;
-            break;
+          for (let i of ZMN_ALERT_LOW_CHANGE) {
+            if (zmnTick.change <= i) {
+              //Low % Change Alert
+              last_tick_change = i;
+              change_alert = true;
+              break;
+            }
           }
-        }
 
-        for (let i of ZMN_ALERT_HIGH_CHANGE) {
-          if (zmnTick.change >= i) {
-            last_tick_change = i;
-            change_alert = true;
-            break;
+          for (let i of ZMN_ALERT_HIGH_CHANGE) {
+            if (zmnTick.change >= i) {
+              last_tick_change = i;
+              change_alert = true;
+              break;
+            }
           }
-        }
-        //send msg
-        _this.emit('pushMessage', {
-          to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
-          message: {
-            type: 'text',
-            text: alertMsg || 'Alert!'
-          }
-        });
-        // set nearest bound for next loop
-      });
+          //send msg
+          console.log(zmnTick);
+
+          _this.emit('pushMessage', {
+            to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
+            message: {
+              type: 'text',
+              text: 'Alert!'
+            }
+          });
+          // set nearest bound for next loop
+        })
+        .catch();
     },
     start: false,
     timeZone: 'Asia/Bangkok'
