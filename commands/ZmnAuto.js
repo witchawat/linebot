@@ -29,7 +29,8 @@ var ZMN_ALERT_LOW_PRICE = [3, 3.3, 3.4, 3.5, 3.6, 3.7]; //LOWER BOUND , Lowest v
 var ZMN_ALERT_HIGH_PRICE = [6, 5, 4]; //HIGHER BOUND, Highest value to Low
 var ZMN_ALERT_LOW_CHANGE = [-10, -5];
 var ZMN_ALERT_HIGH_CHANGE = [10, 5];
-
+let last_tick_price;
+let last_tick_change;
 var price_alert = false;
 var change_alert = false;
 
@@ -67,8 +68,6 @@ const Cmd = function() {
             last: res.data[32].last_price,
             change: res.data[32].change
           };
-          let last_tick_price;
-          let last_tick_change;
 
           //save to Firebase
           FBDB.collection('zmn')
