@@ -25,7 +25,7 @@ FBadmin.initializeApp({
 const FBDB = FBadmin.firestore();
 
 var ZMN_PRICE_TRACK = false;
-var ZMN_ALERT_LOW_PRICE = [3, 3.5, 3.7]; //LOWER BOUND , Lowest value to High
+var ZMN_ALERT_LOW_PRICE = [3, 3.3, 3.4, 3.5, 3.6, 3.7]; //LOWER BOUND , Lowest value to High
 var ZMN_ALERT_HIGH_PRICE = [6, 5, 4]; //HIGHER BOUND, Highest value to Low
 var ZMN_ALERT_LOW_CHANGE = [-10, -5];
 var ZMN_ALERT_HIGH_CHANGE = [10, 5];
@@ -86,13 +86,13 @@ const Cmd = function() {
           for (let i of ZMN_ALERT_LOW_PRICE) {
             if (zmnTick.last <= i && last_tick_price != i) {
               last_tick_price = i; //Set zmnP to LOW_PRICE
-              console.log('Last tick price =', last_tick_price);
-              console.log('i =', i);
-              console.log('zmn last =', zmnTick.last);
+              // console.log('Last tick price =', last_tick_price);
+              // console.log('i =', i);
+              // console.log('zmn last =', zmnTick.last);
               // price_alert = true;
               zmnAlertMsg(zmnTick);
-              break;
             }
+            break;
           }
 
           for (let i of ZMN_ALERT_HIGH_PRICE) {
@@ -100,8 +100,8 @@ const Cmd = function() {
               last_tick_price = i;
               // price_alert = true;
               zmnAlertMsg(zmnTick);
-              break;
             }
+            break;
           }
 
           // for (let i of ZMN_ALERT_LOW_CHANGE) {
@@ -153,8 +153,8 @@ const Cmd = function() {
     );
 
     _this.emit('pushMessage', {
-      // to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
-      to: 'Uf1763382b8cc53af0669ca2d44f880a0', // to Ong
+      to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
+      // to: 'Uf1763382b8cc53af0669ca2d44f880a0', // to Ong
       message: {
         type: 'text',
         text: zmnMsg
