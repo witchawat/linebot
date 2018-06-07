@@ -29,8 +29,7 @@ var ZMN_ALERT_LOW_PRICE = [3, 3.3, 3.4, 3.5, 3.6, 3.7]; //LOWER BOUND , Lowest v
 var ZMN_ALERT_HIGH_PRICE = [6, 5, 4]; //HIGHER BOUND, Highest value to Low
 var ZMN_ALERT_LOW_CHANGE = [-10, -5];
 var ZMN_ALERT_HIGH_CHANGE = [10, 5];
-var last_tick_price = 0;
-var last_tick_change = 0;
+
 var price_alert = false;
 var change_alert = false;
 
@@ -68,6 +67,8 @@ const Cmd = function() {
             last: res.data[32].last_price,
             change: res.data[32].change
           };
+          let last_tick_price;
+          let last_tick_change;
 
           //save to Firebase
           FBDB.collection('zmn')
@@ -86,9 +87,9 @@ const Cmd = function() {
           outerloop_low: for (let i of ZMN_ALERT_LOW_PRICE) {
             if (zmnTick.last <= i && last_tick_price != i) {
               last_tick_price = i; //Set zmnP to LOW_PRICE
-              console.log('Last tick price =', last_tick_price);
-              console.log('i =', i);
-              console.log('zmn last =', zmnTick.last);
+              // console.log('Last tick price =', last_tick_price);
+              // console.log('i =', i);
+              // console.log('zmn last =', zmnTick.last);
               // price_alert = true;
               zmnAlertMsg(zmnTick);
               break outerloop_low;
