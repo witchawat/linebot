@@ -26,8 +26,6 @@ const FBDB = FBadmin.firestore();
 
 var ZMN_PRICE_TRACK = false;
 var ZMN_ALERT_BAND = [3, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4];
-var ZMN_ALERT_LOW_CHANGE = [-10, -5];
-var ZMN_ALERT_HIGH_CHANGE = [10, 5];
 let last_tick_price;
 let last_tick_change;
 let ZMN_PRICE_ARRAY = [0, 0];
