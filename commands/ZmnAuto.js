@@ -49,8 +49,8 @@ const Cmd = function() {
     } else {
       zmnJob.stop();
     }
-    _this.emit('replyMessage', {
-      replyToken: evt.replyToken,
+    _this.emit('pushMessage', {
+      to: 'Uf1763382b8cc53af0669ca2d44f880a0', // to Ong
       message: {
         type: 'text',
         text: zmnMsg
@@ -76,7 +76,7 @@ const Cmd = function() {
               price: zmnTick.last
             })
             .then(ref => {
-              console.log('Saved to FB with ID = ', ref.id);
+              // console.log('Saved to FB with ID = ', ref.id);
             })
             .catch(err => {
               console.log('FB DB ERROR >> ', err);
@@ -86,7 +86,8 @@ const Cmd = function() {
           for (let i of ZMN_ALERT_LOW_PRICE) {
             if (zmnTick.last <= i && last_tick_price != i) {
               last_tick_price = i; //Set zmnP to LOW_PRICE
-              price_alert = true;
+              // price_alert = true;
+              zmnAlertMsg(zmnTick);
               break;
             }
           }
@@ -94,7 +95,8 @@ const Cmd = function() {
           for (let i of ZMN_ALERT_HIGH_PRICE) {
             if (zmnTick.last >= i && last_tick_price != i) {
               last_tick_price = i;
-              price_alert = true;
+              // price_alert = true;
+              zmnAlertMsg(zmnTick);
               break;
             }
           }
@@ -117,31 +119,45 @@ const Cmd = function() {
           // }
 
           //send msg
-          console.log(zmnTick);
-          if (price_alert) {
-            price_alert = false;
-            var zmnMsg = emoji.emojify(
-              `:money_with_wings::money_with_wings::money_with_wings::money_with_wings::money_with_wings: \nZMN Auto Price Alert\nLast: ${
-                zmnTick.last
-              }\nChange: ${zmnTick.change}%`
-            );
+          // if (price_alert) {
+          //   price_alert = false;
+          //   var zmnMsg = emoji.emojify(
+          //     `:money_with_wings::money_with_wings::money_with_wings::money_with_wings::money_with_wings: \nZMN Auto Price Alert\nLast: ${
+          //       zmnTick.last
+          //     }\nChange: ${zmnTick.change}%`
+          //   );
 
-            _this.emit('pushMessage', {
-              to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
-              // to: 'Uf1763382b8cc53af0669ca2d44f880a0', // to Ong
-              message: {
-                type: 'text',
-                text: zmnMsg
-              }
-            });
-          }
+          //   _this.emit('pushMessage', {
+          //     to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
+          //     // to: 'Uf1763382b8cc53af0669ca2d44f880a0', // to Ong
+          //     message: {
+          //       type: 'text',
+          //       text: zmnMsg
+          //     }
+          //   });
+          // }
         })
         .catch();
     },
     start: false,
     timeZone: 'Asia/Bangkok'
   });
+  function zmnAlertMsg(zmnTick) {
+    let zmnMsg = emoji.emojify(
+      `:money_with_wings::money_with_wings::money_with_wings::money_with_wings::money_with_wings: \nZMN Auto Price Alert\nLast: ${
+        zmnTick.last
+      }\nChange: ${zmnTick.change}%`
+    );
 
+    _this.emit('pushMessage', {
+      // to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
+      to: 'Uf1763382b8cc53af0669ca2d44f880a0', // to Ong
+      message: {
+        type: 'text',
+        text: zmnMsg
+      }
+    });
+  }
   console.log('>>> ZMN Job Status >>> ', zmnJob.running);
 
   util.inherits(Cmd, events.EventEmitter);
