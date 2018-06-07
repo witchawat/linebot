@@ -25,14 +25,13 @@ FBadmin.initializeApp({
 const FBDB = FBadmin.firestore();
 
 var ZMN_PRICE_TRACK = false;
-var ZMN_ALERT_LOW_PRICE = [3, 3.3, 3.4, 3.5, 3.6, 3.7]; //LOWER BOUND , Lowest value to High
-var ZMN_ALERT_HIGH_PRICE = [6, 5, 4]; //HIGHER BOUND, Highest value to Low
+var ZMN_ALERT_BAND = [3, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4];
 var ZMN_ALERT_LOW_CHANGE = [-10, -5];
 var ZMN_ALERT_HIGH_CHANGE = [10, 5];
 let last_tick_price;
 let last_tick_change;
 let ZMN_PRICE_ARRAY = [0, 0];
-var price_alert = false;
+var band_alert = false;
 var change_alert = false;
 
 // EE Classified groupId = C9484e01ebf9cc46a2f17a523354704f9
@@ -83,9 +82,27 @@ const Cmd = function() {
               console.log('FB DB ERROR >> ', err);
             });
 
+          var zmnBand = parseFloat(
+            zmnTick.last
+              .toString()
+              .match(new RegExp('^-?\\d+(?:.\\d{0,' + (1 || -1) + '})?'))[0]
+          );
+
+          if (
+            ZMN_ALERT_BAND.indexOf(zmnBand) != -1 &&
+            zmnBand != last_tick_price
+          ) {
+            last_tick_price = zmnBand;
+            band_alert = true;
+          }
+
           ZMN_PRICE_ARRAY.shift();
           ZMN_PRICE_ARRAY.push(zmnTick.last);
-          if (Math.abs(ZMN_PRICE_ARRAY[0] - ZMN_PRICE_ARRAY[1]) >= 0.2) {
+          if (
+            Math.abs(ZMN_PRICE_ARRAY[0] - ZMN_PRICE_ARRAY[1]) >= 0.2 ||
+            band_alert
+          ) {
+            band_alert = false;
             zmnAlertMsg(zmnTick);
           }
 
