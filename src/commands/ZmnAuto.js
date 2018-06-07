@@ -3,7 +3,7 @@ var emoji = require('node-emoji');
 const util = require('util');
 const events = require('events');
 var cron = require('cron');
-import FBDB from '../services/firebase';
+const FBDB = require('../services/firebase');
 
 var ZMN_PRICE_TRACK = false;
 var ZMN_ALERT_LOW_PRICE = [3, 3.5, 3.7]; //LOWER BOUND , Lowest value to High
