@@ -86,9 +86,9 @@ const Cmd = function() {
           outerloop_low: for (let i of ZMN_ALERT_LOW_PRICE) {
             if (zmnTick.last <= i && last_tick_price != i) {
               last_tick_price = i; //Set zmnP to LOW_PRICE
-              // console.log('Last tick price =', last_tick_price);
-              // console.log('i =', i);
-              // console.log('zmn last =', zmnTick.last);
+              console.log('Last tick price =', last_tick_price);
+              console.log('i =', i);
+              console.log('zmn last =', zmnTick.last);
               // price_alert = true;
               zmnAlertMsg(zmnTick);
               break outerloop_low;
@@ -153,8 +153,8 @@ const Cmd = function() {
     );
 
     _this.emit('pushMessage', {
-      to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
-      // to: 'Uf1763382b8cc53af0669ca2d44f880a0', // to Ong
+      // to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
+      to: 'Uf1763382b8cc53af0669ca2d44f880a0', // to Ong
       message: {
         type: 'text',
         text: zmnMsg
