@@ -22,7 +22,7 @@ FBadmin.initializeApp({
   databaseURL: 'https://rainbot-f24dd.firebaseio.com'
 });
 
-const FBDB = FBadmin.database();
+const FBDB = FBadmin.firestore();
 
 var ZMN_PRICE_TRACK = false;
 var ZMN_ALERT_LOW_PRICE = [3, 3.5, 3.7]; //LOWER BOUND , Lowest value to High
@@ -77,6 +77,9 @@ const Cmd = function() {
             })
             .then(ref => {
               console.log('Saved to FB with ID = ', ref.id);
+            })
+            .catch(err => {
+              console.log('FB DB ERROR >> ', err);
             });
 
           //lower than lower bound or higher than higher bound
