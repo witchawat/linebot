@@ -31,6 +31,7 @@ var ZMN_ALERT_LOW_CHANGE = [-10, -5];
 var ZMN_ALERT_HIGH_CHANGE = [10, 5];
 let last_tick_price;
 let last_tick_change;
+let ZMN_PRICE_ARRAY = [0, 0];
 var price_alert = false;
 var change_alert = false;
 
@@ -59,7 +60,7 @@ const Cmd = function() {
   };
 
   var zmnJob = new cron.CronJob({
-    cronTime: '59 * * * * *',
+    cronTime: '* */5 * * * *',
     onTick: function() {
       axios
         .get('https://bx.in.th/api/')
@@ -82,63 +83,24 @@ const Cmd = function() {
               console.log('FB DB ERROR >> ', err);
             });
 
-          //lower than lower bound or higher than higher bound
-          outerloop_low: for (let i of ZMN_ALERT_LOW_PRICE) {
-            console.log('Last tick price =', last_tick_price);
-            console.log('i =', i);
-            console.log('zmn last =', zmnTick.last);
-            if (zmnTick.last <= i && last_tick_price != i) {
-              last_tick_price = i; //Set zmnP to LOW_PRICE
-
-              // price_alert = true;
-              zmnAlertMsg(zmnTick);
-              break outerloop_low;
-            }
+          ZMN_PRICE_ARRAY.shift();
+          ZMN_PRICE_ARRAY.push(zmnTick.last);
+          if (Math.abs(ZMN_PRICE_ARRAY[0] - ZMN_PRICE_ARRAY[1]) >= 0.2) {
+            zmnAlertMsg(zmnTick);
           }
 
-          outerloop_high: for (let i of ZMN_ALERT_HIGH_PRICE) {
-            if (zmnTick.last >= i && last_tick_price != i) {
-              last_tick_price = i;
-              // price_alert = true;
-              zmnAlertMsg(zmnTick);
-              break outerloop_high;
-            }
-          }
+          // //lower than lower bound or higher than higher bound
+          // outerloop_low: for (let i of ZMN_ALERT_LOW_PRICE) {
+          //   console.log('Last tick price =', last_tick_price);
+          //   console.log('i =', i);
+          //   console.log('zmn last =', zmnTick.last);
+          //   if (zmnTick.last <= i && last_tick_price != i) {
+          //     last_tick_price = i; //Set zmnP to LOW_PRICE
 
-          // for (let i of ZMN_ALERT_LOW_CHANGE) {
-          //   if (zmnTick.change <= i) {
-          //     //Low % Change Alert
-          //     last_tick_change = i;
-          //     change_alert = true;
-          //     break;
+          //     // price_alert = true;
+          //     zmnAlertMsg(zmnTick);
+          //     break outerloop_low;
           //   }
-          // }
-
-          // for (let i of ZMN_ALERT_HIGH_CHANGE) {
-          //   if (zmnTick.change >= i) {
-          //     last_tick_change = i;
-          //     change_alert = true;
-          //     break;
-          //   }
-          // }
-
-          //send msg
-          // if (price_alert) {
-          //   price_alert = false;
-          //   var zmnMsg = emoji.emojify(
-          //     `:money_with_wings::money_with_wings::money_with_wings::money_with_wings::money_with_wings: \nZMN Auto Price Alert\nLast: ${
-          //       zmnTick.last
-          //     }\nChange: ${zmnTick.change}%`
-          //   );
-
-          //   _this.emit('pushMessage', {
-          //     to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
-          //     // to: 'Uf1763382b8cc53af0669ca2d44f880a0', // to Ong
-          //     message: {
-          //       type: 'text',
-          //       text: zmnMsg
-          //     }
-          //   });
           // }
         })
         .catch();
