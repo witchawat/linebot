@@ -85,11 +85,12 @@ const Cmd = function() {
 
           //lower than lower bound or higher than higher bound
           outerloop_low: for (let i of ZMN_ALERT_LOW_PRICE) {
+            console.log('Last tick price =', last_tick_price);
+            console.log('i =', i);
+            console.log('zmn last =', zmnTick.last);
             if (zmnTick.last <= i && last_tick_price != i) {
               last_tick_price = i; //Set zmnP to LOW_PRICE
-              // console.log('Last tick price =', last_tick_price);
-              // console.log('i =', i);
-              // console.log('zmn last =', zmnTick.last);
+
               // price_alert = true;
               zmnAlertMsg(zmnTick);
               break outerloop_low;
