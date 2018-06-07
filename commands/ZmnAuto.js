@@ -83,7 +83,7 @@ const Cmd = function() {
             });
 
           //lower than lower bound or higher than higher bound
-          for (let i of ZMN_ALERT_LOW_PRICE) {
+          outerloop_low: for (let i of ZMN_ALERT_LOW_PRICE) {
             if (zmnTick.last <= i && last_tick_price != i) {
               last_tick_price = i; //Set zmnP to LOW_PRICE
               // console.log('Last tick price =', last_tick_price);
@@ -91,17 +91,17 @@ const Cmd = function() {
               // console.log('zmn last =', zmnTick.last);
               // price_alert = true;
               zmnAlertMsg(zmnTick);
+              break outerloop_low;
             }
-            break;
           }
 
-          for (let i of ZMN_ALERT_HIGH_PRICE) {
+          outerloop_high: for (let i of ZMN_ALERT_HIGH_PRICE) {
             if (zmnTick.last >= i && last_tick_price != i) {
               last_tick_price = i;
               // price_alert = true;
               zmnAlertMsg(zmnTick);
+              break outerloop_high;
             }
-            break;
           }
 
           // for (let i of ZMN_ALERT_LOW_CHANGE) {
