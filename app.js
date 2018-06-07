@@ -27,6 +27,7 @@ const config = {
   channelSecret: process.env.LINESECRET
 };
 const client = new line.Client(config);
+
 var eventHandler = new LineEventHandler(client);
 eventHandler.add(['rain', 'rainvid'], new Rain());
 eventHandler.add('air', new Air());

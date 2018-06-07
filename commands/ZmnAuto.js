@@ -3,6 +3,7 @@ var emoji = require('node-emoji');
 const util = require('util');
 const events = require('events');
 var cron = require('cron');
+import FBDB from '../services/firebase';
 
 var ZMN_PRICE_TRACK = false;
 var ZMN_ALERT_LOW_PRICE = [3, 3.5, 3.7]; //LOWER BOUND , Lowest value to High
@@ -48,6 +49,17 @@ const Cmd = function() {
             last: res.data[32].last_price,
             change: res.data[32].change
           };
+
+          //save to Firebase
+          FBDB.collection('zmn')
+            .add({
+              datetime: new Date(),
+              price: zmnTick.last
+            })
+            .then(ref => {
+              console.log('Saved to FB with ID = ', ref.id);
+            });
+
           //lower than lower bound or higher than higher bound
           for (let i of ZMN_ALERT_LOW_PRICE) {
             if (zmnTick.last <= i && last_tick_price != i) {
