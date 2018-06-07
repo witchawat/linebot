@@ -86,6 +86,9 @@ const Cmd = function() {
           for (let i of ZMN_ALERT_LOW_PRICE) {
             if (zmnTick.last <= i && last_tick_price != i) {
               last_tick_price = i; //Set zmnP to LOW_PRICE
+              console.log('Last tick price =', last_tick_price);
+              console.log('i =', i);
+              console.log('zmn last =', zmnTick.last);
               // price_alert = true;
               zmnAlertMsg(zmnTick);
               break;
