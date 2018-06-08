@@ -1,0 +1,26 @@
+<html>
+
+<body>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        var cfg = {
+            baseURL: 'https://api.line.me/liff/v1/apps',
+            headers: {
+                "content-type": " application/json",
+                authorization: "bearer GWSfmmic1cgmq0Cn4X8Y+YVxtK5vNNPfpfGlCJ+6Ksl6FhLrNqug0qXQcar2Ic5l9i6vsFGlm3Vd50vR3OsJG8Wp4jlerMHlr6/cQfa545YAkFFoy8MM6MuQI7C5gUXEJKIs0jK+hx6lzVmJfFFdLQdB04t89/1O/w1cDnyilFU="
+            }
+        }
+
+        function a() {
+            axios.post('/', {
+                "view": {
+                    "type": "TALL",
+                    "url": "https://linerain.herokuapp.com/liff.html"
+                }
+            },cfg).then(r => console.log(r));
+        }
+    </script>
+<button onclick='a()'>auth</button>
+</body>
+
+</html>
