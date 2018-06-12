@@ -136,7 +136,7 @@ const Cmd = function() {
         })
         .catch();
     },
-    start: false,
+    start: true,
     timeZone: 'Asia/Bangkok'
   });
   function zmnAlertMsg(zmnTick) {
