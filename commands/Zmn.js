@@ -27,17 +27,15 @@ const Cmd = function() {
         })
         .catch(console.log('ZMN CMD ERROR'));
     } else {
-      let cmderror = false;
+      let cmderror = true;
       var [buysell, ...accum] = param.toLowerCase().split(/[\s,]+/);
-      if (buysell != 'buy' || buysell != 'sell') {
-        cmderror = true;
+
+      if (['buy', 'sell'].indexOf(utmfCmd) >= 0) {
+        cmderror = false;
       }
 
       let total = accum[0];
-      console.log(buysell);
-      console.log(param);
-      console.log('total = ', total);
-      console.log('cmderror : ', cmderror);
+
       if (typeof total == 'number' && !cmderror) {
         axios.get('https://bx.in.th/api/orderbook/?pairing=32').then(res => {
           let data = [];
