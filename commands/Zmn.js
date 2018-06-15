@@ -31,8 +31,7 @@ const Cmd = function() {
       var [buysell, ...accum] = param.toLowerCase().split(/[\s,]+/);
       if (buysell == 'buy') {
         buysell = 'asks';
-      }
-      if (buysell == 'sell') {
+      } else if (buysell == 'sell') {
         buysell = 'bids';
       } else {
         cmderror = true;
@@ -57,12 +56,11 @@ const Cmd = function() {
             accum_total += price * vol;
             if (accum_total >= total) {
               msg = `ZMN Total ${buysell} vol of ${total} @ ${price}`;
-              _this.emit('pushMessage', {
-                to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
-                // to: 'Uf1763382b8cc53af0669ca2d44f880a0', // to Ong
+              _this.emit('replyMessage', {
+                replyToken: evt.replyToken,
                 message: {
                   type: 'text',
-                  text: `ZMN Buy-Back-Burn Transferred Out to BX.in.th`
+                  text: msg
                 }
               });
               break;
