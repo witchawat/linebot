@@ -27,10 +27,49 @@ const Cmd = function() {
         })
         .catch(console.log('ZMN CMD ERROR'));
     } else {
-      console.log('PARAM >> ');
-      console.log(param);
-      console.log('CMD');
-      console.log(cmd);
+      let cmderror = false;
+      var [buysell, ...accum] = param.toLowerCase().split(/[\s,]+/);
+      if (buysell == 'buy') {
+        buysell = 'asks';
+      }
+      if (buysell == 'sell') {
+        buysell = 'bids';
+      } else {
+        cmderror = true;
+      }
+
+      let total = accum[0];
+      if (typeof total == 'number' && !cmderror) {
+        axios.get('https://bx.in.th/api/orderbook/?pairing=32').then(res => {
+          let data = [];
+          let msg = '';
+          if (buysell == 'buy') {
+            data = res.data.asks;
+          } else if (buysell == 'sell') {
+            data = res.data.bids;
+          }
+
+          let accum_total = 0;
+
+          for (row of data) {
+            let price = row[0];
+            let vol = row[1];
+            accum_total += price * vol;
+            if (accum_total >= total) {
+              msg = `ZMN Total ${buysell} vol of ${total} @ ${price}`;
+              _this.emit('pushMessage', {
+                to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
+                // to: 'Uf1763382b8cc53af0669ca2d44f880a0', // to Ong
+                message: {
+                  type: 'text',
+                  text: `ZMN Buy-Back-Burn Transferred Out to BX.in.th`
+                }
+              });
+              break;
+            }
+          }
+        });
+      }
     }
   };
 
