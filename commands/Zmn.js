@@ -30,7 +30,7 @@ const Cmd = function() {
       let cmderror = true;
       var [buysell, ...accum] = param.toLowerCase().split(/[\s,]+/);
 
-      if (['buy', 'sell'].indexOf(utmfCmd) >= 0) {
+      if (['buy', 'sell'].indexOf(buysell) >= 0) {
         cmderror = false;
       }
 
