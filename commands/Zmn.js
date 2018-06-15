@@ -34,6 +34,10 @@ const Cmd = function() {
       }
 
       let total = accum[0];
+      console.log(buysell);
+      console.log(param);
+      console.log('total = ', total);
+      console.log('cmderror : ', cmderror);
       if (typeof total == 'number' && !cmderror) {
         axios.get('https://bx.in.th/api/orderbook/?pairing=32').then(res => {
           let data = [];
