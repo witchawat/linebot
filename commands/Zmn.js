@@ -34,7 +34,7 @@ const Cmd = function() {
         cmderror = false;
       }
 
-      let total = accum[0];
+      let total = parseInt(accum[0]);
 
       if (typeof total == 'number' && !cmderror) {
         axios.get('https://bx.in.th/api/orderbook/?pairing=32').then(res => {
