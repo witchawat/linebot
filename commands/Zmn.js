@@ -29,11 +29,7 @@ const Cmd = function() {
     } else {
       let cmderror = false;
       var [buysell, ...accum] = param.toLowerCase().split(/[\s,]+/);
-      if (buysell == 'buy') {
-        buysell = 'asks';
-      } else if (buysell == 'sell') {
-        buysell = 'bids';
-      } else {
+      if (buysell != 'buy' || buysell != 'sell') {
         cmderror = true;
       }
 
