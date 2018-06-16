@@ -47,6 +47,7 @@ let last_tick_change;
 let ZMN_PRICE_ARRAY = [0, 0];
 var band_alert = false;
 var bbb_alert = true;
+let ZMN_BBB_TX = 1;
 
 // EE Classified groupId = C9484e01ebf9cc46a2f17a523354704f9
 
@@ -140,18 +141,18 @@ const Cmd = function() {
       if (bbb_alert) {
         axios
           .get(
-            'https://blockchain.info/rawaddr/1ZMNBBB1U9miC7EqJX31xPF2yvpaH6wv3'
+            'https://blockchain.info/rawaddr/3EFWna62EBaWnimnGKtZ4wHkA7Sudj9x6S'
           )
           .then(res => {
-            let total_sent = res.data.total_sent;
-            if (total_sent != 0) {
-              bbb_alert = false;
+            let n_tx = res.data.n_tx;
+            if (n_tx > ZMN_BBB_TX) {
+              ZMN_BBB_TX = n_tx;
               _this.emit('pushMessage', {
                 to: 'C9484e01ebf9cc46a2f17a523354704f9', //EE Classified
                 // to: 'Uf1763382b8cc53af0669ca2d44f880a0', // to Ong
                 message: {
                   type: 'text',
-                  text: `ZMN Buy-Back-Burn Transferred Out to BX.in.th`
+                  text: `ZMN-BBB BTC Wallet\nTransaction FOUND\nInfo: https://blockchain.info/address/3EFWna62EBaWnimnGKtZ4wHkA7Sudj9x6S`
                 }
               });
             }
