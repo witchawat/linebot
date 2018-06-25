@@ -39,10 +39,10 @@ eventHandler.add('zmn', new Zmn());
 if (process.env.NODE_ENV == 'production') eventHandler.add('zmnauto', new ZmnAuto());
 const app = express();
 app.use(express.static('public'));
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({
+//   extended: true
+// }));
+// app.use(bodyParser.json());
 app.set('port', process.env.PORT || 5000);
 app.post('/webhook', line.middleware(config), (req, res) => {
   req.body.events.forEach(evt => eventHandler.handleEvent(evt));
