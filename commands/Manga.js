@@ -26,7 +26,6 @@ const Cmd = function (app) {
     }
   });
   this.handleEvent = function (evt, cmd, param) {
-    notify(['mrs-serie-134363','mrs-serie-184984']);
     _this.emit('replyMessage', {
       replyToken: evt.replyToken,
       message: {
