@@ -75,6 +75,7 @@
           axios.post('/manga/list/' + this.uid, mids).then(r => {
             this.isBusy = false;
             console.log(r.data);
+            alert('saved !');
           });
         },
         follow(mid) {
