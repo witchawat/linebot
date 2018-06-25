@@ -84,6 +84,7 @@
           });
         },
         follow(mid) {
+          this.$refs.followingListContainer.scrollTo(0, 0);
           this.followingList = [...this.searchingList.filter(r => {
             return r.id == mid
           }), ...this.followingList];
