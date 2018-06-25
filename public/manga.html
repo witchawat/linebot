@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes">
+  <title>Manga List</title>
+  <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <style>
+    .listContainer {
+      display: block;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      height: 43vh;
+      border: 2px solid grey;
+      padding: 10px;
+      margin: 10px 0px;
+      box-sizing: border-box;
+    }
+
+    .listContainer img {
+      height: 50px;
+    }
+
+    .listContainer span {
+      width: calc(100vw - 100px);
+      text-overflow: ellipsis;
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id='app'>
+    <input type='text' placeholder="อย่างน้อย 3 ตัวอักษร" v-model='q' ref='q' @keyup.enter='search' />
+    <button @click='search' :disabled='!canSearch'>search</button> &nbsp;&nbsp;
+    <button @click='save' :disabled='isBusy'>save</button>
+    <br/>
+    <div id='searchingListContainer' class='listContainer'>
+      <b v-if='searchingListDisp.length'>{{searchingListDisp.length}} item(s) found.</b>
+      <div v-for='v in searchingListDisp' :key='v.id' @click='follow(v.id)'>
+        <img :src='v.tmb' /><span>{{v.name}}</span>
+      </div>
+    </div>
+    following
+    <div id='followingListContainer' class='listContainer'>
+      <div v-for='v in followingList' :key='v.id' @click='remove(v.id,v.name)'>
+        <img :src='v.tmb' /><span>{{v.name}}</span>
+      </div>
+    </div>
+  </div>
+  <script>
+    var _app = new Vue({
+      el: '#app',
+      data: {
+        q: '',
+        isBusy: false,
+        uid: 'UUd6121abb75eb027dc132221202f81051e7df2bf1976250734ebb5cd2e4bc5ad36b115a42ec196e590934cc92308bc45d44d2c85fe1cbc70b25be893ef35970f8',
+        followingList: [],
+        searchingList: []
+      },
+      methods: {
+        save() {
+          console.log('saving');
+          if (this.isBusy) return;
+          this.isBusy = true;
+          var mids = [];
+          this.followingList.forEach(r => mids.push(r.id));
+          axios.post('/manga/list/' + this.uid, mids).then(r => {
+            this.isBusy = false;
+            console.log(r.data);
+          });
+        },
+        follow(mid) {
+          this.followingList = [...this.searchingList.filter(r => {
+            return r.id == mid
+          }), ...this.followingList];
+        },
+        remove(mid, name) {
+          if (confirm('เลิกติดตาม ' + name)) {
+            console.log(this.followingList.findIndex(r => r.id == mid));
+            this.followingList.splice(this.followingList.findIndex(r => r.id == mid), 1);
+          }
+        },
+        search() {
+          if (!this.canSearch) return;
+          this.isBusy = true;
+          axios.get('/manga/search/' + this.q).then(r => {
+            this.isBusy = false;
+            this.searchingList = r.data;
+          });
+        }
+      },
+      computed: {
+        canSearch() {
+          return !this.isBusy && this.q.length > 2
+        },
+        searchingListDisp() {
+          return this.searchingList.filter(r => {
+            return this.followingList.findIndex(s => s.id == r.id) == -1;
+          });
+        }
+      },
+      created() {
+        liff.init(r => {
+          this.uid=(r.context.userId)?r.context.userId:this.uid;
+          this.uid=(r.context.userId)?r.context.roomId:this.uid;
+          this.uid=(r.context.userId)?r.context.groupId:this.uid;
+          axios.get('/manga/list/' + this.uid).then(r => {
+            this.followingList = r.data;
+          });
+        });
+        // axios.get('/manga/list/' + this.uid).then(r => {
+        //   this.followingList = r.data;
+        // });
+      },
+      mounted() {
+        this.$refs.q.focus();
+      }
+    });
+  </script>
+</body>
+
+</html>
