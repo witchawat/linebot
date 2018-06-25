@@ -60,7 +60,7 @@
       data: {
         q: '',
         isBusy: false,
-        uid: 'UUd6121abb75eb027dc132221202f81051e7df2bf1976250734ebb5cd2e4bc5ad36b115a42ec196e590934cc92308bc45d44d2c85fe1cbc70b25be893ef35970f8',
+        uid: '',
         followingList: [],
         searchingList: []
       },
@@ -112,8 +112,8 @@
       created() {
         liff.init(r => {
           this.uid=(r.context.userId)?r.context.userId:this.uid;
-          this.uid=(r.context.userId)?r.context.roomId:this.uid;
-          this.uid=(r.context.userId)?r.context.groupId:this.uid;
+          this.uid=(r.context.roomId)?r.context.roomId:this.uid;
+          this.uid=(r.context.groupId)?r.context.groupId:this.uid;
           axios.get('/manga/list/' + this.uid).then(r => {
             this.followingList = r.data;
           });
