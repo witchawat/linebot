@@ -1,7 +1,9 @@
+var axios = require('axios');
 var mysql = require('mysql');
 var pool = mysql.createPool(process.env.JAWSDB_URL);
 const util = require('util');
 const events = require('events');
+var CronJob = require('cron').CronJob;
 const Cmd = function (app) {
   events.EventEmitter.call(this);
   const _this = this;
@@ -16,8 +18,7 @@ const Cmd = function (app) {
     try {
       await q("delete from follow where uid=?", [req.params.uid]);
       req.body.forEach(async mid => {
-        console.log(mid);
-        await q("insert into follow(uid,mid) values(?,?)", [req.params.uid,mid]);
+        await q("insert into follow(uid,mid) values(?,?)", [req.params.uid, mid]);
       });
       res.send('ok');
     } catch (e) {
@@ -25,6 +26,7 @@ const Cmd = function (app) {
     }
   });
   this.handleEvent = function (evt, cmd, param) {
+    notify(['mrs-serie-134363','mrs-serie-184984']);
     _this.emit('replyMessage', {
       replyToken: evt.replyToken,
       message: {
@@ -32,27 +34,78 @@ const Cmd = function (app) {
         text: 'line://app/1526734026-V3AxnYZl'
       }
     });
-    /*
-    -- ตัวอย่าง --
-    _this.emit('replyMessage', {
-      replyToken: evt.replyToken,
+  }
+  async function getMangaList() {
+    console.log('getMangaList');
+    axios.post('https://api.mangarockhd.com/query/web400/mrs_filter', {
+      "status": "all"
+    }).then(async r => {
+      r.data.data.forEach(async d => {
+        await q(`insert ignore into manga(id) values('${d}')`);
+      });
+      getMangaInfo();
+    }).catch(e => console.log(e));
+  }
+  async function getMangaUpdate() {
+    console.log('getMangaUpdate');
+    axios.get('https://api.mangarockhd.com/query/web400/mrs_latest').then(async r => {
+      var ids = [],
+        i = 150;
+      r.data.data.forEach(d => {
+        if (i > 0) ids.push(d.oid);
+        i--;
+      });
+      getMangaInfo(ids);
+    }).catch(e => console.log(e));
+  }
+
+  async function notify(mangaIds) {
+    if (!mangaIds.length) return;
+    var uId = '',
+      txt = [];
+    var rows = await q('select * from follow where mid in(' + Array(mangaIds.length).fill('?').join(',') + ')', mangaIds);
+    rows.forEach(r => {
+      if (uId != r.uid) {
+        if (uId) _this.emit('pushMessage', {
+          to: uId,
+          message: {
+            type: 'text',
+            text: txt.join(`\n`)
+          }
+        });
+        uId = r.uid;
+        txt = [];
+      }
+      txt.push('https://mangarock.com/manga/' + r.mid);
+    });
+    if (uId) _this.emit('pushMessage', {
+      to: uId,
       message: {
         type: 'text',
-        text: 'Hello World!'
+        text: txt.join(`\n`)
       }
     });
-    */
-    /*
-    -- ตัวอย่าง --
-    อาจจะเป็น roomId, groupId ก็ได้
-    _this.emit('pushMessage', {
-      to: evt.source.userId,
-      message: {
-        type: 'text',
-        text: 'Hello World!'
+  }
+  async function getMangaInfo(_ids) {
+    var rows, ids, changed = [];
+    if (_ids) {
+      ids = _ids;
+    } else {
+      rows = await q("select id from manga where name=''");
+      ids = rows.map(r => {
+        return r.id
+      });
+    }
+    axios.post('https://api.mangarockhd.com/meta', ids).then(async r => {
+      for (var k in r.data.data) {
+        var d = r.data.data[k];
+        var row = await q('update manga set name=?,tmb=?,chapter=? where id=?', [d.name, d.thumbnail, d.total_chapters, d.oid]);
+        if (row && row.changedRows) {
+          changed.push(d.oid);
+        }
       }
-    });
-    */
+      notify(changed);
+    }).catch(e => console.log(e));
   }
 
   function q() {
@@ -62,7 +115,7 @@ const Cmd = function (app) {
       pool.getConnection(function (err, connection) {
         connection.query(qStr, dat, function (error, results, fields) {
           if (error) {
-            //console.log(error);
+            console.log(error);
             resolve(null);
           } else {
             resolve(results);
@@ -72,6 +125,20 @@ const Cmd = function (app) {
       });
     });
   }
+  new CronJob({
+    cronTime: '* 59 * * * *',
+    onTick: getMangaUpdate,
+    start: true,
+    timeZone: 'Asia/Bangkok',
+    runOnInit: true
+  });
+  new CronJob({
+    cronTime: '* * 13 * * *',
+    onTick: getMangaList,
+    start: true,
+    timeZone: 'Asia/Bangkok',
+    runOnInit: false
+  });
   util.inherits(Cmd, events.EventEmitter);
 }
 module.exports = Cmd;
