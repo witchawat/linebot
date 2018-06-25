@@ -9,6 +9,10 @@
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
   <style>
+    body {
+      background: #dadde6;
+    }
+
     .listContainer {
       display: block;
       overflow-x: hidden;
@@ -111,9 +115,9 @@
       },
       created() {
         liff.init(r => {
-          this.uid=(r.context.userId)?r.context.userId:this.uid;
-          this.uid=(r.context.roomId)?r.context.roomId:this.uid;
-          this.uid=(r.context.groupId)?r.context.groupId:this.uid;
+          this.uid = (r.context.userId) ? r.context.userId : this.uid;
+          this.uid = (r.context.roomId) ? r.context.roomId : this.uid;
+          this.uid = (r.context.groupId) ? r.context.groupId : this.uid;
           axios.get('/manga/list/' + this.uid).then(r => {
             this.followingList = r.data;
           });
