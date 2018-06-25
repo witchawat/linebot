@@ -13,7 +13,7 @@
       display: block;
       overflow-x: hidden;
       overflow-y: scroll;
-      height: 43vh;
+      height: 41vh;
       border: 2px solid grey;
       padding: 10px;
       margin: 10px 0px;
@@ -21,11 +21,11 @@
     }
 
     .listContainer img {
-      height: 50px;
+      height: 60px;
     }
 
     .listContainer span {
-      width: calc(100vw - 100px);
+      width: calc(100vw - 115px);
       text-overflow: ellipsis;
       display: inline-block;
       white-space: nowrap;
@@ -69,6 +69,7 @@
           console.log('saving');
           if (this.isBusy) return;
           this.isBusy = true;
+          this.$refs.q.blur();
           var mids = [];
           this.followingList.forEach(r => mids.push(r.id));
           axios.post('/manga/list/' + this.uid, mids).then(r => {
@@ -90,6 +91,7 @@
         search() {
           if (!this.canSearch) return;
           this.isBusy = true;
+          this.$refs.q.blur();
           axios.get('/manga/search/' + this.q).then(r => {
             this.isBusy = false;
             this.searchingList = r.data;
