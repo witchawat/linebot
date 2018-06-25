@@ -29,7 +29,7 @@ const Cmd = function (app) {
       replyToken: evt.replyToken,
       message: {
         type: 'text',
-        text: 'hi from manga module'
+        text: 'line://app/1526734026-V3AxnYZl'
       }
     });
     /*
