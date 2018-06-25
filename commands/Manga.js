@@ -126,14 +126,14 @@ const Cmd = function (app) {
     });
   }
   new CronJob({
-    cronTime: '* * 59 * * *',
+    cronTime: '0 59 * * * *',
     onTick: getMangaUpdate,
     start: true,
     timeZone: 'Asia/Bangkok',
     runOnInit: true
   });
   new CronJob({
-    cronTime: '* * 13 * * *',
+    cronTime: '0 0 13 * * *',
     onTick: getMangaList,
     start: true,
     timeZone: 'Asia/Bangkok',
