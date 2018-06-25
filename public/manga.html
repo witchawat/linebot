@@ -45,14 +45,14 @@
     <button @click='search' :disabled='!canSearch'>search</button> &nbsp;&nbsp;
     <button @click='save' :disabled='isBusy'>save</button>
     <br/>
-    <div id='searchingListContainer' class='listContainer'>
+    <div ref='searchingListContainer' class='listContainer'>
       <b v-if='searchingListDisp.length'>{{searchingListDisp.length}} item(s) found.</b>
       <div v-for='v in searchingListDisp' :key='v.id' @click='follow(v.id)'>
         <img :src='v.tmb' /><span>{{v.name}}</span>
       </div>
     </div>
     following
-    <div id='followingListContainer' class='listContainer'>
+    <div ref='followingListContainer' class='listContainer'>
       <div v-for='v in followingList' :key='v.id' @click='remove(v.id,v.name)'>
         <img :src='v.tmb' /><span>{{v.name}}</span>
       </div>
@@ -98,6 +98,7 @@
           this.isBusy = true;
           this.$refs.q.blur();
           axios.get('/manga/search/' + this.q).then(r => {
+            this.$refs.searchingListContainer.scrollTo(0, 0);
             this.isBusy = false;
             this.searchingList = r.data;
           });
