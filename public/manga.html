@@ -71,6 +71,7 @@
       methods: {
         save() {
           console.log('saving');
+          if (!this.uid) return;
           if (this.isBusy) return;
           this.isBusy = true;
           this.$refs.q.blur();
