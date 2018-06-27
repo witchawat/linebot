@@ -1,6 +1,6 @@
 var axios = require('axios');
 var mysql = require('mysql');
-var pool = mysql.createPool(process.env.JAWSDB_URL);
+//var pool = mysql.createPool(process.env.JAWSDB_URL);
 const util = require('util');
 const events = require('events');
 var CronJob = require('cron').CronJob;
@@ -39,9 +39,11 @@ const Cmd = function (app) {
     axios.post('https://api.mangarockhd.com/query/web400/mrs_filter', {
       "status": "all"
     }).then(async r => {
-      r.data.data.forEach(async d => {
-        await q(`insert ignore into manga(id) values('${d}')`);
-      });
+      var qStr, chunks, chunkSize = 1000;
+      while (r.data.data.length > 0) {
+        chunks = r.data.data.splice(0, chunkSize);
+        await q('insert ignore into manga(id) values ' + Array(chunks.length).fill('(?)').join(','), chunks);
+      }
       getMangaInfo();
     }).catch(e => console.log(e));
   }
@@ -57,7 +59,6 @@ const Cmd = function (app) {
       getMangaInfo(ids);
     }).catch(e => console.log(e));
   }
-
   async function notify(mangaIds) {
     if (!mangaIds.length) return;
     var uId = '',
@@ -111,17 +112,17 @@ const Cmd = function (app) {
     var qStr = arguments[0];
     var dat = arguments[1];
     return new Promise((resolve) => {
-      pool.getConnection(function (err, connection) {
-        connection.query(qStr, dat, function (error, results, fields) {
-          if (error) {
-            console.log(error);
-            resolve(null);
-          } else {
-            resolve(results);
-          }
-          connection.release();
-        });
+      var connection = mysql.createConnection(process.env.JAWSDB_URL);
+      connection.connect();
+      connection.query(qStr, dat, function (error, results, fields) {
+        if (error) {
+          console.log(error);
+          resolve(null);
+        } else {
+          resolve(results);
+        }
       });
+      connection.end();
     });
   }
   new CronJob({
