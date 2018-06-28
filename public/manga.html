@@ -29,17 +29,21 @@
     }
 
     .listContainer span {
-      width: calc(100vw - 175px);
+      height: 70px;
+      line-height: 70px;
+      width: calc(100vw - 182px);
       text-overflow: ellipsis;
       display: inline-block;
       white-space: nowrap;
       overflow: hidden;
       margin-left: 10px;
     }
-    .listContainer a{
+
+    .listContainer button {
       display: inline-block;
-      width:60px;
-      height:60px;
+      width: 60px;
+      height: 60px;
+      border: 0 none;
       background: url('./read.png');
       background-size: cover;
     }
@@ -54,14 +58,18 @@
     <br/>
     <div ref='searchingListContainer' class='listContainer'>
       <b v-if='searchingListDisp.length'>{{searchingListDisp.length}} item(s) found.</b>
-      <div v-for='v in searchingListDisp' :key='v.id' @click='follow(v.id)'>
-        <img :src='v.tmb' /><span>{{v.name}}</span><a target='_blank' :href="'https://mangarock.com/manga/'+v.id"></a>
+      <div v-for='v in searchingListDisp' :key='v.id'>
+        <img :src='v.tmb' @click='follow(v.id)' />
+        <span @click='follow(v.id)'>{{v.name}}</span>
+        <button target='_blank' @click='openManga(v.id)'></button>
       </div>
     </div>
     following
     <div ref='followingListContainer' class='listContainer'>
       <div v-for='v in followingList' :key='v.id' @click='remove(v.id,v.name)'>
-        <img :src='v.tmb' /><span>{{v.name}}</span><a target='_blank' :href="'https://mangarock.com/manga/'+v.id"></a>
+        <img :src='v.tmb' @click='follow(v.id)' />
+        <span @click='follow(v.id)'>{{v.name}}</span>
+        <button target='_blank' @click='openManga(v.id)'></button>
       </div>
     </div>
   </div>
@@ -76,6 +84,11 @@
         searchingList: []
       },
       methods: {
+        openManga(id) {
+          liff.openWindow({
+            url: 'https://mangarock.com/manga/' + id
+          });
+        },
         save() {
           console.log('saving');
           if (!this.uid) return;
