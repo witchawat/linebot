@@ -49,7 +49,7 @@ app.post('/webhook', line.middleware(config), (req, res) => {
   res.send('');
 });
 
-eventHandler.add('manga', new Manga(app));
+eventHandler.add(['manga','mangadebug'], new Manga(app));
 
 app.get('/test/:q', (req, res) => {
   if (process.env.NODE_ENV == 'development') {
