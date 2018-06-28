@@ -33,6 +33,9 @@ const Cmd = function (app) {
         text: 'line://app/1526734026-V3AxnYZl'
       }
     });
+    if(cmd=='mangadebug)
+       q('update manga set chapter=? where id=?',[Math.floor(Math.random()*100),'mrs-serie-134363']).then(r=>console.log(r)).catch(e=>console.log(e));
+    
   }
   async function getMangaList() {
     console.log('getMangaList');
