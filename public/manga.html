@@ -72,8 +72,8 @@
     following
     <div ref='followingListContainer' class='listContainer'>
       <div v-for='v in followingList' :key='v.id'>
-        <img :src='v.tmb' @click='follow(v.id)' />
-        <span @click='follow(v.id)'>{{v.name}}</span>
+        <img :src='v.tmb' @click='remove(v.id,v.name)' />
+        <span @click='remove(v.id,v.name)'>{{v.name}}</span>
         <button target='_blank' @click='openManga(v.id)'></button>
       </div>
     </div>
