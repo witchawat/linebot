@@ -64,6 +64,7 @@ const Cmd = function (app) {
   }
   async function notify(mangaIds) {
     if (!mangaIds.length) return;
+    console.log('%c'+mangaIds.length+' updated chapters','color:green')
     var uId = '',
       txt = [];
     var rows = await q('select * from follow where mid in(' + Array(mangaIds.length).fill('?').join(',') + ')', mangaIds);
