@@ -46,7 +46,7 @@ let last_tick_price;
 let last_tick_change;
 let ZMN_PRICE_ARRAY = [0, 0];
 var band_alert = false;
-var bbb_alert = true;
+var bbb_alert = false;
 let ZMN_BBB_TX = 1;
 
 // EE Classified groupId = C9484e01ebf9cc46a2f17a523354704f9
@@ -65,7 +65,7 @@ const Cmd = function() {
       zmnJob.stop();
     }
     _this.emit('pushMessage', {
-      to:'C32654f9bd7a12ec3172dad4ff5bb5067', // to Ong
+      to: 'C32654f9bd7a12ec3172dad4ff5bb5067', // to Ong
       message: {
         type: 'text',
         text: zmnMsg
@@ -148,7 +148,7 @@ const Cmd = function() {
             if (n_tx > ZMN_BBB_TX) {
               ZMN_BBB_TX = n_tx;
               _this.emit('pushMessage', {
-                to: 'C32654f9bd7a12ec3172dad4ff5bb5067' , //EE Classified
+                to: 'C32654f9bd7a12ec3172dad4ff5bb5067', //EE Classified
                 // to: 'Uf1763382b8cc53af0669ca2d44f880a0', // to Ong
                 message: {
                   type: 'text',
