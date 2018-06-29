@@ -1,3 +1,4 @@
+var fs = require('fs');
 var axios = require('axios');
 var mysql = require('mysql');
 //var pool = mysql.createPool(process.env.JAWSDB_URL);
@@ -48,7 +49,7 @@ const Cmd = function (app) {
           Authorization: 'Bearer ' + process.env.LINEACCESS
         }
       }).then(r => {
-        var solveImg = 'solve_' + (new Date().getTime()) + '.png';
+        var solveImg = 'solve_' + Math.floor(Math.random()*100) + '.png';
         console.log('img ', solveImg);
         fs.writeFile(path.join(process.cwd(), '/./public/', solveImg), r.data, 'binary', function (err) {
           if (err) {
