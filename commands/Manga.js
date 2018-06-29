@@ -30,15 +30,29 @@ const Cmd = function (app) {
     if (cmd == 'mangai') {
       isExpectingimg = true;
       console.log('waiting for img');
+      _this.emit('replyMessage', {
+        replyToken: evt.replyToken,
+        message: {
+          type: 'text',
+          text: 'waiting for img'
+        }
+      });
       return;
     }
     if (isExpectingimg && cmd == 'mangaimg') {
       isExpectingimg = false;
       console.log('mangaImg');
       console.log(evt);
+      _this.emit('replyMessage', {
+        replyToken: evt.replyToken,
+        message: {
+          type: 'text',
+          text: 'got img'
+        }
+      });
       return;
     }
-    _this.emit('replyMessage', {
+    if (cmd == 'manga') _this.emit('replyMessage', {
       replyToken: evt.replyToken,
       message: {
         type: 'text',
