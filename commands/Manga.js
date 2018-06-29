@@ -6,6 +6,7 @@ const events = require('events');
 var CronJob = require('cron').CronJob;
 const Cmd = function (app) {
   events.EventEmitter.call(this);
+  var isExpectingimg = false;
   const _this = this;
   app.get('/manga/search/:q', (req, res) => {
     q("select id,name,tmb from manga where name like ? order by name asc", ['%' + req.params.q + '%']).then(rows => res.send(rows));
@@ -26,9 +27,11 @@ const Cmd = function (app) {
     }
   });
   this.handleEvent = function (evt, cmd, param) {
-    console.log('manga '+cmd);
-    console.log(evt);
-    if (cmd == 'mangaImg') {
+    if (cmd == 'mangai') {
+      isExpectingimg = true;
+    }
+    if (isExpectingimg && cmd == 'mangaimg') {
+      isExpectingimg = false;
       console.log('mangaImg');
       console.log(evt);
       return;
