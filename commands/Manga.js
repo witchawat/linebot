@@ -54,7 +54,7 @@ const Cmd = function (app) {
     console.log('getMangaUpdate');
     axios.get('https://api.mangarockhd.com/query/web400/mrs_latest').then(async r => {
       var ids = [],
-        i = 550;
+        i = 150;
       r.data.data.forEach(d => {
         if (i > 0) ids.push(d.oid);
         i--;
@@ -64,7 +64,7 @@ const Cmd = function (app) {
   }
   async function notify(mangaIds) {
     if (!mangaIds.length) return;
-    console.log('%c'+mangaIds.length+' updated chapters','color:green')
+    console.log(mangaIds.length+' updated chapters');
     var uId = '',
       txt = [];
     var rows = await q('select * from follow where mid in(' + Array(mangaIds.length).fill('?').join(',') + ')', mangaIds);
