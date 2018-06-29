@@ -26,7 +26,11 @@ const Cmd = function (app) {
     }
   });
   this.handleEvent = function (evt, cmd, param) {
+    console.log('manga '+cmd);
+    console.log(evt);
+    console.log(param);
     if (cmd == 'mangaImg') {
+      console.log('mangaImg');
       console.log(evt);
       return;
     }
