@@ -43,8 +43,7 @@ const Cmd = function (app) {
       console.log('mangaImg');
       console.log(evt);
       axios.get(`https://api.line.me/v2/bot/message/${evt.message.id}/content`, {
-        responseType: 'arraybuffer'
-      }, {
+        responseType: 'arraybuffer',
         headers: {
           Authorization: 'Bearer ' + process.env.LINEACCESS
         }
