@@ -29,6 +29,8 @@ const Cmd = function (app) {
   this.handleEvent = function (evt, cmd, param) {
     if (cmd == 'mangai') {
       isExpectingimg = true;
+      console.log('waiting for img');
+      return;
     }
     if (isExpectingimg && cmd == 'mangaimg') {
       isExpectingimg = false;
