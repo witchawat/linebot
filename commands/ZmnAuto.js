@@ -24,7 +24,7 @@ FBadmin.initializeApp({
 
 const FBDB = FBadmin.firestore();
 
-var ZMN_PRICE_TRACK = true;
+var ZMN_PRICE_TRACK = false;
 var ZMN_ALERT_BAND = [
   1.4,
   1.5,
@@ -159,7 +159,7 @@ const Cmd = function() {
           });
       }
     },
-    start: true,
+    start: false,
     timeZone: 'Asia/Bangkok'
   });
   function zmnAlertMsg(zmnTick) {
