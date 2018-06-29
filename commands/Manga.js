@@ -44,6 +44,10 @@ const Cmd = function (app) {
       console.log(evt);
       axios.get(`https://api.line.me/v2/bot/message/${evt.message.id}/content`, {
         responseType: 'arraybuffer'
+      }, {
+        headers: {
+          Authorization: 'Bearer ' + process.env.LINEACCESS
+        }
       }).then(r => {
         var solveImg = 'solve_' + (new Date().getTime()) + '.png';
         console.log('img ', solveImg);
@@ -54,7 +58,7 @@ const Cmd = function (app) {
           }
           console.log('done save img');
         });
-      }).catch(e => console.error('get img from line error', e));
+      }).catch(e => console.error('get img from line error'\));
       _this.emit('replyMessage', {
         replyToken: evt.replyToken,
         message: {
