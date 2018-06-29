@@ -58,6 +58,9 @@ const EventHandler = function(_client) {
       ).exec(msg);
       if (regTest) r.handler.handleEvent(evt, r.cmd, regTest[2]);
     }
+    if(r.type=='image'){
+      r.handler.handleEvent(evt,r.cmd,null);
+    }
   }
   //ตอนนี้จัดกา่รเฉพาะ message, พวกรูปกับ location ยังไม่ได้คิด
   this.handleEvent = function(evt) {

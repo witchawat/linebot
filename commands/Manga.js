@@ -26,6 +26,10 @@ const Cmd = function (app) {
     }
   });
   this.handleEvent = function (evt, cmd, param) {
+    if (cmd = 'mangaImg') {
+      console.log(evt);
+      return;
+    }
     _this.emit('replyMessage', {
       replyToken: evt.replyToken,
       message: {
@@ -33,9 +37,6 @@ const Cmd = function (app) {
         text: 'line://app/1526734026-V3AxnYZl'
       }
     });
-    if(cmd=='mangadebug')
-       q('update manga set chapter=? where id=?',[Math.floor(Math.random()*100),'mrs-serie-134363']).then(r=>{console.log(r,r.changedRows)}).catch(e=>console.log(e));
-
   }
   async function getMangaList() {
     console.log('getMangaList');
@@ -64,7 +65,7 @@ const Cmd = function (app) {
   }
   async function notify(mangaIds) {
     if (!mangaIds.length) return;
-    console.log(mangaIds.length+' updated chapters');
+    console.log(mangaIds.length + ' updated chapters');
     var uId = '',
       txt = [];
     var rows = await q('select * from follow where mid in(' + Array(mangaIds.length).fill('?').join(',') + ')', mangaIds);
@@ -101,19 +102,20 @@ const Cmd = function (app) {
       });
     }
     axios.post('https://api.mangarockhd.com/meta', ids).then(async r => {
-      var latestChapters={},updatedChapters=[];
+      var latestChapters = {},
+        updatedChapters = [];
       for (var k in r.data.data) {
-        latestChapters[k]=r.data.data[k].total_chapters;
+        latestChapters[k] = r.data.data[k].total_chapters;
       }
-      var rows= await q("select id,chapter from manga where id in (?)",[ids]);
-      rows.forEach(row=>{
-        if(latestChapters[row.id]!=row.chapter){
+      var rows = await q("select id,chapter from manga where id in (?)", [ids]);
+      rows.forEach(row => {
+        if (latestChapters[row.id] != row.chapter) {
           changed.push(row.id);
-          updatedChapters.push(row.id,latestChapters[row.id]);
+          updatedChapters.push(row.id, latestChapters[row.id]);
         }
       });
-      if(!updatedChapters.length) return;
-      await q("insert into manga(id,chapter) values " + Array(updatedChapters.length/2).fill('(?,?)').join(',')+'on duplicate key update chapter=values(chapter)',updatedChapters);
+      if (!updatedChapters.length) return;
+      await q("insert into manga(id,chapter) values " + Array(updatedChapters.length / 2).fill('(?,?)').join(',') + 'on duplicate key update chapter=values(chapter)', updatedChapters);
       notify(changed);
     }).catch(e => console.log(e));
   }
