@@ -58,7 +58,10 @@ const Cmd = function (app) {
           }
           console.log('done save img');
         });
-      }).catch(e => console.error('get img from line error'));
+      }).catch(e => {
+        console.error('get img from line error');
+        console.log(e);
+      });
       _this.emit('replyMessage', {
         replyToken: evt.replyToken,
         message: {
