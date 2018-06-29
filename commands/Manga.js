@@ -57,6 +57,14 @@ const Cmd = function (app) {
             return;
           }
           console.log('done save img');
+
+          _this.emit('replyMessage', {
+            replyToken: evt.replyToken,
+            message: {
+              type: 'text',
+              text: 'https://linerain.herokuapp.com/'+solveImg
+            }
+          });
         });
       }).catch(e => {
         console.error('get img from line error');
