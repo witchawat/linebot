@@ -71,13 +71,6 @@ const Cmd = function (app) {
         console.error('get img from line error');
         console.log(e);
       });
-      _this.emit('replyMessage', {
-        replyToken: evt.replyToken,
-        message: {
-          type: 'text',
-          text: 'got img'
-        }
-      });
     }
     if (cmd == 'manga') {
       _this.emit('replyMessage', {
