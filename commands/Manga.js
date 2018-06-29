@@ -54,7 +54,7 @@ const Cmd = function (app) {
     console.log('getMangaUpdate');
     axios.get('https://api.mangarockhd.com/query/web400/mrs_latest').then(async r => {
       var ids = [],
-        i = 150;
+        i = 550;
       r.data.data.forEach(d => {
         if (i > 0) ids.push(d.oid);
         i--;
