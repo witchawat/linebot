@@ -37,7 +37,6 @@ const Cmd = function (app) {
           text: 'waiting for img'
         }
       });
-      return;
     }
     if (isExpectingimg && cmd == 'mangaimg') {
       isExpectingimg = false;
@@ -50,15 +49,16 @@ const Cmd = function (app) {
           text: 'got img'
         }
       });
-      return;
     }
-    if (cmd == 'manga') _this.emit('replyMessage', {
-      replyToken: evt.replyToken,
-      message: {
-        type: 'text',
-        text: 'line://app/1526734026-V3AxnYZl'
-      }
-    });
+    if (cmd == 'manga') {
+      _this.emit('replyMessage', {
+        replyToken: evt.replyToken,
+        message: {
+          type: 'text',
+          text: 'line://app/1526734026-V3AxnYZl'
+        }
+      });
+    }
   }
   async function getMangaList() {
     console.log('getMangaList');
