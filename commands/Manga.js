@@ -26,7 +26,7 @@ const Cmd = function (app) {
     }
   });
   this.handleEvent = function (evt, cmd, param) {
-    if (cmd = 'mangaImg') {
+    if (cmd == 'mangaImg') {
       console.log(evt);
       return;
     }
