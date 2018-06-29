@@ -42,6 +42,19 @@ const Cmd = function (app) {
       isExpectingimg = false;
       console.log('mangaImg');
       console.log(evt);
+      axios.get(`https://api.line.me/v2/bot/message/${evt.message.id}/content`, {
+        responseType: 'arraybuffer'
+      }).then(r => {
+        var solveImg = 'solve_' + (new Date().getTime()) + '.png';
+        console.log('img ', solveImg);
+        fs.writeFile(path.join(process.cwd(), '/./public/', solveImg), r.data, 'binary', function (err) {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          console.log('done save img');
+        });
+      }).catch(e => console.error('get img from line error', e));
       _this.emit('replyMessage', {
         replyToken: evt.replyToken,
         message: {
