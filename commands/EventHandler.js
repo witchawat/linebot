@@ -60,7 +60,7 @@ const EventHandler = function (_client) {
   this.handleEvent = function (evt) {
     rules.forEach(r => isCmdMatched(evt, r));
   };
-  this.foo = function () {
+  this.logRules = function () {
     console.log(rules);
   };
 };
