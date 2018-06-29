@@ -18,6 +18,8 @@ const EventHandler = function(_client) {
         handler: cmdHandler
       });
     }
+    cmdHandler.removeListener('replyMessage', replyMessage);
+    cmdHandler.removeListener('pushMessage', pushMessage);
     cmdHandler.on('replyMessage', replyMessage);
     cmdHandler.on('pushMessage', pushMessage);
   };
@@ -64,6 +66,8 @@ const EventHandler = function(_client) {
   }
   //ตอนนี้จัดกา่รเฉพาะ message, พวกรูปกับ location ยังไม่ได้คิด
   this.handleEvent = function(evt) {
+    console.log('in handleEvent');
+    console.log(evt);
     rules.forEach(r => isCmdMatched(evt, r));
   };
   this.foo = function() {
