@@ -35,7 +35,7 @@ const Cmd = function (app) {
     });
     if(cmd=='mangadebug')
        q('update manga set chapter=? where id=?',[Math.floor(Math.random()*100),'mrs-serie-134363']).then(r=>{console.log(r,r.changedRows)}).catch(e=>console.log(e));
-    
+
   }
   async function getMangaList() {
     console.log('getMangaList');
@@ -100,13 +100,19 @@ const Cmd = function (app) {
       });
     }
     axios.post('https://api.mangarockhd.com/meta', ids).then(async r => {
+      var latestChapters={},updatedChapters=[];
       for (var k in r.data.data) {
-        var d = r.data.data[k];
-        var row = await q('update manga set name=?,tmb=?,chapter=? where id=?', [d.name, d.thumbnail, d.total_chapters, d.oid]);
-        if (row && row.changedRows) {
-          changed.push(d.oid);
-        }
+        latestChapters[k]=r.data.data[k].total_chapters;
       }
+      var rows= await q("select id,chapter from manga where id in (?)",[ids]);
+      rows.forEach(row=>{
+        if(latestChapters[row.id]!=row.chapter){
+          changed.push(row.id);
+          updatedChapters.push(row.id,latestChapters[row.id]);
+        }
+      });
+      if(!updatedChapters.length) return;
+      await q("insert into manga(id,chapter) values " + Array(updatedChapters.length/2).fill('(?,?)').join(',')+'on duplicate key update chapter=values(chapter)',updatedChapters);
       notify(changed);
     }).catch(e => console.log(e));
   }
