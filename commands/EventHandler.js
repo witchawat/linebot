@@ -44,7 +44,7 @@ const EventHandler = function (_client) {
 
   function isCmdMatched(evt, r) {
     //image+text are in type 'message' , location are in type 'location'
-    if (r.type == 'message') {
+    if (evt.type == 'message') {
       if (evt.message && evt.message.type == 'text' && r.type == 'text') {
         if (!evt.message.text || evt.message.text.charAt(0) != '!') return;
         var msg = evt.message.text.trim();
@@ -59,6 +59,8 @@ const EventHandler = function (_client) {
   }
   //ตอนนี้จัดกา่รเฉพาะ message, พวกรูปกับ location ยังไม่ได้คิด
   this.handleEvent = function (evt) {
+    console.log('in handleEvent');
+    console.log(evt);
     rules.forEach(r => isCmdMatched(evt, r));
   };
   this.foo = function () {
