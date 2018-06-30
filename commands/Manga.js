@@ -26,7 +26,7 @@ const Cmd = function (app) {
         await q("insert into follow(uid,mid) values(?,?)", [req.params.uid, mid]);
       });
       res.send('ok');
-      console.log('done save manga list');
+      getMangaUpdate();
     } catch (e) {
       next(e)
     }
