@@ -8,6 +8,8 @@ const events = require('events');
 var CronJob = require('cron').CronJob;
 const Cmd = function (app) {
   events.EventEmitter.call(this);
+  var checkEveryThisSecs = 60 * 45; //45 mins
+  var checkLimit = 10; // max fetch per check
   var isExpectingimg = false;
   const _this = this;
   app.get('/manga/search/:q', (req, res) => {
@@ -24,6 +26,7 @@ const Cmd = function (app) {
         await q("insert into follow(uid,mid) values(?,?)", [req.params.uid, mid]);
       });
       res.send('ok');
+      console.log('done save manga list');
     } catch (e) {
       next(e)
     }
@@ -50,7 +53,7 @@ const Cmd = function (app) {
           Authorization: 'Bearer ' + process.env.LINEACCESS
         }
       }).then(r => {
-        var solveImg = 'solve_' + Math.floor(Math.random()*100) + '.png';
+        var solveImg = 'solve_' + Math.floor(Math.random() * 100) + '.png';
         console.log('img ', solveImg);
         fs.writeFile(path.join(process.cwd(), '/./public/', solveImg), r.data, 'binary', function (err) {
           if (err) {
@@ -58,12 +61,11 @@ const Cmd = function (app) {
             return;
           }
           console.log('done save img');
-
           _this.emit('replyMessage', {
             replyToken: evt.replyToken,
             message: {
               type: 'text',
-              text: 'https://linerain.herokuapp.com/'+solveImg
+              text: 'https://linerain.herokuapp.com/' + solveImg
             }
           });
         });
@@ -83,7 +85,6 @@ const Cmd = function (app) {
     }
   }
   async function getMangaList() {
-    console.log('getMangaList');
     axios.post('https://api.mangarockhd.com/query/web400/mrs_filter', {
       "status": "all"
     }).then(async r => {
@@ -92,20 +93,61 @@ const Cmd = function (app) {
         chunks = r.data.data.splice(0, chunkSize);
         await q('insert ignore into manga(id) values ' + Array(chunks.length).fill('(?)').join(','), chunks);
       }
-      getMangaInfo();
+      var rows = await q("select id from manga where tmb=''");
+      var ids = rows.map(r => {
+        return r.id
+      });
+      console.log('getMangaList :: ' + ids.length + ' new manga(s).');
+      if (!ids.length) return;
+      axios.post('https://api.mangarockhd.com/meta', ids).then(async r => {
+        var toUpdate = [];
+        for (var k in r.data.data) {
+          toUpdate.push(k);
+          toUpdate.push(r.data.data[k].name);
+          toUpdate.push(r.data.data[k].thumbnail)
+        }
+        await q("insert into manga(id,name,tmb) values " + Array(toUpdate.length / 3).fill('(?,?,?)').join(',') + ' on duplicate key update name=values(name),tmb=values(tmb)', toUpdate);
+      }).catch(e => console.log(e));
     }).catch(e => console.log(e));
   }
-  async function getMangaUpdate() {
-    console.log('getMangaUpdate');
-    axios.get('https://api.mangarockhd.com/query/web400/mrs_latest').then(async r => {
-      var ids = [],
-        i = 150;
-      r.data.data.forEach(d => {
-        if (i > 0) ids.push(d.oid);
-        i--;
+
+  function getLatestChapter(id) {
+    return new Promise((resolve) => {
+      axios.get(`https://api.mangarockhd.com/query/web400/info?oid=${id}`).then(r => {
+        var chapName = '',
+          chapter = 0;
+        r.data.data.chapters.forEach(c => {
+          if (c.order > chapter) {
+            chapter = c.order;
+            chapName = c.name;
+          }
+        });
+        if (chapter == 0) resolve(null);
+        resolve({
+          chapter,
+          chapName
+        });
+      }).catch(e => {
+        console.error(e);
+        resolve(null);
       });
-      getMangaInfo(ids);
-    }).catch(e => console.log(e));
+    });
+  }
+  async function getMangaUpdate() {
+    var changed = [];
+    var rows = await q(`select id,chapter,time_to_sec(timediff(now(),lastCheck))as diff from manga where id in(select distinct mid from follow) having diff>${checkEveryThisSecs} order by lastCheck asc limit ${checkLimit}`);
+    for (var i = 0; i < rows.length; i++) {
+      var info = await getLatestChapter(rows[i].id);
+      if (info && info.chapter != rows[i].chapter) {
+        if (info.chapter > rows[i].chapter) {
+          changed.push(rows[i].id);
+          await q('update manga set lastUpdate=now() where id=?',[rows[i].id]);
+        }
+        await q('update manga set chapName=?,chapter=?,lastCheck=now() where id=?', [info.chapName, info.chapter, rows[i].id]);
+      }
+    }
+    console.log('getMangaUpdate :: '+changed.length +' new update(s)');
+    if (changed.length) notify(changed);
   }
   async function notify(mangaIds) {
     if (!mangaIds.length) return;
@@ -135,34 +177,6 @@ const Cmd = function (app) {
       }
     });
   }
-  async function getMangaInfo(_ids) {
-    var rows, ids, changed = [];
-    if (_ids) {
-      ids = _ids;
-    } else {
-      rows = await q("select id from manga where name=''");
-      ids = rows.map(r => {
-        return r.id
-      });
-    }
-    axios.post('https://api.mangarockhd.com/meta', ids).then(async r => {
-      var latestChapters = {},
-        updatedChapters = [];
-      for (var k in r.data.data) {
-        latestChapters[k] = r.data.data[k].total_chapters;
-      }
-      var rows = await q("select id,chapter from manga where id in (?)", [ids]);
-      rows.forEach(row => {
-        if (latestChapters[row.id] != row.chapter) {
-          changed.push(row.id);
-          updatedChapters.push(row.id, latestChapters[row.id]);
-        }
-      });
-      if (!updatedChapters.length) return;
-      await q("insert into manga(id,chapter) values " + Array(updatedChapters.length / 2).fill('(?,?)').join(',') + 'on duplicate key update chapter=values(chapter)', updatedChapters);
-      notify(changed);
-    }).catch(e => console.log(e));
-  }
 
   function q() {
     var qStr = arguments[0];
@@ -182,7 +196,7 @@ const Cmd = function (app) {
     });
   }
   new CronJob({
-    cronTime: '0 59 * * * *',
+    cronTime: '0 0,5,10,15,20,25,30,35,40,45,50,55 * * * *',
     onTick: getMangaUpdate,
     start: true,
     timeZone: 'Asia/Bangkok',
