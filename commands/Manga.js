@@ -97,7 +97,7 @@ const Cmd = function (app) {
       var ids = rows.map(r => {
         return r.id
       });
-      console.log('getMangaList :: ' + ids.length + ' new manga(s).');
+      //console.log('getMangaList :: ' + ids.length + ' new manga(s).');
       if (!ids.length) return;
       axios.post('https://api.mangarockhd.com/meta', ids).then(async r => {
         var toUpdate = [];
