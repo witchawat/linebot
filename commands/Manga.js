@@ -116,6 +116,7 @@ const Cmd = function (app) {
       axios.get(`https://api.mangarockhd.com/query/web400/info?oid=${id}`).then(r => {
         if (!r.data.data.chapters) {
           console.log('manga error :: ' + id);
+          console.log(r.data);
           resolve(null);
           return;
         } else {
