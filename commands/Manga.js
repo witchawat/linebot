@@ -149,8 +149,8 @@ const Cmd = function (app) {
     var changed = [];
     var rows = await q(`select id,name,chapter,time_to_sec(timediff(now(),lastCheck))as diff from manga where id in(select distinct mid from follow) having diff>${checkEveryThisSecs} order by lastCheck asc limit ${checkLimit}`);
     for (var i = 0; i < rows.length; i++) {
-      console.log('checking '+rows[i].name);
       var info = await getLatestChapter(rows[i].id);
+      console.log('checking '+rows[i].name,info);
       if (info && info.chapter != rows[i].chapter) {
         if (info.chapter > rows[i].chapter) {
           changed.push(rows[i].id);
