@@ -117,7 +117,9 @@ const Cmd = function (app) {
         if (!r.data.data.chapters) {
           console.log('manga error :: ' + id);
           resolve(null);
-          console.log('after resolve');
+          return;
+        } else {
+          console.log('manga ok :: ' + id);
         }
         var chapName = '',
           chapter = 0;
@@ -127,7 +129,10 @@ const Cmd = function (app) {
             chapName = c.name;
           }
         });
-        if (chapter == 0) resolve(null);
+        if (chapter == 0) {
+          resolve(null);
+          return;
+        }
         resolve({
           chapter,
           chapName
