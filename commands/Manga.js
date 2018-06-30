@@ -9,7 +9,7 @@ var CronJob = require('cron').CronJob;
 const Cmd = function (app) {
   events.EventEmitter.call(this);
   var checkEveryThisSecs = 60 * 45; //45 mins
-  var checkLimit = 1; // max fetch per check
+  var checkLimit = 5; // max fetch per check
   var isExpectingimg = false;
   const _this = this;
   app.get('/manga/search/:q', (req, res) => {
@@ -113,16 +113,19 @@ const Cmd = function (app) {
 
   function getLatestChapter(id) {
     return new Promise((resolve) => {
-      axios.get(`https://mangarock.com/manga/${id}`).then(r => {
-        console.log(r.data);
-        var chapters = r.data.substr(r.data.indexOf('"chapters":[') + 11);
-        chapters=chapters.substr(0, chapters.indexOf(']') + 1);
-        console.log(id);
-        console.log(chapters);
-        chapters = JSON.parse(chapters);
+      axios.get(`https://api.mangarockhd.com/query/web400/info?oid=${id}`).then(async r => {
+        if (!r.data.data.chapters) {
+          await q("delete from follow where mid=?",[id]);
+          console.log('manga error :: ' + id);
+          console.log(r.data);
+          resolve(null);
+          return;
+        } else {
+          console.log('manga ok :: ' + id);
+        }
         var chapName = '',
           chapter = 0;
-        chapters.forEach(c => {
+        r.data.data.chapters.forEach(c => {
           if (c.order > chapter) {
             chapter = c.order;
             chapName = c.name;
@@ -130,7 +133,7 @@ const Cmd = function (app) {
         });
         if (chapter == 0) {
           resolve(null);
-          return
+          return;
         }
         resolve({
           chapter,
