@@ -113,18 +113,12 @@ const Cmd = function (app) {
 
   function getLatestChapter(id) {
     return new Promise((resolve) => {
-      axios.get(`https://api.mangarockhd.com/query/web400/info?oid=${id}`).then(r => {
-        if (!r.data.data.chapters) {
-          console.log('manga error :: ' + id);
-          console.log(r.data);
-          resolve(null);
-          return;
-        } else {
-          console.log('manga ok :: ' + id);
-        }
+      axios.get(`https://mangarock.com/manga/${id}`).then(r => {
+        var chapters = r.data.substr(r.data.indexOf('"chapters":[') + 11);
+        chapters = JSON.parse(chapters.substr(0, chapters.indexOf(']') + 1));
         var chapName = '',
           chapter = 0;
-        r.data.data.chapters.forEach(c => {
+        chapters.forEach(c => {
           if (c.order > chapter) {
             chapter = c.order;
             chapName = c.name;
@@ -132,7 +126,7 @@ const Cmd = function (app) {
         });
         if (chapter == 0) {
           resolve(null);
-          return;
+          return
         }
         resolve({
           chapter,
