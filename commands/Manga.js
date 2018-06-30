@@ -114,6 +114,7 @@ const Cmd = function (app) {
   function getLatestChapter(id) {
     return new Promise((resolve) => {
       axios.get(`https://mangarock.com/manga/${id}`).then(r => {
+        console.log(r.data);
         var chapters = r.data.substr(r.data.indexOf('"chapters":[') + 11);
         chapters=chapters.substr(0, chapters.indexOf(']') + 1);
         console.log(id);
