@@ -113,7 +113,7 @@ const Cmd = function (app) {
 
   function getLatestChapter(id) {
     return new Promise((resolve) => {
-      axios.get(`https://api.mangarockhd.com/query/web400/info?oid=${id}`).then(async r => {
+      axios.get(`https://api.mangarockhd.com/query/web400/info?oid=${id}&country=Thailand`).then(async r => {
         if (!r.data.data.chapters) {
           await q("delete from follow where mid=?",[id]);
           console.log('manga error :: ' + id);
