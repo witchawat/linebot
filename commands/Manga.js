@@ -151,13 +151,15 @@ const Cmd = function (app) {
     for (var i = 0; i < rows.length; i++) {
       var info = await getLatestChapter(rows[i].id);
       console.log('checking '+rows[i].name,info);
-      if (info && info.chapter != rows[i].chapter) {
+      if (info) {
         if (info.chapter > rows[i].chapter) {
           changed.push(rows[i].id);
           await q('update manga set lastUpdate=now() where id=?', [rows[i].id]);
         }
         await q('update manga set chapName=?,chapter=?,lastCheck=now() where id=?', [info.chapName, info.chapter, rows[i].id]);
-      }
+      }else{
+        await q('delete from follow where mid=?',[rows[i].id]);
+        }
     }
     console.log('getMangaUpdate :: ' + changed.length + ' new update(s)');
     if (changed.length) notify(changed);
