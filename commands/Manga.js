@@ -114,9 +114,11 @@ const Cmd = function (app) {
   function getLatestChapter(id) {
     return new Promise((resolve) => {
       axios.get(`https://api.mangarockhd.com/query/web400/info?oid=${id}`).then(r => {
-        if(!r.data.chapters){
-          console.log('manga error :: '+id);
-          resolve(null);}
+        if (!r.data.chapters) {
+          console.log('manga error :: ' + id);
+          resolve(null);
+          console.log('after resolve');
+        }
         var chapName = '',
           chapter = 0;
         r.data.data.chapters.forEach(c => {
@@ -144,12 +146,12 @@ const Cmd = function (app) {
       if (info && info.chapter != rows[i].chapter) {
         if (info.chapter > rows[i].chapter) {
           changed.push(rows[i].id);
-          await q('update manga set lastUpdate=now() where id=?',[rows[i].id]);
+          await q('update manga set lastUpdate=now() where id=?', [rows[i].id]);
         }
         await q('update manga set chapName=?,chapter=?,lastCheck=now() where id=?', [info.chapName, info.chapter, rows[i].id]);
       }
     }
-    console.log('getMangaUpdate :: '+changed.length +' new update(s)');
+    console.log('getMangaUpdate :: ' + changed.length + ' new update(s)');
     if (changed.length) notify(changed);
   }
   async function notify(mangaIds) {
