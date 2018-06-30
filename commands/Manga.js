@@ -114,7 +114,7 @@ const Cmd = function (app) {
   function getLatestChapter(id) {
     return new Promise((resolve) => {
       axios.get(`https://api.mangarockhd.com/query/web400/info?oid=${id}`).then(r => {
-        if (!r.data.chapters) {
+        if (!r.data.data.chapters) {
           console.log('manga error :: ' + id);
           resolve(null);
           console.log('after resolve');
