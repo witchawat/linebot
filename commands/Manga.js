@@ -120,9 +120,9 @@ const Cmd = function (app) {
           console.log(r.data);
           resolve(null);
           return;
-        } else {
-          console.log('manga ok :: ' + id);
-        }
+        } //else {
+          //console.log('manga ok :: ' + id);
+        //}
         var chapName = '',
           chapter = 0;
         r.data.data.chapters.forEach(c => {
