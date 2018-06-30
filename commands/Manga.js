@@ -9,7 +9,7 @@ var CronJob = require('cron').CronJob;
 const Cmd = function (app) {
   events.EventEmitter.call(this);
   var checkEveryThisSecs = 60 * 45; //45 mins
-  var checkLimit = 10; // max fetch per check
+  var checkLimit = 2; // max fetch per check
   var isExpectingimg = false;
   const _this = this;
   app.get('/manga/search/:q', (req, res) => {
@@ -115,7 +115,10 @@ const Cmd = function (app) {
     return new Promise((resolve) => {
       axios.get(`https://mangarock.com/manga/${id}`).then(r => {
         var chapters = r.data.substr(r.data.indexOf('"chapters":[') + 11);
-        chapters = JSON.parse(chapters.substr(0, chapters.indexOf(']') + 1));
+        chapters=chapters.substr(0, chapters.indexOf(']') + 1);
+        console.log(id);
+        console.log(chapters);
+        chapters = JSON.parse(chapters);
         var chapName = '',
           chapter = 0;
         chapters.forEach(c => {
