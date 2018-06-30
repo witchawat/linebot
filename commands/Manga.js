@@ -9,7 +9,7 @@ var CronJob = require('cron').CronJob;
 const Cmd = function (app) {
   events.EventEmitter.call(this);
   var checkEveryThisSecs = 60 * 45; //45 mins
-  var checkLimit = 2; // max fetch per check
+  var checkLimit = 1; // max fetch per check
   var isExpectingimg = false;
   const _this = this;
   app.get('/manga/search/:q', (req, res) => {
