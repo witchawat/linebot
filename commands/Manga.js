@@ -13,10 +13,10 @@ const Cmd = function (app) {
   var isExpectingimg = false;
   const _this = this;
   app.get('/manga/search/:q', (req, res) => {
-    q("select id,name,tmb from manga where name like ? order by name asc", ['%' + req.params.q + '%']).then(rows => res.send(rows));
+    q("select id,name,tmb from manga where canRead='yes' and name like ? order by name asc", ['%' + req.params.q + '%']).then(rows => res.send(rows));
   });
   app.get('/manga/list/:uid', (req, res) => {
-    q("select id,name,tmb from manga where id in(select mid from follow where uid=? ) order by lastUpdate desc", [req.params.uid]).then(rows => res.send(rows));
+    q("select id,name,tmb,time_to_sec(timediff(now(),lastUpdate))as age,chapName from manga where canRead='yes' and id in(select mid from follow where uid=? ) order by lastUpdate desc", [req.params.uid]).then(rows => res.send(rows));
   });
   // ใช้ที่เดียว ไม่ใช้ express-async-handler ดีกว่า
   app.post('/manga/list/:uid', async (req, res) => {
@@ -115,14 +115,12 @@ const Cmd = function (app) {
     return new Promise((resolve) => {
       axios.get(`https://api.mangarockhd.com/query/web400/info?oid=${id}&country=Thailand`).then(async r => {
         if (!r.data.data.chapters) {
-          await q("delete from follow where mid=?",[id]);
+          await q("update manga set canRead='no' where id=?", [id]);
           console.log('manga error :: ' + id);
           console.log(r.data);
           resolve(null);
           return;
-        } //else {
-          //console.log('manga ok :: ' + id);
-        //}
+        }
         var chapName = '',
           chapter = 0;
         r.data.data.chapters.forEach(c => {
@@ -150,18 +148,17 @@ const Cmd = function (app) {
     var rows = await q(`select id,name,chapter,time_to_sec(timediff(now(),lastCheck))as diff from manga where id in(select distinct mid from follow) having diff>${checkEveryThisSecs} order by lastCheck asc limit ${checkLimit}`);
     for (var i = 0; i < rows.length; i++) {
       var info = await getLatestChapter(rows[i].id);
-      console.log('checking '+rows[i].name,info);
+      //console.log('checking ' + rows[i].name, info);
       if (info) {
         if (info.chapter > rows[i].chapter) {
           changed.push(rows[i].id);
           await q('update manga set lastUpdate=now() where id=?', [rows[i].id]);
         }
         await q('update manga set chapName=?,chapter=?,lastCheck=now() where id=?', [info.chapName, info.chapter, rows[i].id]);
-      }else{
-        await q('delete from follow where mid=?',[rows[i].id]);
-        }
+      } else {
+        await q("update manga set canRead='no' where id=?", [rows[i].id]);
+      }
     }
-    console.log('getMangaUpdate :: ' + changed.length + ' new update(s)');
     if (changed.length) notify(changed);
   }
   async function notify(mangaIds) {

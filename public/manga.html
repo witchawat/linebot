@@ -35,13 +35,46 @@
 
     .listContainer span {
       height: 70px;
-      line-height: 70px;
       width: calc(100vw - 165px);
-      text-overflow: ellipsis;
-      display: inline-block;
-      white-space: nowrap;
       overflow: hidden;
       margin-left: 10px;
+      display: inline-block;
+      position: relative;
+    }
+
+    .listContainer span b:first-child:nth-last-child(1) {
+      line-height: 70px;
+    }
+
+    .listContainer span b:first-child:nth-last-child(2) {
+      line-height: 35px;
+    }
+
+    .listContainer span b:nth-of-type(2) {
+      line-height: 25px;
+      font-size: 70%;
+    }
+
+    .listContainer span b {
+      font-weight: normal;
+      text-overflow: ellipsis;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .listContainer span.new::before {
+      content: '';
+      position: absolute;
+      top: 13px;
+      height: 10px;
+      width: 10px;
+      background-color: green;
+      border-radius: 20px;
+    }
+
+    .listContainer span.new b:nth-of-type(1) {
+      padding-left: 15px;
     }
 
     .listContainer button {
@@ -65,7 +98,7 @@
       <b v-if='searchingListDisp.length'>{{searchingListDisp.length}} item(s) found.</b>
       <div v-for='v in searchingListDisp' :key='v.id'>
         <img :src='v.tmb' @click='follow(v.id)' />
-        <span @click='follow(v.id)'>{{v.name}}</span>
+        <span @click='follow(v.id)'><b>{{v.name}}</b></span>
         <button target='_blank' @click='openManga(v.id)'></button>
       </div>
     </div>
@@ -73,7 +106,10 @@
     <div ref='followingListContainer' class='listContainer'>
       <div v-for='v in followingList' :key='v.id'>
         <img :src='v.tmb' @click='remove(v.id,v.name)' />
-        <span @click='remove(v.id,v.name)'>{{v.name}}</span>
+        <span @click='remove(v.id,v.name)' :class='(v.age&&v.age<86400)?"new":""'>
+          <b>{{v.name}}</b>
+          <b v-if='v.chapName'>{{v.chapName}}</b>
+        </span>
         <button target='_blank' @click='openManga(v.id)'></button>
       </div>
     </div>
