@@ -100,7 +100,9 @@
       <b v-if='searchingListDisp.length'>{{searchingListDisp.length}} item(s) found.</b>
       <div v-for='v in searchingListDisp' :key='v.id'>
         <img :src='v.tmb' @click='follow(v.id)' />
-        <span @click='follow(v.id)'><b>{{v.name}}</b></span>
+        <span @click='follow(v.id)'>
+          <b>{{v.name}}</b>
+        </span>
         <button target='_blank' @click='openManga(v.id)'></button>
       </div>
     </div>
@@ -108,7 +110,7 @@
     <div ref='followingListContainer' class='listContainer'>
       <div v-for='v in followingList' :key='v.id'>
         <img :src='v.tmb' @click='remove(v.id,v.name)' />
-        <span @click='remove(v.id,v.name)' :class='(v.age&&v.age<86400)?"new":""'>
+        <span @click='remove(v.id,v.name)' :class='(v.age && v.age<86400)?"new":""'>
           <b>{{v.name}}</b>
           <b v-if='v.chapName'>{{v.chapName}}</b>
         </span>
