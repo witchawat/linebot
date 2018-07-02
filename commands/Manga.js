@@ -156,7 +156,8 @@ const Cmd = function (app) {
         }
         await q('update manga set chapName=?,chapter=?,lastCheck=now() where id=?', [info.chapName, info.chapter, rows[i].id]);
       } else {
-        await q("update manga set canRead='no' where id=?", [rows[i].id]);
+        await q("update manga set lastCheck=DATE_ADD(NOW(), INTERVAL 234 MINUTE) where id=?", [rows[i].id]);
+        //await q("update manga set canRead='no' where id=?", [rows[i].id]);
       }
     }
     if (changed.length) notify(changed);
