@@ -21,12 +21,17 @@ const Cmd = function (app) {
   // ใช้ที่เดียว ไม่ใช้ express-async-handler ดีกว่า
   app.post('/manga/list/:uid', async (req, res) => {
     try {
+      var toSave=[];
       await q("delete from follow where uid=?", [req.params.uid]);
       req.body.forEach(async mid => {
-        await q("insert into follow(uid,mid) values(?,?)", [req.params.uid, mid]);
+        toSave.push(req.params.uid);
+        toSave.push(mid);
       });
+      if(toSave.length){
+        await q("insert into follow(uid,mid) values "+Array(toSave.length/2).fill('(?,?)').join(','),toSave);
+        getMangaUpdate();
+      }
       res.send('ok');
-      getMangaUpdate();
     } catch (e) {
       next(e)
     }
