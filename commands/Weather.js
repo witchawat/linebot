@@ -5,7 +5,7 @@ const events = require('events');
 const Cmd = function() {
   events.EventEmitter.call(this);
   const _this = this;
-var header={'header':{'Authorization':  'Bearer ' + process.env.TMD_TOKEN}};
+var header={'headers':{'Authorization':  'Bearer ' + process.env.TMD_TOKEN}};
   this.handleEvent = function(evt, cmd, param) {
     var duration = 1;
     duration = cmd == 'w2' ? 2 : duration;
