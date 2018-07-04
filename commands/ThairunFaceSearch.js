@@ -143,7 +143,7 @@ fragment photoView on PhotoView {
             replyToken: evt.replyToken,
             message: {
               type: 'text',
-              text: msg;
+              text: msg
             }
           });
         }).catch(e => {
