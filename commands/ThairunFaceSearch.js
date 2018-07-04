@@ -131,7 +131,14 @@ fragment photoView on PhotoView {
             'Origin': 'https://photo.thai.run',
             'content-type': 'application/json',
             'Host': 'api.photo.thai.run',
-            'Referer': 'https://photo.thai.run/PKRUNSS2'
+            'Referer': 'https://photo.thai.run/PKRUNSS2',
+            'Connection': 'keep-alive',
+            'Pragma': 'no-cache',
+            'Cache-Control': 'no-cache',
+            'accept': '*/*',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Accept-Language': 'en-US,en;q=0.9,th;q=0.8'
           }
         }).then(r => {
           console.log(r.data);
