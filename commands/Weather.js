@@ -5,9 +5,7 @@ const events = require('events');
 const Cmd = function() {
   events.EventEmitter.call(this);
   const _this = this;
-
-  axios.defaults.headers.common['Authorization'] =
-    'Bearer ' + process.env.TMD_TOKEN;
+var header={'header':{'Authorization':  'Bearer ' + process.env.TMD_TOKEN}};
   this.handleEvent = function(evt, cmd, param) {
     var duration = 1;
     duration = cmd == 'w2' ? 2 : duration;
@@ -67,7 +65,7 @@ const Cmd = function() {
           '&lon=' +
           lng +
           '&fields=tc,wd10m,cond&duration=' +
-          duration
+          duration,header
       )
       .then(resp => {
         console.log(JSON.stringify(resp.data, null, 2));
