@@ -126,21 +126,7 @@ fragment photoView on PhotoView {
 }
 `
         }
-        axios.post('https://api.photo.thai.run/graphql', postData, {
-          'headers': {
-            'Origin': 'https://photo.thai.run',
-            'content-type': 'application/json',
-            'Host': 'api.photo.thai.run',
-            'Referer': 'https://photo.thai.run/PKRUNSS2',
-            'Connection': 'keep-alive',
-            'Pragma': 'no-cache',
-            'Cache-Control': 'no-cache',
-            'accept': '*/*',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Accept-Language': 'en-US,en;q=0.9,th;q=0.8'
-          }
-        }).then(r => {
+        axios.post('https://api.photo.thai.run/graphql', postData).then(r => {
           console.log(r.data);
         }).catch(e => {
           console.error('error calling thairun');
