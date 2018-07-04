@@ -136,9 +136,12 @@ fragment photoView on PhotoView {
           });
           imgs = imgs.sort(function (a, b) {
             return (a.score > b.score) ? -1 : 1;
-          }).filter(i => {
+          });
+          /*  
+            .filter(i => {
             return i.score > 93
           });
+          */
           imgs=imgs.slice(0,20);
           if (imgs.length) msg = imgs.map(i => {
             return i.url
