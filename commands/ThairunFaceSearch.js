@@ -139,7 +139,7 @@ fragment photoView on PhotoView {
           }).filter(i => {
             return i.score > 93
           });
-          imgs=imgs.slice(0,15);
+          imgs=imgs.slice(0,20);
           if (imgs.length) msg = imgs.map(i => {
             return i.url
           }).join(`\n`);
