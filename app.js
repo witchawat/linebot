@@ -35,7 +35,7 @@ eventHandler.add('log', new MyLog());
 eventHandler.add('solve', new WolframSolve());
 eventHandler.add(
   ['weather', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6'], new Weather());
-  eventHandler.add('img', new ThairunFaceSearch(),'image');
+  eventHandler.add('imgbase64', new ThairunFaceSearch(),'image');
 //eventHandler.add('utmf', new UTMF());
 eventHandler.add('zmn', new Zmn());
 if (process.env.NODE_ENV == 'production') eventHandler.add('zmnauto', new ZmnAuto());
