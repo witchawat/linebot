@@ -29,73 +29,10 @@ const Cmd = function () {
   searchPhotosByFace(eventId: $eventId, refData:$refData) {
     count
     items {
-      _id
       similarity
-      event
-      photographer
-      fileName
-     downloadMode
-      info {
-        dateTimeTaken
-        __typename
-      }
       view {
         ...photoView
        __typename
-      }
-      image {
-        small {
-          price
-          size {
-            width
-           height
-            __typename
-          }
-          __typename
-        }
-        medium {
-          price
-          size{
-            width
-            height
-            __typename
-          }
-          __typename
-        }
-        large{
-          price
-          size {
-            width
-            height
-            __typename
-          }
-         __typename
-        }
-        xlarge {
-          price
-          size {
-            width
-            height
-           __typename
-          }
-          __typename
-        }
-        A4 {
-          price
-          size {
-           width
-            height
-            __typename
-          }
-          __typename
-        }
-        __typename
-      }
-     photographer_ {
-        _id
-        displayName
-        username
-        __typename
       }
       __typename
     }
@@ -112,15 +49,6 @@ fragment photoView on PhotoView {
      __typename
     }
     __typename
-  }
-  thumbnail {
-    url
-    size {
-      width
-      height
-      __typename
-    }
-   __typename
   }
   __typename
 }
