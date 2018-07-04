@@ -139,7 +139,7 @@ fragment photoView on PhotoView {
           }).filter(i => {
             return i.score > 93
           });
-          if (imgs.length) msg = imgs.join(`\n`);
+          if (imgs.length) msg = imgs.map(i=>{return i.url}).join(`\n`);
           _this.emit('replyMessage', {
             replyToken: evt.replyToken,
             message: {
