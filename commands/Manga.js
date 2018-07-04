@@ -20,14 +20,14 @@ const Cmd = function (app) {
   // ใช้ที่เดียว ไม่ใช้ express-async-handler ดีกว่า
   app.post('/manga/list/:uid', async (req, res) => {
     try {
-      var toSave=[];
+      var toSave = [];
       await q("delete from follow where uid=?", [req.params.uid]);
       req.body.forEach(async mid => {
         toSave.push(req.params.uid);
         toSave.push(mid);
       });
-      if(toSave.length){
-        await q("insert into follow(uid,mid) values "+Array(toSave.length/2).fill('(?,?)').join(','),toSave);
+      if (toSave.length) {
+        await q("insert into follow(uid,mid) values " + Array(toSave.length / 2).fill('(?,?)').join(','), toSave);
         getMangaUpdate();
       }
       res.send('ok');
@@ -36,7 +36,7 @@ const Cmd = function (app) {
     }
   });
   this.handleEvent = function (evt, cmd, param) {
-    if (cmd == 'mangaimg') {
+    if (cmd == 'img') {
       console.log('mangaImg');
       console.log(evt);
       axios.get(`https://api.line.me/v2/bot/message/${evt.message.id}/content`, {
@@ -61,6 +61,22 @@ const Cmd = function (app) {
             }
           });
         });
+      }).catch(e => {
+        console.error('get img from line error');
+        console.log(e);
+      });
+    }
+    if (cmd == 'imgbase64') {
+      console.log('mangaImg');
+      console.log(evt);
+      axios.get(`https://api.line.me/v2/bot/message/${evt.message.id}/content`, {
+        responseType: 'arraybuffer',
+        headers: {
+          Authorization: 'Bearer ' + process.env.LINEACCESS
+        }
+      }).then(r => {
+        var b64 = Buffer.from(r.data, 'binary').toString('base64');
+        console.log(b64);
       }).catch(e => {
         console.error('get img from line error');
         console.log(e);
