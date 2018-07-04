@@ -17,7 +17,7 @@ const Cmd = function () {
       }).then(r => {
         var b64 = Buffer.from(r.data, 'binary').toString('base64');
         console.log(b64);
-        console.log(r);
+        console.log(r.headers);
       }).catch(e => {
         console.error('get img from line error');
         console.log(e);
