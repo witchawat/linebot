@@ -7,6 +7,7 @@ const MyLog = require('./commands/MyLog.js');
 const WolframSolve = require('./commands/WolframSolve.js');
 const Weather = require('./commands/Weather.js');
 const Manga = require('./commands/Manga.js');
+const ThairunFaceSearch = require('./commands/ThairunFaceSearch.js');
 //const UTMF = require('./commands/Utmf.js');
 const Zmn = require('./commands/Zmn.js');
 const ZmnAuto= (process.env.NODE_ENV == 'production')?require('./commands/ZmnAuto.js'):null;
@@ -34,6 +35,7 @@ eventHandler.add('log', new MyLog());
 eventHandler.add('solve', new WolframSolve());
 eventHandler.add(
   ['weather', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6'], new Weather());
+  eventHandler.add('img', new ThairunFaceSearch(),'image');
 //eventHandler.add('utmf', new UTMF());
 eventHandler.add('zmn', new Zmn());
 if (process.env.NODE_ENV == 'production') eventHandler.add('zmnauto', new ZmnAuto());
@@ -50,8 +52,6 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 });
 var mangaHandler=new Manga(app);
 eventHandler.add('manga',mangaHandler);
-eventHandler.add('img',mangaHandler,'image');
-eventHandler.add('imgbase64',mangaHandler,'image');
 //eventHandler.logRules();
 app.get('/test/:q', (req, res) => {
   if (process.env.NODE_ENV == 'development') {

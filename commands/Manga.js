@@ -1,5 +1,3 @@
-var fs = require('fs');
-var path = require('path');
 var axios = require('axios');
 var mysql = require('mysql');
 //var pool = mysql.createPool(process.env.JAWSDB_URL);
@@ -36,52 +34,6 @@ const Cmd = function (app) {
     }
   });
   this.handleEvent = function (evt, cmd, param) {
-    if (cmd == 'img') {
-      console.log('mangaImg');
-      console.log(evt);
-      axios.get(`https://api.line.me/v2/bot/message/${evt.message.id}/content`, {
-        responseType: 'arraybuffer',
-        headers: {
-          Authorization: 'Bearer ' + process.env.LINEACCESS
-        }
-      }).then(r => {
-        var solveImg = 'solve_' + Math.floor(Math.random() * 100) + '.png';
-        console.log('img ', solveImg);
-        fs.writeFile(path.join(process.cwd(), '/./public/', solveImg), r.data, 'binary', function (err) {
-          if (err) {
-            console.log(err);
-            return;
-          }
-          console.log('done save img');
-          _this.emit('replyMessage', {
-            replyToken: evt.replyToken,
-            message: {
-              type: 'text',
-              text: 'https://linerain.herokuapp.com/' + solveImg
-            }
-          });
-        });
-      }).catch(e => {
-        console.error('get img from line error');
-        console.log(e);
-      });
-    }
-    if (cmd == 'imgbase64') {
-      console.log('mangaImg');
-      console.log(evt);
-      axios.get(`https://api.line.me/v2/bot/message/${evt.message.id}/content`, {
-        responseType: 'arraybuffer',
-        headers: {
-          Authorization: 'Bearer ' + process.env.LINEACCESS
-        }
-      }).then(r => {
-        var b64 = Buffer.from(r.data, 'binary').toString('base64');
-        console.log(b64);
-      }).catch(e => {
-        console.error('get img from line error');
-        console.log(e);
-      });
-    }
     if (cmd == 'manga') {
       _this.emit('replyMessage', {
         replyToken: evt.replyToken,
