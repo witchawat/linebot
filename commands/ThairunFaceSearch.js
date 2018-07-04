@@ -142,7 +142,7 @@ fragment photoView on PhotoView {
           imgs=imgs.slice(0,20);
           if (imgs.length) msg = imgs.map(i => {
             return i.url
-          }).join(`\n`);
+          }).join(`\n\n`);
           _this.emit('replyMessage', {
             replyToken: evt.replyToken,
             message: {
