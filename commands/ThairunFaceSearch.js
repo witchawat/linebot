@@ -131,7 +131,7 @@ fragment photoView on PhotoView {
             'Origin': 'https://photo.thai.run',
             'content-type': 'application/json',
             'Host': 'api.photo.thai.run',
-            'Referer': 'https://photo.thai.run/PKRUNSS2?p=2'
+            'Referer': 'https://photo.thai.run/PKRUNSS2'
           }
         }).then(r => {
           console.log(r.data);
