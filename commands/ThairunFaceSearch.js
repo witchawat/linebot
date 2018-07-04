@@ -127,14 +127,14 @@ fragment photoView on PhotoView {
         axios.post('https://api.photo.thai.run/graphql', postData).then(r => {
           var imgs = [],
             msg = 'ไม่พบภาพ';
-            console.log(r.data);
+          console.log(r.data);
           if (r.data.data.searchPhotosByFace.items) r.data.data.searchPhotosByFace.items.forEach(i => {
             imgs.push({
               score: i.similarity,
               url: i.view.preview.url
             });
           });
-          imgs.sort(function (a, b) {
+          imgs = imgs.sort(function (a, b) {
             return (a.score > b.score) ? -1 : 1;
           }).filter(i => {
             return i.score > 93
