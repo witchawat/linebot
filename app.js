@@ -49,8 +49,8 @@ app.post('/webhook', line.middleware(config), (req, res) => {
   res.send('');
 });
 var mangaHandler=new Manga(app);
-eventHandler.add(['manga','mangai'],mangaHandler);
-eventHandler.add('mangaImg',mangaHandler,'image');
+eventHandler.add('manga',mangaHandler);
+eventHandler.add('mangaimg',mangaHandler,'image');
 //eventHandler.logRules();
 app.get('/test/:q', (req, res) => {
   if (process.env.NODE_ENV == 'development') {

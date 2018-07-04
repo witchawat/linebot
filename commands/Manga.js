@@ -9,8 +9,7 @@ var CronJob = require('cron').CronJob;
 const Cmd = function (app) {
   events.EventEmitter.call(this);
   var checkEveryThisSecs = 60 * 45; //45 mins
-  var checkLimit = 5; // max fetch per check
-  var isExpectingimg = false;
+  var checkLimit = 10; // max fetch per check
   const _this = this;
   app.get('/manga/search/:q', (req, res) => {
     q("select id,name,tmb from manga where canRead='yes' and name like ? order by name asc", ['%' + req.params.q + '%']).then(rows => res.send(rows));
@@ -37,19 +36,7 @@ const Cmd = function (app) {
     }
   });
   this.handleEvent = function (evt, cmd, param) {
-    if (cmd == 'mangai') {
-      isExpectingimg = true;
-      console.log('waiting for img');
-      _this.emit('replyMessage', {
-        replyToken: evt.replyToken,
-        message: {
-          type: 'text',
-          text: 'waiting for img'
-        }
-      });
-    }
-    if (isExpectingimg && cmd == 'mangaimg') {
-      isExpectingimg = false;
+    if (cmd == 'mangaimg') {
       console.log('mangaImg');
       console.log(evt);
       axios.get(`https://api.line.me/v2/bot/message/${evt.message.id}/content`, {
