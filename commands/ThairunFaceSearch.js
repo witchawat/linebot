@@ -134,7 +134,7 @@ fragment photoView on PhotoView {
           console.log(r.data);
         }).catch(e => {
           console.error('error calling thairun');
-          //console.log(e);
+          console.log(e);
         });
       }).catch(e => {
         console.error('get img from line error');
