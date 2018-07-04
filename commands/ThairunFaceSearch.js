@@ -128,7 +128,9 @@ fragment photoView on PhotoView {
         }
         axios.post('https://api.photo.thai.run/graphql', postData, {
           'headers': {
-            'Origin': 'https://photo.thai.run'
+            'Origin': 'https://photo.thai.run',
+            'content-type': 'application/json',
+            'Host': 'api.photo.thai.run'
           }
         }).then(r => {
           console.log(r.data);
