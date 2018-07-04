@@ -128,7 +128,7 @@ fragment photoView on PhotoView {
           var imgs = [],
             msg = 'ไม่พบภาพ';
           console.log(r.data);
-          if (r.data.data.searchPhotosByFace.items) r.data.data.searchPhotosByFace.items.forEach(i => {
+          if (r.data.data.searchPhotosByFace) r.data.data.searchPhotosByFace.items.forEach(i => {
             imgs.push({
               score: i.similarity,
               url: i.view.preview.url
