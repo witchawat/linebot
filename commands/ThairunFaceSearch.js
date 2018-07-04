@@ -127,6 +127,7 @@ fragment photoView on PhotoView {
         axios.post('https://api.photo.thai.run/graphql', postData).then(r => {
           var imgs = [],
             msg = 'ไม่พบภาพ';
+            console.log(r.data);
           if (r.data.data.searchPhotosByFace.items) r.data.data.searchPhotosByFace.items.forEach(i => {
             imgs.push({
               score: i.similarity,
@@ -148,6 +149,7 @@ fragment photoView on PhotoView {
           });
         }).catch(e => {
           console.error('error calling thairun');
+          console.log(e);
         });
       }).catch(e => {
         console.error('get img from line error');
