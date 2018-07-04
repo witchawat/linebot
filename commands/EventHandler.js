@@ -1,7 +1,7 @@
 const EventHandler = function (_client) {
   var client = _client;
   var rules = [];
-  var gpsHandler, gpsHandlerCmd, gpsTimer, imgHandler, imgHandlerCmd, imgTimer;
+  var locHandler, locHandlerCmd, locTimer, imgHandler, imgHandlerCmd, imgTimer;
   this.add = function (cmd, cmdHandler, _type) {
     var type = _type || 'text';
     if (Array.isArray(cmd)) {
@@ -62,11 +62,18 @@ const EventHandler = function (_client) {
           imgHandler = null;
         }, 60000); //wait 1 minute for image
       }
-      if (r.type == 'position') {
-        gpsHandler = r;
-        clearTimeout(gpsTimer);
+      if (r.type == 'location') {
+        replyMessage({
+          replyToken: evt.replyToken,
+          message: {
+            type: 'text',
+            text: 'waiting for location'
+          }
+        });
+        locHandler = r;
+        clearTimeout(locTimer);
         setTimeout(function () {
-          gpsHandler = null;
+          locHandler = null;
         }, 60000); //wait 1 minute for image
       }
       if (r.type == 'text') r.handler.handleEvent(evt, r.cmd, regTest[2]);
@@ -78,9 +85,14 @@ const EventHandler = function (_client) {
     if (evt.type != 'message' || !evt.message) return;
     if (evt.message.type == 'text') rules.forEach(r => isCmdMatched(evt, r));
     if (evt.message.type == 'image' && imgHandler) {
+      imgHandler.handler.handleEvent(evt, imgHandler.cmd, null);
       clearTimeout(imgTimer);
       imgHandler = null;
-      imgHandler.handler.handleEvent(evt, imgHandler.cmd, null);
+    }
+    if (evt.message.type == 'location' && locHandler) {
+      locHandler.handler.handleEvent(evt, locHandler.cmd, null);
+      clearTimeout(locTimer);
+      locHandler = null;
     }
   };
   this.logRules = function () {
