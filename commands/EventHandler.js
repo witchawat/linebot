@@ -82,7 +82,7 @@ const EventHandler = function (_client) {
     }
   }
   this.handleEvent = function (evt) {
-    //console.log(evt);
+    console.log(evt);
     if (evt.type != 'message' || !evt.message) return;
     if (evt.message.type == 'text') rules.forEach(r => isCmdMatched(evt, r));
     if (evt.message.type == 'image' && imgHandler) {
