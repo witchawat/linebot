@@ -6,7 +6,9 @@ const Cmd = function () {
   events.EventEmitter.call(this);
   const _this = this;
   this.handleEvent = function (evt, cmd, param) {
-    if(cmd=='airLoc'){
+    console.log(evt);
+    console.log(cmd);
+    if(cmd=='airloc'){
       console.log(evt);
       return;
       airInfo().then(r => {
