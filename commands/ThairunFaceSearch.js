@@ -1,3 +1,4 @@
+const MAX_RETURN_PICS=40;
 var axios = require('axios');
 const util = require('util');
 const events = require('events');
@@ -11,7 +12,7 @@ const Cmd = function () {
     var picCount = 3;
     if (!isNaN(param * 1)) picCount = param * 1;
     picCount = (picCount < 1) ? 1 : picCount;
-    picCount = (picCount > 20) ? 20 : picCount;
+    picCount = (picCount > MAX_RETURN_PICS) ? MAX_RETURN_PICS : picCount;
     if (cmd == 'pk') {
       searchFace('PKRUNSS2', replyId, picCount, evt.message.id);
     }
