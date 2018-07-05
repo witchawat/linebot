@@ -73,14 +73,17 @@ preview {
         });
         */
         imgs = imgs.slice(0, picCount);
-        if (imgs.length) msg = imgs.map(i => {
-          return i.url
-        }).join(`\n\n`);
+        if (imgs.length) {
+          imgs.map(i => {
+            fetchImg(replyId,i.url);
+          });
+          return;
+        }
         _this.emit('pushMessage', {
           to: replyId,
           message: {
             type: 'text',
-            text: msg
+            text: 'ไม่พบภาพ'
           }
         });
       }).catch(e => {
@@ -91,6 +94,26 @@ preview {
       console.error('get img from line error');
       //console.log(e);
     });
+  }
+
+  function fetchImg(replyId, url) {
+    axios.get(url, {
+      responseType: 'arraybuffer'
+    }).then(r => {
+      var faceImg = 'face_' + (new Date().getTime()) + '.jpg';
+      fs.writeFile(path.join(process.cwd(), '/./public/', faceImg), r.data, 'binary', function (err) {
+        console.log(err);
+        if (err) return;
+        _this.emit('pushMessage', {
+          to: replyId,
+          message: {
+            "type": "image",
+            "originalContentUrl": 'https://linerain.herokuapp.com/' + faceImg,
+            "previewImageUrl": 'https://linerain.herokuapp.com/' + faceImg
+          }
+        });
+      });
+    }).catch(e => console.log('error fetchingImg'));
   }
   util.inherits(Cmd, events.EventEmitter);
 }
