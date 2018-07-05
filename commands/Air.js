@@ -14,7 +14,7 @@ const Cmd = function () {
           replyToken: evt.replyToken,
           message: {
             type: "text",
-            text: r
+            text:`[ ${evt.message.address} ]\n\n` + r
           }
         });
       });
