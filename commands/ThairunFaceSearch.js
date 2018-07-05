@@ -48,9 +48,12 @@ searchPhotosByFace(eventId: $eventId, refData:$refData) {
 }
 
 fragment photoView on PhotoView {
-preview {
-  url
-}
+  preview {
+    url
+  }
+  thumbnail {
+    url
+  }
 }
 `
       }
@@ -60,7 +63,8 @@ preview {
         if (r.data.data.searchPhotosByFace) r.data.data.searchPhotosByFace.items.forEach(i => {
           imgs.push({
             score: i.similarity,
-            url: i.view.preview.url
+            url: i.view.preview.url,
+            tmb: i.view.thumbnail.url
           });
         });
         imgs = imgs.sort(function (a, b) {
@@ -74,7 +78,15 @@ preview {
         imgs = imgs.slice(0, picCount);
         if (imgs.length) {
           imgs.map(i => {
-            fetchImg(replyId, i.url);
+            //fetchImg(replyId, i.url);
+            _this.emit('pushMessage', {
+              to: replyId,
+              message: {
+                "type": "image",
+                "originalContentUrl": i.url,
+                "previewImageUrl": i.tmb
+              }
+            });
           });
           return;
         }
