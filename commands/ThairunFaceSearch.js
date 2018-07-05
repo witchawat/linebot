@@ -1,5 +1,4 @@
 var axios = require('axios');
-//var pool = mysql.createPool(process.env.JAWSDB_URL);
 const util = require('util');
 const events = require('events');
 const Cmd = function () {
@@ -16,12 +15,12 @@ const Cmd = function () {
     if (cmd == 'pk') {
       console.log(evt);
       console.log('param :: ' + param);
-      searchFace('PKRUNSS2', replyId, picCount, Buffer.from(r.data, 'binary').toString('base64'));
+      searchFace('PKRUNSS2', replyId, picCount, evt.message.id);
     }
   }
 
-  function searchFace(raceName, replyId, picCount, base64img) {
-    axios.get(`https://api.line.me/v2/bot/message/${evt.message.id}/content`, {
+  function searchFace(raceName, replyId, picCount, contentId) {
+    axios.get(`https://api.line.me/v2/bot/message/${contentId}/content`, {
       responseType: 'arraybuffer',
       headers: {
         Authorization: 'Bearer ' + process.env.LINEACCESS
@@ -33,7 +32,7 @@ const Cmd = function () {
           "eventId": raceName,
           "refData": {
             "mimeType": "image/jpeg",
-            "base64data": base64img
+            "base64data": Buffer.from(r.data, 'binary').toString('base64')
           }
         },
         "query": `
