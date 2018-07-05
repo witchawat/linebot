@@ -97,6 +97,7 @@ preview {
   }
 
   function fetchImg(replyId, url) {
+    console.log('fetchImg '+url);
     axios.get(url, {
       responseType: 'arraybuffer'
     }).then(r => {
@@ -113,7 +114,7 @@ preview {
           }
         });
       });
-    }).catch(e => console.log('error fetchingImg'));
+    }).catch(e => {console.log('error fetchingImg');console.log(e);});
   }
   util.inherits(Cmd, events.EventEmitter);
 }
