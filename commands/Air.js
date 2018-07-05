@@ -9,9 +9,7 @@ const Cmd = function () {
     console.log(evt);
     console.log(cmd);
     if(cmd=='airloc'){
-      console.log(evt);
-      return;
-      airInfo().then(r => {
+      airInfo(evt.message.latitude,evt.message.longitude).then(r => {
         _this.emit('replyMessage', {
           replyToken: evt.replyToken,
           message: {
