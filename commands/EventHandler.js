@@ -57,10 +57,10 @@ const EventHandler = function (_client) {
           }
         });
         imgHandler = r;
+        imgHandlerParam=regTest[2];
         clearTimeout(imgTimer);
         setTimeout(function () {
           imgHandler = null;
-          imgHandlerParam=regTest[2];
         }, 60000); //wait 1 minute for image
       }
       if (r.type == 'location') {
