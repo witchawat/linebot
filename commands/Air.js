@@ -8,8 +8,8 @@ const Cmd = function () {
   this.handleEvent = function (evt, cmd, param) {
     console.log(evt);
     console.log(cmd);
-    if(cmd=='airloc'){
-      airInfo(evt.message.latitude,evt.message.longitude).then(r => {
+    if (cmd == 'airloc') {
+      airInfo(evt.message.latitude, evt.message.longitude).then(r => {
         _this.emit('replyMessage', {
           replyToken: evt.replyToken,
           message: {
@@ -18,33 +18,34 @@ const Cmd = function () {
           }
         });
       });
-      return;
     }
-    if (!param) {
-      airInfo().then(r => {
-        _this.emit('replyMessage', {
-          replyToken: evt.replyToken,
-          message: {
-            type: "text",
-            text: r
-          }
-        });
-      });
-    } else {
-      axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURI(param) + '&key=' + process.env.STATIC_MAP_API_KEY + '&language=th').then(r => {
-        if (r.data.results.length) {
-          var formatted_address = r.data.results[0].formatted_address;
-          airInfo(r.data.results[0].geometry.location.lat, r.data.results[0].geometry.location.lng).then(r => {
-            _this.emit('replyMessage', {
-              replyToken: evt.replyToken,
-              message: {
-                type: "text",
-                text: `[ ${formatted_address} ]\n\n` + r
-              }
-            });
+    if (cmd == 'air') {
+      if (!param) {
+        airInfo().then(r => {
+          _this.emit('replyMessage', {
+            replyToken: evt.replyToken,
+            message: {
+              type: "text",
+              text: r
+            }
           });
-        }
-      }).catch();
+        });
+      } else {
+        axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURI(param) + '&key=' + process.env.STATIC_MAP_API_KEY + '&language=th').then(r => {
+          if (r.data.results.length) {
+            var formatted_address = r.data.results[0].formatted_address;
+            airInfo(r.data.results[0].geometry.location.lat, r.data.results[0].geometry.location.lng).then(r => {
+              _this.emit('replyMessage', {
+                replyToken: evt.replyToken,
+                message: {
+                  type: "text",
+                  text: `[ ${formatted_address} ]\n\n` + r
+                }
+              });
+            });
+          }
+        }).catch();
+      }
     }
   }
 
