@@ -6,8 +6,6 @@ const Cmd = function () {
   events.EventEmitter.call(this);
   const _this = this;
   this.handleEvent = function (evt, cmd, param) {
-    console.log(evt);
-    console.log(cmd);
     if (cmd == 'airloc') {
       airInfo(evt.message.latitude, evt.message.longitude).then(r => {
         _this.emit('replyMessage', {
