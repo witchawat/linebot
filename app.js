@@ -32,7 +32,7 @@ var eventHandler = new LineEventHandler(client);
 eventHandler.add(['rain', 'rainvid'], new Rain());
 var airHandler=new Air();
 eventHandler.add('air', airHandler);
-eventHandler.add('airLoc', airHandler,'location');
+eventHandler.add('airloc', airHandler,'location');
 eventHandler.add('log', new MyLog());
 eventHandler.add('solve', new WolframSolve());
 eventHandler.add(
