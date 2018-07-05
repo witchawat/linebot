@@ -1,7 +1,7 @@
 const EventHandler = function (_client) {
   var client = _client;
   var rules = [];
-  var locHandler, locHandlerCmd, locTimer, imgHandler, imgHandlerCmd, imgTimer;
+  var locHandler, locHandlerParam, locTimer, imgHandler, imgHandlerParam, imgTimer;
   this.add = function (cmd, cmdHandler, _type) {
     var type = _type || 'text';
     if (Array.isArray(cmd)) {
@@ -60,6 +60,7 @@ const EventHandler = function (_client) {
         clearTimeout(imgTimer);
         setTimeout(function () {
           imgHandler = null;
+          imgHandlerParam=regTest[2];
         }, 60000); //wait 1 minute for image
       }
       if (r.type == 'location') {
@@ -71,6 +72,7 @@ const EventHandler = function (_client) {
           }
         });
         locHandler = r;
+        locHandlerParam=regTest[2];
         clearTimeout(locTimer);
         setTimeout(function () {
           locHandler = null;
@@ -84,12 +86,12 @@ const EventHandler = function (_client) {
     if (evt.type != 'message' || !evt.message) return;
     if (evt.message.type == 'text') rules.forEach(r => isCmdMatched(evt, r));
     if (evt.message.type == 'image' && imgHandler) {
-      imgHandler.handler.handleEvent(evt, imgHandler.cmd, null);
+      imgHandler.handler.handleEvent(evt, imgHandler.cmd, imgHandlerParam);
       clearTimeout(imgTimer);
       imgHandler = null;
     }
     if (evt.message.type == 'location' && locHandler) {
-      locHandler.handler.handleEvent(evt, locHandler.cmd, null);
+      locHandler.handler.handleEvent(evt, locHandler.cmd, locHandlerParam);
       clearTimeout(locTimer);
       locHandler = null;
     }

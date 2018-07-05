@@ -7,6 +7,7 @@ const Cmd = function () {
   const _this = this;
   this.handleEvent = function (evt, cmd, param) {
     if (cmd == 'pk') {
+      console.log('param :: '+param);
       axios.get(`https://api.line.me/v2/bot/message/${evt.message.id}/content`, {
         responseType: 'arraybuffer',
         headers: {
