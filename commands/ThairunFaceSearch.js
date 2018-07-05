@@ -1,6 +1,4 @@
 var axios = require('axios');
-var fs = require('fs');
-var path = require('path');
 const util = require('util');
 const events = require('events');
 const Cmd = function () {
@@ -37,14 +35,14 @@ const Cmd = function () {
         },
         "query": `
 query searchPhotosByFace($eventId: MongoID, $refData: FileData!) {
-searchPhotosByFace(eventId: $eventId, refData:$refData) {
-  items {
-    similarity
-    view {
-      ...photoView
+  searchPhotosByFace(eventId: $eventId, refData:$refData) {
+    items {
+      similarity
+      view {
+        ...photoView
+      }
     }
   }
-}
 }
 
 fragment photoView on PhotoView {
@@ -78,7 +76,6 @@ fragment photoView on PhotoView {
         imgs = imgs.slice(0, picCount);
         if (imgs.length) {
           imgs.map(i => {
-            //fetchImg(replyId, i.url);
             _this.emit('pushMessage', {
               to: replyId,
               message: {
@@ -111,30 +108,6 @@ fragment photoView on PhotoView {
     }).catch(e => {
       console.error('get img from line error');
       //console.log(e);
-    });
-  }
-
-  function fetchImg(replyId, url) {
-    console.log('fetchImg ' + url);
-    axios.get(url, {
-      responseType: 'arraybuffer'
-    }).then(r => {
-      var faceImg = 'face_' + (new Date().getTime()) + '.jpg';
-      fs.writeFile(path.join(process.cwd(), '/./public/', faceImg), r.data, 'binary', function (err) {
-        console.log(err);
-        if (err) return;
-        _this.emit('pushMessage', {
-          to: replyId,
-          message: {
-            "type": "image",
-            "originalContentUrl": 'https://linerain.herokuapp.com/' + faceImg,
-            "previewImageUrl": 'https://linerain.herokuapp.com/' + faceImg
-          }
-        });
-      });
-    }).catch(e => {
-      console.log('error fetchingImg');
-      console.log(e);
     });
   }
   util.inherits(Cmd, events.EventEmitter);
