@@ -6,6 +6,20 @@ const Cmd = function () {
   events.EventEmitter.call(this);
   const _this = this;
   this.handleEvent = function (evt, cmd, param) {
+    if(cmd=='airLoc'){
+      console.log(evt);
+      return;
+      airInfo().then(r => {
+        _this.emit('replyMessage', {
+          replyToken: evt.replyToken,
+          message: {
+            type: "text",
+            text: r
+          }
+        });
+      });
+      return;
+    }
     if (!param) {
       airInfo().then(r => {
         _this.emit('replyMessage', {

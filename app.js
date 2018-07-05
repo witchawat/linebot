@@ -30,7 +30,9 @@ const config = {
 const client = new line.Client(config);
 var eventHandler = new LineEventHandler(client);
 eventHandler.add(['rain', 'rainvid'], new Rain());
-eventHandler.add('air', new Air());
+var airHandler=new Air();
+eventHandler.add('air', airHandler);
+eventHandler.add('airLoc', airHandler,'location');
 eventHandler.add('log', new MyLog());
 eventHandler.add('solve', new WolframSolve());
 eventHandler.add(
