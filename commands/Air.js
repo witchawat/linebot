@@ -105,7 +105,8 @@ ${emoji.get('thermometer')} ${temp}°C  Humidity = ${humidity}
 ${emoji.get('sunglasses')} UV Index ${uvindex} ${uvindex_warning}
 Updated At ${emoji.get(':clock2:')} ${time}`;
       })).catch(err => {
-      return 'API Error'
+        console.log(err);
+      return 'API Error';
     });
   }
   util.inherits(Cmd, events.EventEmitter);
