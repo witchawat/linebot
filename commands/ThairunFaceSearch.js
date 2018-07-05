@@ -15,8 +15,6 @@ const Cmd = function () {
     picCount = (picCount < 1) ? 1 : picCount;
     picCount = (picCount > 20) ? 20 : picCount;
     if (cmd == 'pk') {
-      console.log(evt);
-      console.log('param :: ' + param);
       searchFace('PKRUNSS2', replyId, picCount, evt.message.id);
     }
   }
@@ -59,7 +57,6 @@ preview {
       axios.post('https://api.photo.thai.run/graphql', postData).then(r => {
         var imgs = [],
           msg = 'ไม่พบภาพ';
-        console.log(r.data);
         if (r.data.data.searchPhotosByFace) r.data.data.searchPhotosByFace.items.forEach(i => {
           imgs.push({
             score: i.similarity,
