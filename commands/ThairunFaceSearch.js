@@ -77,7 +77,7 @@ preview {
         imgs = imgs.slice(0, picCount);
         if (imgs.length) {
           imgs.map(i => {
-            fetchImg(replyId,i.url);
+            fetchImg(replyId, i.url);
           });
           return;
         }
@@ -90,7 +90,14 @@ preview {
         });
       }).catch(e => {
         console.error('error calling thairun');
-        console.log(e);
+        _this.emit('pushMessage', {
+          to: replyId,
+          message: {
+            type: 'text',
+            text: 'ไม่พบภาพ'
+          }
+        });
+        //console.log(e);
       });
     }).catch(e => {
       console.error('get img from line error');
@@ -99,7 +106,7 @@ preview {
   }
 
   function fetchImg(replyId, url) {
-    console.log('fetchImg '+url);
+    console.log('fetchImg ' + url);
     axios.get(url, {
       responseType: 'arraybuffer'
     }).then(r => {
@@ -116,7 +123,10 @@ preview {
           }
         });
       });
-    }).catch(e => {console.log('error fetchingImg');console.log(e);});
+    }).catch(e => {
+      console.log('error fetchingImg');
+      console.log(e);
+    });
   }
   util.inherits(Cmd, events.EventEmitter);
 }
