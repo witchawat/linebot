@@ -13,114 +13,30 @@ const Cmd = function () {
           Authorization: 'Bearer ' + process.env.LINEACCESS
         }
       }).then(r => {
-        var b64 = Buffer.from(r.data, 'binary').toString('base64');
         var postData = {
           "operationName": "searchPhotosByFace",
           "variables": {
             "eventId": "PKRUNSS2",
             "refData": {
               "mimeType": "image/jpeg",
-              "base64data": b64
+              "base64data": Buffer.from(r.data, 'binary').toString('base64')
             }
           },
           "query": `query searchPhotosByFace($eventId: MongoID, $refData: FileData!) {
   searchPhotosByFace(eventId: $eventId, refData:$refData) {
-    count
     items {
-      _id
       similarity
-      event
-      photographer
-      fileName
-     downloadMode
-      info {
-        dateTimeTaken
-        __typename
-      }
       view {
         ...photoView
-       __typename
       }
-      image {
-        small {
-          price
-          size {
-            width
-           height
-            __typename
-          }
-          __typename
-        }
-        medium {
-          price
-          size{
-            width
-            height
-            __typename
-          }
-          __typename
-        }
-        large{
-          price
-          size {
-            width
-            height
-            __typename
-          }
-         __typename
-        }
-        xlarge {
-          price
-          size {
-            width
-            height
-           __typename
-          }
-          __typename
-        }
-        A4 {
-          price
-          size {
-           width
-            height
-            __typename
-          }
-          __typename
-        }
-        __typename
-      }
-     photographer_ {
-        _id
-        displayName
-        username
-        __typename
-      }
-      __typename
     }
-   __typename
   }
 }
 
 fragment photoView on PhotoView {
   preview {
     url
-    size {
-      width
-      height
-     __typename
-    }
-    __typename
   }
-  thumbnail {
-    url
-    size {
-      width
-      height
-      __typename
-    }
-   __typename
-  }
-  __typename
 }
 `
         }
@@ -137,7 +53,7 @@ fragment photoView on PhotoView {
           imgs = imgs.sort(function (a, b) {
             return (a.score > b.score) ? -1 : 1;
           });
-          /*  
+          /*
             .filter(i => {
             return i.score > 93
           });
