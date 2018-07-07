@@ -13,7 +13,7 @@ const Cmd = function (app) {
     q("select id,name,tmb from manga where canRead='yes' and name like ? order by name asc", ['%' + req.params.q + '%']).then(rows => res.send(rows));
   });
   app.get('/manga/list/:uid', (req, res) => {
-    q("select id,name,tmb,time_to_sec(timediff(now(),lastUpdate))as age,chapName from manga where canRead='yes' and id in(select mid from follow where uid=? ) order by lastUpdate desc", [req.params.uid]).then(rows => res.send(rows));
+    q("select id,name,tmb,time_to_sec(timediff(now(),lastUpdate))as age,chapName from manga where canRead='yes' and id in(select mid from follow where uid=? ) order by lastUpdate desc, name asc", [req.params.uid]).then(rows => res.send(rows));
   });
   // ใช้ที่เดียว ไม่ใช้ express-async-handler ดีกว่า
   app.post('/manga/list/:uid', async (req, res) => {
