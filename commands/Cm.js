@@ -134,7 +134,7 @@ const Cmd = function() {
   async function searchRunners(qStr) {
     var ret = [];
     var rows = await q(
-      "select * from cm where runnerName like ? limit 10",
+      "select * from cm where runnerName like ? order by bib desc limit 10",
       `%${qStr}%`
     );
     rows.forEach(r => {
