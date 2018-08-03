@@ -9,6 +9,7 @@ const Weather = require("./commands/Weather.js");
 const Manga = require("./commands/Manga.js");
 const ThairunFaceSearch = require("./commands/ThairunFaceSearch.js");
 //const UTMF = require('./commands/Utmf.js');
+const CM = require('./commands/Cm.js');
 const Zmn = require("./commands/Zmn.js");
 const ZmnAuto =
   process.env.NODE_ENV == "production"
@@ -42,6 +43,7 @@ eventHandler.add(
 );
 eventHandler.add(["pk", "marine"], new ThairunFaceSearch(), "image");
 //eventHandler.add('utmf', new UTMF());
+eventHandler.add('cm', new CM());
 eventHandler.add("zmn", new Zmn());
 if (process.env.NODE_ENV == "production")
   eventHandler.add("zmnauto", new ZmnAuto());
