@@ -62,14 +62,25 @@ const Cmd = function() {
             if (idx !== -1) {
               ret.push(
                 "deleted :: " +
-                  (runners[bib] != undefined
-                    ? `[${runners[bib].runner.bib}] ${runners[bib].runner.name}`
-                    : bib)
+                (runners[bib] != undefined
+                  ? `[${runners[bib].runner.bib}] ${runners[bib].runner.name}`
+                  : bib)
               );
               settings[bib].splice(idx, 1);
               if (settings[bib].length == 0) delete settings[bib];
               isSettingChange = true;
             }
+          });
+        }
+        if (cmCmd == "info") {
+          var checkedBibs = await Promise.all(
+            bibs.map(async _ => {
+              return await runnerInfo(_);
+            })
+          );
+          checkedBibs.map(_ => {
+            if (_.runner)
+              ret.push(formatInfo(_));
           });
         }
         if (cmCmd == "list") {
@@ -249,7 +260,7 @@ const Cmd = function() {
     if (runner.lastCp) {
       ret += `${pinEmoji} (${runner.lastCp}) [${runner.km} / ${
         runner.maxKM
-      } km]`;
+      } km] ${runner.raceTime} : ${runner.timeOfDay}`;
     }
     return ret;
   }
@@ -274,13 +285,15 @@ const Cmd = function() {
             lastCp = "",
             km = 0,
             raceTime = "",
+            timeOfDay="",
             action = "";
           while (i < tbl2tds.length) {
             if (tbl2tds[i + 2].textContent != "-") {
               lastCp = tbl2tds[i].textContent;
               km = tbl2tds[i + 1].textContent;
               raceTime = tbl2tds[i + 2].textContent;
-              action = tbl2tds[i + 3].textContent;
+              timeOfDay = tbl2tds[i + 3].textContent;
+              action = tbl2tds[i + 4].textContent;
             }
             i += 5;
           }
@@ -293,6 +306,7 @@ const Cmd = function() {
             lastCp,
             km,
             raceTime,
+            timeOfDay,
             action
           };
           resolve({
