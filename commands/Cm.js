@@ -182,7 +182,7 @@ const Cmd = function() {
       var bibs = [];
       var isRunnersChange = false;
       for (var k in settings)
-        if (!runners[k] || runners[k].runner.status == "") bibs.push(k);
+        if (!runners[k] || runners[k].runner.status == "" || runners[k].runner.status == "OK") bibs.push(k);
       for (var k in runners)
         if (!settings[k]) {
           isRunnersChange = true;
