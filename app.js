@@ -9,7 +9,7 @@ const Weather = require("./commands/Weather.js");
 const Manga = require("./commands/Manga.js");
 const ThairunFaceSearch = require("./commands/ThairunFaceSearch.js");
 //const UTMF = require('./commands/Utmf.js');
-const CM = require('./commands/Cm.js');
+//const CM = require('./commands/Cm.js');
 const Zmn = require("./commands/Zmn.js");
 const ZmnAuto =
   process.env.NODE_ENV == "production"
@@ -43,7 +43,7 @@ eventHandler.add(
 );
 eventHandler.add(["pk", "marine"], new ThairunFaceSearch(), "image");
 //eventHandler.add('utmf', new UTMF());
-eventHandler.add('cm', new CM());
+//eventHandler.add('cm', new CM());
 eventHandler.add("zmn", new Zmn());
 if (process.env.NODE_ENV == "production")
   eventHandler.add("zmnauto", new ZmnAuto());
@@ -153,6 +153,7 @@ app.get("*", function(req, res) {
 app.listen(app.get("port"), function() {
   console.log("Node app is running on port", app.get("port"));
 });
+/*
 new CronJob({
   cronTime: '0 0,10,20,30,40,50 * * * *',
   onTick: function(){
@@ -164,3 +165,4 @@ new CronJob({
   timeZone: 'Asia/Bangkok',
   runOnInit: true
 });
+*/
