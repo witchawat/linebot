@@ -41,7 +41,7 @@ eventHandler.add(
   ["weather", "w1", "w2", "w3", "w4", "w5", "w6"],
   new Weather()
 );
-eventHandler.add(["pk", "marine"], new ThairunFaceSearch(), "image");
+eventHandler.add(["aug","pk", "marine"], new ThairunFaceSearch(), "image");
 //eventHandler.add('utmf', new UTMF());
 //eventHandler.add('cm', new CM());
 eventHandler.add("zmn", new Zmn());
