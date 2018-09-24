@@ -64,6 +64,14 @@ app.post("/webhook", line.middleware(config), (req, res) => {
 var mangaHandler = new Manga(app);
 eventHandler.add("manga", mangaHandler);
 //eventHandler.logRules();
+app.get("/to/:usrId/:msg", (req, res) => {
+  if (process.env.NODE_ENV != "development") {
+    client.pushMessage(req.params.to, req.params.msg).catch(err => {
+      console.log(err);
+    });
+  }
+  res.send("Ong Line Bot");
+});
 app.get("/test/:q", (req, res) => {
   if (process.env.NODE_ENV == "development") {
     eventHandler.handleEvent({
