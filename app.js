@@ -66,11 +66,11 @@ eventHandler.add("manga", mangaHandler);
 //eventHandler.logRules();
 app.get("/to/:usrId/:msg", (req, res) => {
   if (process.env.NODE_ENV != "development") {
-    client.pushMessage(req.params.to, req.params.msg).catch(err => {
+    client.pushMessage(req.params.usrId, req.params.msg).catch(err => {
       console.log(err);
     });
   }
-  res.send("send msg");
+  res.send("send msg to " + req.params.usrId);
 });
 app.get("/test/:q", (req, res) => {
   if (process.env.NODE_ENV == "development") {
