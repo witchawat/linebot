@@ -70,7 +70,7 @@ app.get("/to/:usrId/:msg", (req, res) => {
       console.log(err);
     });
   }
-  res.send("Ong Line Bot");
+  res.send("send msg");
 });
 app.get("/test/:q", (req, res) => {
   if (process.env.NODE_ENV == "development") {
