@@ -11,10 +11,7 @@ const ThairunFaceSearch = require("./commands/ThairunFaceSearch.js");
 //const UTMF = require('./commands/Utmf.js');
 //const CM = require('./commands/Cm.js');
 const Zmn = require("./commands/Zmn.js");
-const ZmnAuto =
-  process.env.NODE_ENV == "production"
-    ? require("./commands/ZmnAuto.js")
-    : null;
+const ZmnAuto = process.env.NODE_ENV == "production" ? require("./commands/ZmnAuto.js") : null;
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const express = require("express");
@@ -37,16 +34,12 @@ eventHandler.add("air", airHandler);
 eventHandler.add("airloc", airHandler, "location");
 eventHandler.add("log", new MyLog());
 eventHandler.add("solve", new WolframSolve());
-eventHandler.add(
-  ["weather", "w1", "w2", "w3", "w4", "w5", "w6"],
-  new Weather()
-);
-eventHandler.add(["aug","pk", "marine"], new ThairunFaceSearch(), "image");
+eventHandler.add(["weather", "w1", "w2", "w3", "w4", "w5", "w6"], new Weather());
+eventHandler.add(["aug", "pk", "marine"], new ThairunFaceSearch(), "image");
 //eventHandler.add('utmf', new UTMF());
 //eventHandler.add('cm', new CM());
 eventHandler.add("zmn", new Zmn());
-if (process.env.NODE_ENV == "production")
-  eventHandler.add("zmnauto", new ZmnAuto());
+if (process.env.NODE_ENV == "production") eventHandler.add("zmnauto", new ZmnAuto());
 const app = express();
 app.use(express.static("public"));
 app.use(
@@ -66,9 +59,14 @@ eventHandler.add("manga", mangaHandler);
 //eventHandler.logRules();
 app.get("/to/:usrId/:msg", (req, res) => {
   if (process.env.NODE_ENV != "development") {
-    client.pushMessage(req.params.usrId, req.params.msg).catch(err => {
-      console.log(err);
-    });
+    client
+      .pushMessage(req.params.usrId, {
+        type: "text",
+        text: req.params.msg
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
   res.send("send msg to " + req.params.usrId);
 });
@@ -133,10 +131,7 @@ app.get("/utmfRunner", (req, res) => {
       });
       // Last CP REACHED
       let runner = {
-        name:
-          data.querySelector("identite").getAttribute("prenom") +
-          " " +
-          data.querySelector("identite").getAttribute("nom"),
+        name: data.querySelector("identite").getAttribute("prenom") + " " + data.querySelector("identite").getAttribute("nom"),
         course: data
           .querySelector("fiche")
           .getAttribute("c")
