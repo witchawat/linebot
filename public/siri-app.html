@@ -1,36 +1,23 @@
 <html>
 
+<head>
+  <script src='https://chaichana.org/siri/util.js'></script>
+</head>
+
 <body>
-
-  
-<script>
-  /*
- * In window A's scripts, with A being on <https://chaichana.org:8080>:
- */
-  
-    document.addEventListener('DOMContentLoaded', function(){
-    
-var popup=window.open('https://chaichana.org/siri','targetWindow','width=100,height=100');
-
-// When the popup has fully loaded, if not blocked by a popup blocker:
-
-// This does nothing, assuming the window hasn't changed its location.
-popup.postMessage("The user is 'bob' and the password is 'secret'",
-                  "https://chaichana.org");
-
-// This will successfully queue a message to be sent to the popup, assuming
-// the window hasn't changed its location.
-popup.postMessage("hello there!", "https://chaichana.org");
-
-    }, false);
-function receiveMessage(event)
-{
-  console.log(event);
-  // event.source is popup
-  // event.data is "hi there yourself!  the secret response is: rheeeeet!"
-}
-window.addEventListener("message", receiveMessage, false);
-</script>   
+  <button onclick='SiriAuth.auth(cb)'>Auth</button> 
+  &nbsp;&nbsp;&nbsp;
+  <button onclick='SiriAuth.logout(cb2)'>Logout</button> 
+  <br/>
+  <div id='log'></div>
+  <script>
+    function cb(e) {
+      document.getElementById('log').innerHTML='session : '+e;
+    }
+    function cb2(e) {
+      document.getElementById('log').innerHTML='done logout';
+    }
+  </script>
 </body>
 
 </html>
