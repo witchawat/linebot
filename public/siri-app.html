@@ -2,12 +2,14 @@
 
 <body>
 
-<iframe id='siriFrame' style='width:300px;height:100px' src='https://chaichana.org/siri/'></iframe>
-
+  
 <script>
   /*
  * In window A's scripts, with A being on <https://chaichana.org:8080>:
  */
+  
+    document.addEventListener('DOMContentLoaded', function(){
+    
 var popup=window.open('https://chaichana.org/siri','targetWindow','width=100,height=100');
 
 // When the popup has fully loaded, if not blocked by a popup blocker:
@@ -20,6 +22,7 @@ popup.postMessage("The user is 'bob' and the password is 'secret'",
 // the window hasn't changed its location.
 popup.postMessage("hello there!", "https://chaichana.org");
 
+    }, false);
 function receiveMessage(event)
 {
   console.log(event);
