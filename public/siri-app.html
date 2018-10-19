@@ -8,8 +8,7 @@
   /*
  * In window A's scripts, with A being on <https://chaichana.org:8080>:
  */
-
-var popup = document.getElementById('siriFrame');
+var popup=window.open('https://chaichana.org/siri','targetWindow','width=100,height=100');
 
 // When the popup has fully loaded, if not blocked by a popup blocker:
 
@@ -23,11 +22,7 @@ popup.postMessage("hello there!", "https://chaichana.org");
 
 function receiveMessage(event)
 {
-  // Do we trust the sender of this message?  (might be
-  // different from what we originally opened, for example).
-  if (event.origin !== "https://chaichana.org")
-    return;
-
+  console.log(event);
   // event.source is popup
   // event.data is "hi there yourself!  the secret response is: rheeeeet!"
 }
