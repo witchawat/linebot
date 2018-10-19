@@ -1,13 +1,38 @@
-
 <html>
 
 <body>
-  <script>
-    window.document.addEventListener('siri', function (e) {
-      console.log(e);
-    }, false);
-</script>
-<iframe style='width:300px;height:100px' src='https://chaichana.org/siri/'></iframe>
+
+<iframe id='siriFrame' style='width:300px;height:100px' src='https://chaichana.org/siri/'></iframe>
+
+<script>
+  /*
+ * In window A's scripts, with A being on <https://chaichana.org:8080>:
+ */
+
+var popup = document.getElementById('siriFrame');
+
+// When the popup has fully loaded, if not blocked by a popup blocker:
+
+// This does nothing, assuming the window hasn't changed its location.
+popup.postMessage("The user is 'bob' and the password is 'secret'",
+                  "https://chaichana.org");
+
+// This will successfully queue a message to be sent to the popup, assuming
+// the window hasn't changed its location.
+popup.postMessage("hello there!", "https://chaichana.org");
+
+function receiveMessage(event)
+{
+  // Do we trust the sender of this message?  (might be
+  // different from what we originally opened, for example).
+  if (event.origin !== "https://chaichana.org")
+    return;
+
+  // event.source is popup
+  // event.data is "hi there yourself!  the secret response is: rheeeeet!"
+}
+window.addEventListener("message", receiveMessage, false);
+</script>   
 </body>
 
 </html>
