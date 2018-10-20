@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <script src='https://chaichana.org/siri/util.js'></script>
+  <script src='https://chaichana.org/siri/util.js?555'></script>
 </head>
 
 <body>
@@ -12,11 +12,14 @@
   <div id='log'></div>
   <script>
     function cb(e) {
-        document.getElementById('log').innerHTML = 'session : ' + JSON.stringify(e);
+      document.getElementById('log').innerHTML='session : '+JSON.stringify(e);
     }
     function cb2(e) {
       document.getElementById('log').innerHTML='done logout';
     }
+    document.addEventListener("DOMContentLoaded", function (e) {
+      SiriAuth.init(cb);
+    });
   </script>
 </body>
 
