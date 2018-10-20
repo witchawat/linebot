@@ -12,7 +12,7 @@
   <div id='log'></div>
   <script>
     function cb(e) {
-      document.getElementById('log').innerHTML='session : '+e;
+        document.getElementById('log').innerHTML = 'session : ' + JSON.stringify(e);
     }
     function cb2(e) {
       document.getElementById('log').innerHTML='done logout';
