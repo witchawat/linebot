@@ -17,6 +17,9 @@
     function cb2(e) {
       document.getElementById('log').innerHTML='done logout';
     }
+    document.addEventListener("DOMContentLoaded", function (e) {
+      SiriAuth.init(cb);
+    });
   </script>
 </body>
 
