@@ -1,6 +1,8 @@
 <html>
 
 <head>
+  <meta charset="utf-8">
+  <meta name='viewport' content='width=device-width, initial-scale=1' />
   <script src='https://chaichana.org/siri/util.js?555'></script>
 </head>
 
@@ -20,6 +22,9 @@
     document.addEventListener("DOMContentLoaded", function (e) {
       SiriAuth.init(cb);
     });
+    window.addEventListener("focus", function (event) {
+      SiriAuth.init(cb);
+    }, false);
   </script>
 </body>
 
