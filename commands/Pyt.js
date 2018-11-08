@@ -105,7 +105,7 @@ const Cmd = function() {
         if (isSettingChange) {
           //console.log('settings changed to ' + JSON.stringify(settings, null, 2));
           redisClient.set(
-            "cm",
+            "pyt",
             JSON.stringify(settings),
             "EX",
             30 * 24 * 60 * 60
@@ -114,7 +114,7 @@ const Cmd = function() {
         if (isRunnersChange) {
           //console.log('runners changed to ' + JSON.stringify(runners, null, 2));
           redisClient.set(
-            "cmRunnerInfo",
+            "pytRunnerInfo",
             JSON.stringify(runners),
             "EX",
             30 * 24 * 60 * 60
@@ -141,7 +141,7 @@ const Cmd = function() {
       }
     }
   };
-
+// dont use this func
   async function searchRunners(qStr) {
     var ret = [];
     var rows = await q(
@@ -157,7 +157,7 @@ const Cmd = function() {
 
   function getSettings() {
     return new Promise((resolve, reject) => {
-      redisClient.get("cm", function(err, _) {
+      redisClient.get("pyt", function(err, _) {
         if (err || !_) {
           resolve({});
           return;
@@ -173,7 +173,7 @@ const Cmd = function() {
 
   function getRunnersInfo() {
     return new Promise((resolve, reject) => {
-      redisClient.get("cmRunnerInfo", function(err, _) {
+      redisClient.get("pytRunnerInfo", function(err, _) {
         if (err || !_) {
           resolve({});
           return;
@@ -223,7 +223,7 @@ const Cmd = function() {
       if (isRunnersChange) {
         //console.log('runners changed to ' + JSON.stringify(runners, null, 2));
         redisClient.set(
-          "cmRunnerInfo",
+          "pytRunnerInfo",
           JSON.stringify(runners),
           "EX",
           30 * 24 * 60 * 60
@@ -267,7 +267,7 @@ const Cmd = function() {
 
   function runnerInfo(_bib) {
     return new Promise((resolve, reject) => {
-      let url = "https://race.chillingtrail.run/cm6/r/" + encodeURI(_bib);
+      let url = "https://race.chillingtrail.run/pyt/r/" + encodeURI(_bib);
       let web = JSDOM.fromURL(url)
         .then(dom => {
           let tbls = dom.window.document.querySelectorAll("table");
