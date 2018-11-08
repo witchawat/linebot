@@ -129,7 +129,7 @@ const Cmd = function() {
           }
         });
       } else {
-        // too lazy to prepare data
+        // no search for PYT, too lazy to prepare data
         //search runner by name
         //var info = await searchRunners(cmCmd);
         _this.emit("replyMessage", {
@@ -137,7 +137,11 @@ const Cmd = function() {
           message: {
             type: "text",
             //text: info
-            text: "Sorry, too lazy to make searching works..."
+            text: `Sample usage...
+!pyt info 9001
+!pyt add 9001
+!pyt del 9001
+!pyt list`
           }
         });
       }
