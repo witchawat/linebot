@@ -129,13 +129,15 @@ const Cmd = function() {
           }
         });
       } else {
+        // too lazy to prepare data
         //search runner by name
-        var info = await searchRunners(cmCmd);
+        //var info = await searchRunners(cmCmd);
         _this.emit("replyMessage", {
           replyToken: evt.replyToken,
           message: {
             type: "text",
-            text: info
+            //text: info
+            text: "Sorry, too lazy to make searching works..."
           }
         });
       }
