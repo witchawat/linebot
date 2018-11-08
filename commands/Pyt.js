@@ -18,8 +18,12 @@ const Cmd = function() {
       _this.emit("replyMessage", {
         replyToken: evt.replyToken,
         message: {
-          type: "text",
-          text: "Please input BIB Number."
+          type: "text",  
+          text: `Sample usage...
+!pyt info 9001
+!pyt add 9001
+!pyt del 9001
+!pyt list`
         }
       });
     } else {
