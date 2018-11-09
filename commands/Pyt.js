@@ -298,7 +298,7 @@ const Cmd = function() {
             timeOfDay="",
             action = "";
           while (i < tbl2tds.length) {
-            if (tbl2tds[i + 2].textContent != "-") {
+            if (tbl2tds[i + 2]&&tbl2tds[i + 2].textContent != "-") {
               lastCp = tbl2tds[i].textContent;
               km = tbl2tds[i + 1].textContent;
               raceTime = tbl2tds[i + 2].textContent;
