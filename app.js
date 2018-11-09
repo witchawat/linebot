@@ -156,7 +156,7 @@ app.get("*", function(req, res) {
 app.listen(app.get("port"), function() {
   console.log("Node app is running on port", app.get("port"));
 });
-/*
+
 new CronJob({
   cronTime: '0 0,10,20,30,40,50 * * * *',
   onTick: function(){
@@ -168,4 +168,3 @@ new CronJob({
   timeZone: 'Asia/Bangkok',
   runOnInit: true
 });
-*/
