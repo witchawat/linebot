@@ -92,6 +92,7 @@
 
 <body>
   <div id='app'>
+    <a href='http://evereng.com'>ev</a>
     <input type='text' placeholder="อย่างน้อย 3 ตัวอักษร" v-model='q' ref='q' @keyup.enter='search' />
     <button @click='search' :disabled='!canSearch'>search</button> &nbsp;&nbsp;
     <button @click='save' :disabled='isBusy'>save</button>
