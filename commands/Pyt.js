@@ -285,7 +285,7 @@ const Cmd = function() {
             resolve({});
             return;
           }
-          let tbl2tds = tbls[1].querySelectorAll("td");
+          let tbl2tds = (tbls[1])?tbls[1].querySelectorAll("td"):[];
           let bib = tbls[0].querySelectorAll("td")[0].textContent;
           let name = tbls[0].querySelectorAll("td")[1].textContent;
           let course = tbls[0].querySelectorAll("td")[2].textContent;
