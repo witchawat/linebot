@@ -324,7 +324,7 @@ const Cmd = function() {
           });
         })
         .catch(error => {
-          //console.log(error);
+          console.log(error);
           resolve({});
         });
     });
