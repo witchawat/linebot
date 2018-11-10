@@ -200,13 +200,17 @@ const Cmd = function() {
         })
       );
       //console.log(JSON.stringify(currInfo, null, 1));
-      currInfo.map(info => {
+      currInfo.map(async info => {
         if (!info || !info.runner) return;
         var bib = info.runner.bib;
         // new runner, แบบว่าเพิ่ง check ครั้งแรกงี้
         if (!runners[bib] || runners[bib].runner.lastCp != info.runner.lastCp || runners[bib].runner.status != info.runner.status) {
           isRunnersChange = true;
           runners[bib] = info;
+          if (info.runner.bib && info.runner.course) {
+            let rank = await runnerRank(info.runner.bib, info.runner.course);
+            if (rank) info.runner.rank = rank;
+          }
           notify(info, settings[bib]);
         }
       });
@@ -245,7 +249,7 @@ const Cmd = function() {
       ret += `${pinEmoji} (${runner.lastCp}) [${runner.km} / ${runner.maxKM} km] ${runner.raceTime} : ${runner.timeOfDay}`;
     }
     if (runner.rank) {
-      ret += `${crownEmoji} ${runner.rank}`;
+      ret += `  ${crownEmoji}  ${runner.rank}`;
     }
     return ret;
   }
