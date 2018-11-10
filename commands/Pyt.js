@@ -310,7 +310,7 @@ const Cmd = function() {
   }
   function runnerRank(bib, course) {
     return new Promise(resolve => {
-      let web = JSDOM.fromURL(`https://race.chillingtrail.run/pyt/l?distance=${encodeURI(course)}&limit=10000`)
+      let web = JSDOM.fromURL(`https://race.chillingtrail.run/pyt/l?distance=${encodeURI(course)}&limit=100`)
         .then(dom => {
           let tds = dom.window.document.querySelectorAll("table")[0].querySelectorAll("td");
           let i = 1;
