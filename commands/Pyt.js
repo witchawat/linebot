@@ -249,7 +249,7 @@ const Cmd = function() {
       ret += `${pinEmoji} (${runner.lastCp}) [${runner.km} / ${runner.maxKM} km] ${runner.raceTime} : ${runner.timeOfDay}`;
     }
     if (runner.rank) {
-      ret += `  ${crownEmoji} overall: ${runner.rank.overall} gender: ${runner.rank.gender}`;
+      ret += `  ${crownEmoji} overall: ${runner.rank.overall} ♂ gender: ${runner.rank.gender}`;
     }
     return ret;
   }
