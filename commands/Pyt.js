@@ -76,7 +76,7 @@ const Cmd = function() {
             bibs.map(async _ => {
               let rInfo = await runnerInfo(_);
               if (rInfo.runner.bib && rInfo.runner.course) {
-                let rank = await runnerRank(rInfo.runner.bib, rInfo.runner.course);
+                let rank = await runnerRank(rInfo.runner.bib, rInfo.runner.course,10000);
                 if (rank) rInfo.runner.rank = rank;
               }
               return rInfo;
@@ -308,9 +308,10 @@ const Cmd = function() {
         });
     });
   }
-  function runnerRank(bib, course) {
+  function runnerRank(bib, course, limit) {
+    limit = limit || 100;
     return new Promise(resolve => {
-      let web = JSDOM.fromURL(`https://race.chillingtrail.run/pyt/l?distance=${encodeURI(course)}&limit=100`)
+      let web = JSDOM.fromURL(`https://race.chillingtrail.run/pyt/l?distance=${encodeURI(course)}&limit=${limit}`)
         .then(dom => {
           let tds = dom.window.document.querySelectorAll("table")[0].querySelectorAll("td");
           let i = 1;
