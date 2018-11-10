@@ -75,8 +75,12 @@ const Cmd = function() {
           var checkedBibs = await Promise.all(
             bibs.map(async _ => {
               let rInfo = await runnerInfo(_);
+              console.log(rInfo);
+              
               if (rInfo.bib && rInfo.course) {
                 let rank = await runnerRank(rInfo.bib, rInfo.course);
+                console.log(`rank ${rank}`);
+                
                 if (rank) rInfo.rank = rank;
               }
               return rInfo;
