@@ -243,13 +243,15 @@ const Cmd = function() {
     var runnerEmoji = emoji.get("runner");
     var pinEmoji = emoji.get("pushpin");
     var crownEmoji = emoji.get("crown");
+    var maleEmoji = emoji.get("male_sign");
+    var femaleEmoji = emoji.get("female_sign");
     var ret = `[${runner.bib}] ${runnerEmoji} ${runner.name} (${runner.course})`;
     ret += runner.status ? ` -- ${runner.status}` : "";
     if (runner.lastCp) {
       ret += `${pinEmoji} (${runner.lastCp}) [${runner.km} / ${runner.maxKM} km] ${runner.raceTime} : ${runner.timeOfDay}`;
     }
     if (runner.rank) {
-      ret += `  ${crownEmoji}   ${runner.rank.gender} : ${runner.rank.overall}`;
+      ret += `  ${crownEmoji}   ${runner.rank.overall}  ${maleEmoji}${femaleEmoji}    ${runner.rank.gender}`;
     }
     return ret;
   }
