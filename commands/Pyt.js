@@ -251,7 +251,7 @@ const Cmd = function() {
       ret += `${pinEmoji} (${runner.lastCp}) [${runner.km} / ${runner.maxKM} km] ${runner.raceTime} : ${runner.timeOfDay}`;
     }
     if (runner.rank) {
-      ret += `  ${crownEmoji}   ${runner.rank.overall}  ${maleEmoji}${femaleEmoji}    ${runner.rank.gender}`;
+      ret += `  ${crownEmoji}   ${runner.rank.overall}  ${maleEmoji} ${femaleEmoji}    ${runner.rank.gender}`;
     }
     return ret;
   }
