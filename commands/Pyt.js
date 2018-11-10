@@ -249,7 +249,7 @@ const Cmd = function() {
       ret += `${pinEmoji} (${runner.lastCp}) [${runner.km} / ${runner.maxKM} km] ${runner.raceTime} : ${runner.timeOfDay}`;
     }
     if (runner.rank) {
-      ret += `  ${crownEmoji}:   ${runner.rank.overall}  ♂♀:   ${runner.rank.gender}`;
+      ret += `  ${crownEmoji}: ${runner.rank.overall}  ♂♀: ${runner.rank.gender}`;
     }
     return ret;
   }
@@ -309,7 +309,7 @@ const Cmd = function() {
     });
   }
   function runnerRank(bib, course, limit) {
-    limit = limit || 50;
+    limit = limit || 100;
     return new Promise(resolve => {
       let web = JSDOM.fromURL(`https://race.chillingtrail.run/pyt/l?distance=${encodeURI(course)}&limit=${limit}`)
         .then(dom => {
