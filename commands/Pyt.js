@@ -18,7 +18,7 @@ const Cmd = function() {
       _this.emit("replyMessage", {
         replyToken: evt.replyToken,
         message: {
-          type: "text",  
+          type: "text",
           text: `Sample usage...
 !pyt info 9001
 !pyt add 9001
@@ -31,7 +31,7 @@ const Cmd = function() {
       var replyId = evt.source.userId;
       replyId = evt.source.roomId ? evt.source.roomId : replyId;
       replyId = evt.source.groupId ? evt.source.groupId : replyId;
-      if (["add", "list", "del","info"].indexOf(cmCmd) >= 0) {
+      if (["add", "list", "del", "info"].indexOf(cmCmd) >= 0) {
         var settings = await getSettings();
         var runners = await getRunnersInfo();
         var isSettingChange = false;
@@ -64,12 +64,7 @@ const Cmd = function() {
             if (!settings[bib]) return;
             var idx = settings[bib].indexOf(replyId);
             if (idx !== -1) {
-              ret.push(
-                "deleted :: " +
-                (runners[bib] != undefined
-                  ? `[${runners[bib].runner.bib}] ${runners[bib].runner.name}`
-                  : bib)
-              );
+              ret.push("deleted :: " + (runners[bib] != undefined ? `[${runners[bib].runner.bib}] ${runners[bib].runner.name}` : bib));
               settings[bib].splice(idx, 1);
               if (settings[bib].length == 0) delete settings[bib];
               isSettingChange = true;
@@ -79,12 +74,16 @@ const Cmd = function() {
         if (cmCmd == "info") {
           var checkedBibs = await Promise.all(
             bibs.map(async _ => {
-              return await runnerInfo(_);
+              let rInfo = await runnerInfo(_);
+              if (rInfo.bib && rInfo.course) {
+                let rank = await runnerRank(rInfo.bib, rInfo.course);
+                if (rank) rInfo.rank = rank;
+              }
+              return rInfo;
             })
           );
           checkedBibs.map(_ => {
-            if (_.runner)
-              ret.push(formatInfo(_));
+            if (_.runner) ret.push(formatInfo(_));
           });
         }
         if (cmCmd == "list") {
@@ -99,30 +98,18 @@ const Cmd = function() {
           );
           if (trackingRunners.length) {
             ret.push("Tracking...");
-            trackingRunners.map(_ =>
-              ret.push(`${_.runner.course}[${_.runner.bib}] ${_.runner.name}`)
-            );
+            trackingRunners.map(_ => ret.push(`${_.runner.course}[${_.runner.bib}] ${_.runner.name}`));
           } else {
             ret.push("Tracking list is empty");
           }
         }
         if (isSettingChange) {
           //console.log('settings changed to ' + JSON.stringify(settings, null, 2));
-          redisClient.set(
-            "pyt",
-            JSON.stringify(settings),
-            "EX",
-            30 * 24 * 60 * 60
-          );
+          redisClient.set("pyt", JSON.stringify(settings), "EX", 30 * 24 * 60 * 60);
         }
         if (isRunnersChange) {
           //console.log('runners changed to ' + JSON.stringify(runners, null, 2));
-          redisClient.set(
-            "pytRunnerInfo",
-            JSON.stringify(runners),
-            "EX",
-            30 * 24 * 60 * 60
-          );
+          redisClient.set("pytRunnerInfo", JSON.stringify(runners), "EX", 30 * 24 * 60 * 60);
         }
         if (!ret.length) return;
         _this.emit("replyMessage", {
@@ -151,13 +138,10 @@ const Cmd = function() {
       }
     }
   };
-// dont use this func
+  // dont use this func
   async function searchRunners(qStr) {
     var ret = [];
-    var rows = await q(
-      "select * from cm where runnerName like ? order by bib desc limit 10",
-      `%${qStr}%`
-    );
+    var rows = await q("select * from cm where runnerName like ? order by bib desc limit 10", `%${qStr}%`);
     rows.forEach(r => {
       ret.push(`${r.course}[${r.bib}] ${r.runnerName}`);
     });
@@ -220,11 +204,7 @@ const Cmd = function() {
         if (!info || !info.runner) return;
         var bib = info.runner.bib;
         // new runner, แบบว่าเพิ่ง check ครั้งแรกงี้
-        if (
-          !runners[bib] ||
-          runners[bib].runner.lastCp != info.runner.lastCp ||
-          runners[bib].runner.status != info.runner.status
-        ) {
+        if (!runners[bib] || runners[bib].runner.lastCp != info.runner.lastCp || runners[bib].runner.status != info.runner.status) {
           isRunnersChange = true;
           runners[bib] = info;
           notify(info, settings[bib]);
@@ -232,12 +212,7 @@ const Cmd = function() {
       });
       if (isRunnersChange) {
         //console.log('runners changed to ' + JSON.stringify(runners, null, 2));
-        redisClient.set(
-          "pytRunnerInfo",
-          JSON.stringify(runners),
-          "EX",
-          30 * 24 * 60 * 60
-        );
+        redisClient.set("pytRunnerInfo", JSON.stringify(runners), "EX", 30 * 24 * 60 * 60);
       }
     } catch (e) {
       console.log(" -=* Error UpdateRunnersInfo *=- ");
@@ -263,14 +238,14 @@ const Cmd = function() {
     var runner = info.runner;
     var runnerEmoji = emoji.get("runner");
     var pinEmoji = emoji.get("pushpin");
-    var ret = `[${runner.bib}] ${runnerEmoji} ${runner.name} (${
-      runner.course
-    })`;
+    var crownEmoji = emoji.get("crown");
+    var ret = `[${runner.bib}] ${runnerEmoji} ${runner.name} (${runner.course})`;
     ret += runner.status ? ` -- ${runner.status}` : "";
     if (runner.lastCp) {
-      ret += `${pinEmoji} (${runner.lastCp}) [${runner.km} / ${
-        runner.maxKM
-      } km] ${runner.raceTime} : ${runner.timeOfDay}`;
+      ret += `${pinEmoji} (${runner.lastCp}) [${runner.km} / ${runner.maxKM} km] ${runner.raceTime} : ${runner.timeOfDay}`;
+    }
+    if (runner.rank) {
+      ret += `${crownEmoji} ${runner.rank}`;
     }
     return ret;
   }
@@ -285,20 +260,20 @@ const Cmd = function() {
             resolve({});
             return;
           }
-          let tbl2tds = (tbls[1])?tbls[1].querySelectorAll("td"):[];
+          let tbl2tds = tbls[1] ? tbls[1].querySelectorAll("td") : [];
           let bib = tbls[0].querySelectorAll("td")[0].textContent;
           let name = tbls[0].querySelectorAll("td")[1].textContent;
           let course = tbls[0].querySelectorAll("td")[2].textContent;
           let status = tbls[0].querySelectorAll("td")[4].textContent;
-          let maxKM = (tbl2tds.length)?tbl2tds[tbl2tds.length - 4].textContent:"";
+          let maxKM = tbl2tds.length ? tbl2tds[tbl2tds.length - 4].textContent : "";
           let i = 0,
             lastCp = "",
             km = 0,
             raceTime = "",
-            timeOfDay="",
+            timeOfDay = "",
             action = "";
           while (i < tbl2tds.length) {
-            if (tbl2tds[i + 2]&&tbl2tds[i + 2].textContent != "-") {
+            if (tbl2tds[i + 2] && tbl2tds[i + 2].textContent != "-") {
               lastCp = tbl2tds[i].textContent;
               km = tbl2tds[i + 1].textContent;
               raceTime = tbl2tds[i + 2].textContent;
@@ -326,6 +301,29 @@ const Cmd = function() {
         .catch(error => {
           console.log(error);
           resolve({});
+        });
+    });
+  }
+  function runnerRank(bib, course) {
+    return new Promise(resolve => {
+      let web = JSDOM.fromURL(`https://race.chillingtrail.run/pyt/l?distance=${encodeURI(course)}&limit=10000`)
+        .then(dom => {
+          let tds = dom.window.document.querySelectorAll("table")[0].querySelectorAll("td");
+          let i = 1;
+          while (i < tds.length) {
+            if (bib == tds[i].textContent) {
+              resolve(tds[i + 6].textContent);
+              return;
+            }
+            i += 8;
+          }
+
+          resolve("");
+          return;
+        })
+        .catch(e => {
+          //console.log(e);
+          resolve("");
         });
     });
   }
