@@ -76,7 +76,7 @@ const Cmd = function() {
             bibs.map(async _ => {
               let rInfo = await runnerInfo(_);
               if (rInfo.runner.bib && rInfo.runner.course) {
-                let rank = await runnerRank(rInfo.runner.bib, rInfo.runner.course,10000);
+                let rank = await runnerRank(rInfo.runner.bib, rInfo.runner.course, 10000);
                 if (rank) rInfo.runner.rank = rank;
               }
               return rInfo;
@@ -249,7 +249,7 @@ const Cmd = function() {
       ret += `${pinEmoji} (${runner.lastCp}) [${runner.km} / ${runner.maxKM} km] ${runner.raceTime} : ${runner.timeOfDay}`;
     }
     if (runner.rank) {
-      ret += `  ${crownEmoji}   ${runner.rank}`;
+      ret += `  ${crownEmoji}   ${runner.rank.gender} : ${runner.rank.overall}`;
     }
     return ret;
   }
@@ -309,7 +309,7 @@ const Cmd = function() {
     });
   }
   function runnerRank(bib, course, limit) {
-    limit = limit || 100;
+    limit = limit || 50;
     return new Promise(resolve => {
       let web = JSDOM.fromURL(`https://race.chillingtrail.run/pyt/l?distance=${encodeURI(course)}&limit=${limit}`)
         .then(dom => {
@@ -317,18 +317,18 @@ const Cmd = function() {
           let i = 1;
           while (i < tds.length) {
             if (bib == tds[i].textContent) {
-              resolve(tds[i + 6].textContent);
+              resolve({ overall: tds[i - 1].textContent, gender: tds[i + 6].textContent });
               return;
             }
             i += 8;
           }
 
-          resolve("");
+          resolve();
           return;
         })
         .catch(e => {
           //console.log(e);
-          resolve("");
+          resolve();
         });
     });
   }
