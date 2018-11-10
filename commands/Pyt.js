@@ -243,7 +243,6 @@ const Cmd = function() {
     var runnerEmoji = emoji.get("runner");
     var pinEmoji = emoji.get("pushpin");
     var crownEmoji = emoji.get("crown");
-    var maleEmoji = emoji.get("male_sign");
     var ret = `[${runner.bib}] ${runnerEmoji} ${runner.name} (${runner.course})`;
     ret += runner.status ? ` -- ${runner.status}` : "";
     if (runner.lastCp) {
