@@ -9,7 +9,7 @@ const Weather = require("./commands/Weather.js");
 const Manga = require("./commands/Manga.js");
 const ThairunFaceSearch = require("./commands/ThairunFaceSearch.js");
 //const UTMF = require('./commands/Utmf.js');
-const PYT = require('./commands/Pyt.js');
+//const PYT = require('./commands/Pyt.js');
 const Zmn = require("./commands/Zmn.js");
 const ZmnAuto = process.env.NODE_ENV == "production" ? require("./commands/ZmnAuto.js") : null;
 const jsdom = require("jsdom");
@@ -37,7 +37,7 @@ eventHandler.add("solve", new WolframSolve());
 eventHandler.add(["weather", "w1", "w2", "w3", "w4", "w5", "w6"], new Weather());
 eventHandler.add(["chonburi"], new ThairunFaceSearch(), "image");
 //eventHandler.add('utmf', new UTMF());
-eventHandler.add('pyt', new PYT());
+//eventHandler.add('pyt', new PYT());
 eventHandler.add("zmn", new Zmn());
 if (process.env.NODE_ENV == "production") eventHandler.add("zmnauto", new ZmnAuto());
 const app = express();
@@ -157,14 +157,14 @@ app.listen(app.get("port"), function() {
   console.log("Node app is running on port", app.get("port"));
 });
 
-new CronJob({
-  cronTime: '0 0,10,20,30,40,50 * * * *',
-  onTick: function(){
-    var http = require('http');
-    http.get('http://linerain.herokuapp.com/');
-    console.log('-- prevent sleep cron --');
-  },
-  start: true,
-  timeZone: 'Asia/Bangkok',
-  runOnInit: true
-});
+// new CronJob({
+//   cronTime: '0 0,10,20,30,40,50 * * * *',
+//   onTick: function(){
+//     var http = require('http');
+//     http.get('http://linerain.herokuapp.com/');
+//     console.log('-- prevent sleep cron --');
+//   },
+//   start: true,
+//   timeZone: 'Asia/Bangkok',
+//   runOnInit: true
+// });
