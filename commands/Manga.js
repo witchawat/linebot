@@ -45,7 +45,7 @@ const Cmd = function (app) {
     }
   }
   async function getMangaList() {
-    axios.post('https://api.mangarockhd.com/query/web400/mrs_filter', {
+    axios.post('https://api.mangarockhd.com/query/web401/mrs_filter', {
       "status": "all"
     }).then(async r => {
       var qStr, chunks, chunkSize = 1000;
@@ -73,7 +73,7 @@ const Cmd = function (app) {
 
   function getLatestChapter(id) {
     return new Promise((resolve) => {
-      axios.get(`https://api.mangarockhd.com/query/web400/info?oid=${id}&country=Thailand`).then(async r => {
+      axios.get(`https://api.mangarockhd.com/query/web401/info?oid=${id}&country=Thailand`).then(async r => {
         if (!r.data.data.chapters) {
           await q("update manga set canRead='no' where id=?", [id]);
           console.log('manga error :: ' + id);
