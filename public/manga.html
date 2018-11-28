@@ -96,6 +96,8 @@
     <button @click='search' :disabled='!canSearch'>search</button> &nbsp;&nbsp;
     <button @click='save' :disabled='isBusy'>save</button>
     <br/>
+    {{qqq}}  ::  {{hhh}}
+    <br/>
     <div ref='searchingListContainer' class='listContainer'>
       <b v-if='searchingListDisp.length'>{{searchingListDisp.length}} item(s) found.</b>
       <div v-for='v in searchingListDisp' :key='v.id'>
@@ -123,6 +125,8 @@
       el: '#app',
       data: {
         q: '',
+        qqq:window.location.search,
+        hhh:window.location.hash,
         isBusy: false,
         uid: '',
         followingList: [],
