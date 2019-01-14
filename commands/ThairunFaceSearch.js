@@ -19,6 +19,7 @@ const Cmd = function() {
   };
 
   function searchFace(raceName, replyId, picCount, contentId) {
+    console.log(`searchFace ${raceName}`);
     axios
       .get(`https://api.line.me/v2/bot/message/${contentId}/content`, {
         responseType: "arraybuffer",
