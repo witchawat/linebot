@@ -60,7 +60,7 @@ fragment photoView on PhotoView {
 `
         };
         axios
-          .post("https://api.photo.thai.run/graphql", postData)
+          .post("https://api.photo.c.thai.run/graphql", postData)
           .then(r => {
             var imgs = [],
               msg = "ไม่พบภาพ";
