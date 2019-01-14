@@ -103,7 +103,6 @@ fragment photoView on PhotoView {
             });
           })
           .catch(e => {
-            console.log(e);
             console.error("error calling thairun");
             _this.emit("pushMessage", {
               to: replyId,
