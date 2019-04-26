@@ -9,15 +9,16 @@ const Cmd = function() {
   var header = { headers: { Authorization: "Bearer " + process.env.TMD_TOKEN } };
   this.handleEvent = function(evt, cmd, param) {
     var duration = 1;
-    duration = cmd == "w2" ? 2 : duration;
-    duration = cmd == "w3" ? 3 : duration;
-    duration = cmd == "w4" ? 4 : duration;
-    duration = cmd == "w5" ? 5 : duration;
-    duration = cmd == "w6" ? 6 : duration;
-    duration = cmd == "w7" ? 7 : duration;
-    duration = cmd == "w8" ? 8 : duration;
-    duration = cmd == "w9" ? 9 : duration;
-    duration = cmd == "w10" ? 10 : duration;
+    cmd = cmd.replace(/[^0-9]+/g, "");
+    duration = cmd == "2" ? 2 : duration;
+    duration = cmd == "3" ? 3 : duration;
+    duration = cmd == "4" ? 4 : duration;
+    duration = cmd == "5" ? 5 : duration;
+    duration = cmd == "6" ? 6 : duration;
+    duration = cmd == "7" ? 7 : duration;
+    duration = cmd == "8" ? 8 : duration;
+    duration = cmd == "9" ? 9 : duration;
+    duration = cmd == "10" ? 10 : duration;
     if (!param) {
       weatherInfo(duration).then(r => {
         _this.emit("replyMessage", {
