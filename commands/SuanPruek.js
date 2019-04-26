@@ -37,13 +37,17 @@ const Cmd = function() {
         });
       });
     }
+    console.log(cmd);
+    console.log(param);
+    
+    
   };
   function msToHMS(ms) {
     var seconds = ms / 1000;
     var hours = parseInt(seconds / 3600);
     seconds = seconds % 3600;
     var minutes = parseInt(seconds / 60);
-    seconds = seconds % 60;
+    seconds = parseInt(seconds % 60);
     return `${("0" + hours).slice(-2)}:${("0" + minutes).slice(-2)}:${("0" + seconds).slice(-2)}`;
   }
 

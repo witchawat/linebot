@@ -13,10 +13,7 @@ const PYT = require("./commands/Pyt.js");
 const Zmn = require("./commands/Zmn.js");
 const FitnessFirst = require("./commands/FitnessFirst.js");
 const SuanPruek = require("./commands/SuanPruek.js");
-const ZmnAuto =
-  process.env.NODE_ENV == "production"
-    ? require("./commands/ZmnAuto.js")
-    : null;
+const ZmnAuto = process.env.NODE_ENV == "production" ? require("./commands/ZmnAuto.js") : null;
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const express = require("express");
@@ -39,19 +36,17 @@ eventHandler.add("air", airHandler);
 eventHandler.add("airloc", airHandler, "location");
 eventHandler.add("log", new MyLog());
 eventHandler.add("solve", new WolframSolve());
-eventHandler.add(
-  ["weather", "w1", "w2", "w3", "w4", "w5", "w6"],
-  new Weather()
-);
+eventHandler.add(["weather", "w1", "w2", "w3", "w4", "w5", "w6"], new Weather());
 eventHandler.add(["icmm"], new ThairunFaceSearch(), "image");
 //eventHandler.add('utmf', new UTMF());
 eventHandler.add("pyt", new PYT());
 eventHandler.add("zmn", new Zmn());
 eventHandler.add("ff", new FitnessFirst());
-eventHandler.add(["settime","gettime"], new SuanPruek());
+var suanPruekHandler = new SuanPruek();
+eventHandler.add(["settime", "gettime"], suanPruekHandler);
+eventHandler.add("__", suanPruekHandler, "special");
 
-if (process.env.NODE_ENV == "production")
-  eventHandler.add("zmnauto", new ZmnAuto());
+if (process.env.NODE_ENV == "production") eventHandler.add("zmnauto", new ZmnAuto());
 const app = express();
 app.use(express.static("public"));
 app.use(
