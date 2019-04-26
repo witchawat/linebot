@@ -68,7 +68,7 @@ const Cmd = function() {
           lat +
           "&lon=" +
           lng +
-          "&fields=tc,wd10m,cond&duration=" +
+          "&fields=tc,rh,rain,wd10m,cond&duration=" +
           duration,
         header
       )

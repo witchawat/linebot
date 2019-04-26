@@ -51,10 +51,12 @@ const Cmd = function() {
   const _this = this;
   this.handleEvent = function(evt, cmd, param) {
     if (cmd == "settime") {
-      var raceClk = param.split(":").map(v => v * 1);
-      var t = 10 * 60 * 60 * 1000 - ((raceClk[0] * 60 + raceClk[1]) * 60 + raceClk[2]) * 1000;
-      var d = new Date();
-      redisClient.set("suanPruek", d.getTime() + t, "EX", 30 * 24 * 60 * 60);
+      if (evt.source.userId == "Ud099a65459ece49825a844abef4a2dfc") {
+        var raceClk = param.split(":").map(v => v * 1);
+        var t = 10 * 60 * 60 * 1000 - ((raceClk[0] * 60 + raceClk[1]) * 60 + raceClk[2]) * 1000;
+        var d = new Date();
+        redisClient.set("suanPruek", d.getTime() + t, "EX", 30 * 24 * 60 * 60);
+      }
       _this.emit("replyMessage", {
         replyToken: evt.replyToken,
         message: {
