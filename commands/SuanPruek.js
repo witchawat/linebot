@@ -132,7 +132,7 @@ const Cmd = function() {
       dist = parkDist - accumDist[idx] - segDist[idx] * pp;
     if (dist > 0) {
       pace = remainingTime / dist;
-      while (pace > 360) {
+      while (pace > 300) {
         if (pace < 1200) {
           if (res != "") res += ", ";
           res += lap + "-" + sec2pace(pace);
