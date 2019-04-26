@@ -17,22 +17,22 @@ const hIndex = {
   95: [30, 34, 38, 42, 47, 53],
   100: [31, 35, 39, 44, 49, 56]
 };
-
+var cmdPrefix = "ww";
 const Cmd = function() {
   events.EventEmitter.call(this);
   const _this = this;
   var header = { headers: { Authorization: "Bearer " + process.env.TMD_TOKEN } };
   this.handleEvent = function(evt, cmd, param) {
     var duration = 1;
-    duration = cmd == "w2" ? 2 : duration;
-    duration = cmd == "w3" ? 3 : duration;
-    duration = cmd == "w4" ? 4 : duration;
-    duration = cmd == "w5" ? 5 : duration;
-    duration = cmd == "w6" ? 6 : duration;
-    duration = cmd == "w7" ? 7 : duration;
-    duration = cmd == "w8" ? 8 : duration;
-    duration = cmd == "w9" ? 9 : duration;
-    duration = cmd == "w10" ? 10 : duration;
+    duration = cmd == `${cmdPrefix}2` ? 2 : duration;
+    duration = cmd == `${cmdPrefix}3` ? 3 : duration;
+    duration = cmd == `${cmdPrefix}4` ? 4 : duration;
+    duration = cmd == `${cmdPrefix}5` ? 5 : duration;
+    duration = cmd == `${cmdPrefix}6` ? 6 : duration;
+    duration = cmd == `${cmdPrefix}7` ? 7 : duration;
+    duration = cmd == `${cmdPrefix}8` ? 8 : duration;
+    duration = cmd == `${cmdPrefix}9` ? 9 : duration;
+    duration = cmd == `${cmdPrefix}10` ? 10 : duration;
     if (!param) {
       weatherInfo(duration).then(r => {
         _this.emit("replyMessage", {
