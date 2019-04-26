@@ -37,10 +37,15 @@ const Cmd = function() {
         });
       });
     }
-    console.log(cmd);
-    console.log(param);
-    
-    
+    if (!cmd) {
+      _this.emit("replyMessage", {
+        replyToken: evt.replyToken,
+        message: {
+          type: "text",
+          text: `${evt.message.latitude}, ${evt.message.longitude}`
+        }
+      });
+    }
   };
   function msToHMS(ms) {
     var seconds = ms / 1000;
