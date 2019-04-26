@@ -107,7 +107,7 @@ const Cmd = function() {
     ret += realFeel <= 32 ? emoji.get(":white_check_mark:") : "";
     ret += " " + realFeel + "°C ";
     ret += inp.summary;
-
+    ret += " " + emoji.get(":rain:") + inp.precipProbability;
     return ret;
   }
   function f2c(f) {

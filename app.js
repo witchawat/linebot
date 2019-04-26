@@ -43,7 +43,7 @@ eventHandler.add(
 );
 eventHandler.add(
   ["wweather", "ww", "ww1", "ww2", "ww3", "ww4", "ww5", "ww6", "ww7", "ww8", "ww9", "ww10"],
-  new Weathery()
+  new Weather()
 );
 eventHandler.add(["icmm"], new ThairunFaceSearch(), "image");
 //eventHandler.add('utmf', new UTMF());
