@@ -6,6 +6,7 @@ const Air = require("./commands/Air.js");
 const MyLog = require("./commands/MyLog.js");
 const WolframSolve = require("./commands/WolframSolve.js");
 const WeatherDarkSky = require("./commands/WeatherDarkSky.js");
+const Weather = require("./commands/Weathery.js");
 const Manga = require("./commands/Manga.js");
 const ThairunFaceSearch = require("./commands/ThairunFaceSearch.js");
 //const UTMF = require('./commands/Utmf.js');
@@ -39,6 +40,10 @@ eventHandler.add("solve", new WolframSolve());
 eventHandler.add(
   ["weather", "w", "w1", "w2", "w3", "w4", "w5", "w6", "w7", "w8", "w9", "w10"],
   new WeatherDarkSky()
+);
+eventHandler.add(
+  ["wweather", "ww", "ww1", "ww2", "ww3", "ww4", "ww5", "ww6", "ww7", "ww8", "ww9", "ww10"],
+  new Weathery()
 );
 eventHandler.add(["icmm"], new ThairunFaceSearch(), "image");
 //eventHandler.add('utmf', new UTMF());
