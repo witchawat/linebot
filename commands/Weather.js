@@ -2,6 +2,22 @@ var axios = require("axios");
 var emoji = require("node-emoji");
 const util = require("util");
 const events = require("events");
+const hIndex = {
+  40: [27, 27, 28, 29, 31, 33, 34, 36, 38, 41, 43, 46, 48, 51, 54, 58],
+  45: [27, 28, 29, 31, 32, 34, 36, 38, 40, 43, 46, 48, 51, 54, 58],
+  50: [27, 28, 29, 31, 33, 35, 37, 39, 42, 45, 48, 51, 55, 58],
+  55: [27, 29, 30, 32, 34, 36, 38, 41, 44, 47, 51, 54, 58],
+  60: [28, 29, 31, 33, 35, 38, 41, 43, 47, 51, 54, 58],
+  65: [38, 29, 32, 34, 37, 39, 42, 46, 49, 53, 58],
+  70: [28, 30, 32, 35, 38, 41, 44, 48, 52, 57],
+  75: [29, 31, 33, 36, 39, 43, 47, 51, 56],
+  80: [29, 32, 34, 38, 41, 45, 49, 54],
+  85: [29, 32, 36, 39, 43, 47, 52, 57],
+  90: [30, 33, 37, 41, 45, 50, 55],
+  95: [30, 34, 38, 42, 47, 53],
+  100: [31, 35, 39, 44, 49, 56]
+};
+
 const Cmd = function() {
   events.EventEmitter.call(this);
   const _this = this;
@@ -116,6 +132,14 @@ const Cmd = function() {
     ret += 11 <= dir && dir < 13 ? emoji.get("arrow_right") : "";
     ret += 13 <= dir && dir < 15 ? emoji.get("arrow_lower_right") : "";
     ret += " " + inp.data.tc.toFixed(0) + "°C";
+    ret += " " + Math.round((inp.data.rh * 1) / 5) * 5 + " " + (Math.round(inp.data.tc) - 27) + " ";
+    var realFeel = "Danger !!!";
+    if (
+      hIndex[Math.round((inp.data.rh * 1) / 5) * 5] &&
+      hIndex[Math.round((inp.data.rh * 1) / 5) * 5][Math.round(inp.data.tc) - 27]
+    )
+      realFeel = hIndex[Math.round((inp.data.rh * 1) / 5) * 5][Math.round(inp.data.tc) - 27];
+    ret += " feel " + realFeel + "°C";
     return ret;
   }
   util.inherits(Cmd, events.EventEmitter);
