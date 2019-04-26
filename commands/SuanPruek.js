@@ -89,8 +89,8 @@ const Cmd = function() {
         var t = _ * 1;
         var d = new Date();
         var ret = getPos(
-          evt.message.latitude * 1,
           evt.message.longitude * 1,
+          evt.message.latitude * 1,
           (t - d.getTime()) / 1000
         );
         _this.emit("replyMessage", {
