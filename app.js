@@ -48,7 +48,7 @@ eventHandler.add(["icmm"], new ThairunFaceSearch(), "image");
 eventHandler.add("pyt", new PYT());
 eventHandler.add("zmn", new Zmn());
 eventHandler.add("ff", new FitnessFirst());
-eventHandler.add("settime", new SuanPruek());
+eventHandler.add(["settime","gettime"], new SuanPruek());
 
 if (process.env.NODE_ENV == "production")
   eventHandler.add("zmnauto", new ZmnAuto());
