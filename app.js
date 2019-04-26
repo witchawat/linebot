@@ -36,7 +36,10 @@ eventHandler.add("air", airHandler);
 eventHandler.add("airloc", airHandler, "location");
 eventHandler.add("log", new MyLog());
 eventHandler.add("solve", new WolframSolve());
-eventHandler.add(["weather", "w1", "w2", "w3", "w4", "w5", "w6"], new Weather());
+eventHandler.add(
+  ["weather", "w", "w1", "w2", "w3", "w4", "w5", "w6", "w7", "w8", "w9", "w10"],
+  new Weather()
+);
 eventHandler.add(["icmm"], new ThairunFaceSearch(), "image");
 //eventHandler.add('utmf', new UTMF());
 //eventHandler.add("pyt", new PYT());

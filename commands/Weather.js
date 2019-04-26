@@ -29,6 +29,10 @@ const Cmd = function() {
     duration = cmd == "w4" ? 4 : duration;
     duration = cmd == "w5" ? 5 : duration;
     duration = cmd == "w6" ? 6 : duration;
+    duration = cmd == "w7" ? 7 : duration;
+    duration = cmd == "w8" ? 8 : duration;
+    duration = cmd == "w9" ? 9 : duration;
+    duration = cmd == "w10" ? 10 : duration;
     if (!param) {
       weatherInfo(duration).then(r => {
         _this.emit("replyMessage", {
@@ -138,17 +142,17 @@ const Cmd = function() {
       hIndex[Math.round((inp.data.rh * 1) / 5) * 5][Math.round(inp.data.tc) - 27]
     )
       realFeel = hIndex[Math.round((inp.data.rh * 1) / 5) * 5][Math.round(inp.data.tc) - 27];
-    ret += " feel like ";
+    ret += " , feel like ";
     if (isNaN(realFeel)) {
       ret += emoji.get(":skull:");
     } else {
       ret += 52 <= realFeel && realFeel <= 58 ? emoji.get(":skull:") : "";
       ret += 40 <= realFeel && realFeel <= 51 ? emoji.get(":sos:") : "";
-      ret += 33 <= realFeel && realFeel <= 39 ? emoji.get(":bangbang:") : "";
+      ret += 33 <= realFeel && realFeel <= 39 ? emoji.get(":large_orange_diamond:") : "";
       ret += realFeel <= 32 ? emoji.get(":white_check_mark:") : "";
     }
 
-    ret += realFeel + "°C";
+    ret += " " + realFeel + "°C";
     return ret;
   }
   util.inherits(Cmd, events.EventEmitter);
