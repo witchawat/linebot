@@ -143,7 +143,7 @@ const Cmd = function() {
       hIndex[Math.round((inp.data.rh * 1) / 5) * 5][Math.round(inp.data.tc) - 27]
     )
       realFeel = hIndex[Math.round((inp.data.rh * 1) / 5) * 5][Math.round(inp.data.tc) - 27];
-    ret += " , feel like ";
+    ret += " ";
     if (isNaN(realFeel)) {
       ret += emoji.get(":skull:");
     } else {
