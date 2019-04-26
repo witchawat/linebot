@@ -139,11 +139,15 @@ const Cmd = function() {
     )
       realFeel = hIndex[Math.round((inp.data.rh * 1) / 5) * 5][Math.round(inp.data.tc) - 27];
     ret += " feel like ";
-    ret += isNaN(realFeel) ? emoji.get(":skull:") : "";
-    ret += !isNaN(realFeel) && realFeel > 51 ? emoji.get(":skull:") : "";
-    ret += !isNaN(realFeel) && realFeel > 39 ? emoji.get(":sos:") : "";
-    ret += !isNaN(realFeel) && realFeel > 32 ? emoji.get(":bangbang:") : "";
-    ret += !isNaN(realFeel) && realFeel > 26 ? emoji.get(":white_check_mark:") : "";
+    if (isNaN(realFeel)) {
+      ret += emoji.get(":skull:");
+    } else {
+      ret += 52 <= realFeel && realFeel <= 58 ? emoji.get(":skull:") : "";
+      ret += 40 <= realFeel && realFeel <= 51 ? emoji.get(":sos:") : "";
+      ret += 33 <= realFeel && realFeel <= 39 ? emoji.get(":bangbang:") : "";
+      ret += realFeel <= 32 ? emoji.get(":white_check_mark:") : "";
+    }
+
     ret += realFeel + "°C";
     return ret;
   }
