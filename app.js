@@ -12,6 +12,7 @@ const ThairunFaceSearch = require("./commands/ThairunFaceSearch.js");
 const PYT = require("./commands/Pyt.js");
 const Zmn = require("./commands/Zmn.js");
 const FitnessFirst = require("./commands/FitnessFirst.js");
+const SuanPruek = require("./commands/SuanPruek.js");
 const ZmnAuto =
   process.env.NODE_ENV == "production"
     ? require("./commands/ZmnAuto.js")
@@ -47,6 +48,7 @@ eventHandler.add(["icmm"], new ThairunFaceSearch(), "image");
 eventHandler.add("pyt", new PYT());
 eventHandler.add("zmn", new Zmn());
 eventHandler.add("ff", new FitnessFirst());
+eventHandler.add("raceTime", new SuanPruek());
 
 if (process.env.NODE_ENV == "production")
   eventHandler.add("zmnauto", new ZmnAuto());

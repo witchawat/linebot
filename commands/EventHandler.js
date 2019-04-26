@@ -1,15 +1,17 @@
-const EventHandler = function (_client) {
+const EventHandler = function(_client) {
   var client = _client;
   var rules = [];
-  var locHandler, locHandlerParam, locTimer, imgHandler, imgHandlerParam, imgTimer;
-  this.add = function (cmd, cmdHandler, _type) {
-    var type = _type || 'text';
+  var specialHandler, locHandler, locHandlerParam, locTimer, imgHandler, imgHandlerParam, imgTimer;
+  this.add = function(cmd, cmdHandler, _type) {
+    var type = _type || "text";
     if (Array.isArray(cmd)) {
-      cmd.forEach(aCmd => rules.push({
-        cmd: aCmd.toLowerCase(),
-        type: type,
-        handler: cmdHandler
-      }));
+      cmd.forEach(aCmd =>
+        rules.push({
+          cmd: aCmd.toLowerCase(),
+          type: type,
+          handler: cmdHandler
+        })
+      );
     } else {
       rules.push({
         cmd: cmd.toLowerCase(),
@@ -17,14 +19,17 @@ const EventHandler = function (_client) {
         handler: cmdHandler
       });
     }
-    cmdHandler.removeListener('replyMessage', replyMessage);
-    cmdHandler.removeListener('pushMessage', pushMessage);
-    cmdHandler.on('replyMessage', replyMessage);
-    cmdHandler.on('pushMessage', pushMessage);
+    if (type == "special") {
+      specialHandler = cmdHandler;
+    }
+    cmdHandler.removeListener("replyMessage", replyMessage);
+    cmdHandler.removeListener("pushMessage", pushMessage);
+    cmdHandler.on("replyMessage", replyMessage);
+    cmdHandler.on("pushMessage", pushMessage);
   };
 
   function replyMessage(obj) {
-    if (process.env.NODE_ENV == 'development') {
+    if (process.env.NODE_ENV == "development") {
       console.log(obj);
     } else {
       client.replyMessage(obj.replyToken, obj.message).catch(err => {
@@ -34,7 +39,7 @@ const EventHandler = function (_client) {
   }
 
   function pushMessage(obj) {
-    if (process.env.NODE_ENV == 'development') {
+    if (process.env.NODE_ENV == "development") {
       console.log(obj);
     } else {
       client.pushMessage(obj.to, obj.message).catch(err => {
@@ -44,59 +49,62 @@ const EventHandler = function (_client) {
   }
 
   function isCmdMatched(evt, r) {
-    if (!evt.message.text || evt.message.text.charAt(0) != '!') return;
+    if (!evt.message.text || evt.message.text.charAt(0) != "!") return;
     var msg = evt.message.text.trim();
-    var regTest = RegExp('^\\!(' + r.cmd + '$|' + r.cmd + '[\\s]+(.*)*)', 'i').exec(msg);
+    var regTest = RegExp("^\\!(" + r.cmd + "$|" + r.cmd + "[\\s]+(.*)*)", "i").exec(msg);
     if (regTest) {
-      if (r.type == 'image') {
+      if (r.type == "image") {
         replyMessage({
           replyToken: evt.replyToken,
           message: {
-            type: 'text',
-            text: 'waiting for img'
+            type: "text",
+            text: "waiting for img"
           }
         });
         imgHandler = r;
-        imgHandlerParam=regTest[2];
+        imgHandlerParam = regTest[2];
         clearTimeout(imgTimer);
-        setTimeout(function () {
+        setTimeout(function() {
           imgHandler = null;
         }, 60000); //wait 1 minute for image
       }
-      if (r.type == 'location') {
+      if (r.type == "location") {
         replyMessage({
           replyToken: evt.replyToken,
           message: {
-            type: 'text',
-            text: 'waiting for location'
+            type: "text",
+            text: "waiting for location"
           }
         });
         locHandler = r;
-        locHandlerParam=regTest[2];
+        locHandlerParam = regTest[2];
         clearTimeout(locTimer);
-        setTimeout(function () {
+        setTimeout(function() {
           locHandler = null;
         }, 60000); //wait 1 minute for location
       }
-      if (r.type == 'text') r.handler.handleEvent(evt, r.cmd, regTest[2]);
+      if (r.type == "text") r.handler.handleEvent(evt, r.cmd, regTest[2]);
     }
   }
-  this.handleEvent = function (evt) {
+  this.handleEvent = function(evt) {
     //console.log(evt);
-    if (evt.type != 'message' || !evt.message) return;
-    if (evt.message.type == 'text') rules.forEach(r => isCmdMatched(evt, r));
-    if (evt.message.type == 'image' && imgHandler) {
+    if (evt.type != "message" || !evt.message) return;
+    if (evt.message.type == "text") rules.forEach(r => isCmdMatched(evt, r));
+    if (evt.message.type == "image" && imgHandler) {
       imgHandler.handler.handleEvent(evt, imgHandler.cmd, imgHandlerParam);
       clearTimeout(imgTimer);
       imgHandler = null;
     }
-    if (evt.message.type == 'location' && locHandler) {
+    if (evt.message.type == "location" && specialHandler) {
+      specialHandler.handleEvent(evt, null, null);
+    }
+    if (evt.message.type == "location" && locHandler) {
       locHandler.handler.handleEvent(evt, locHandler.cmd, locHandlerParam);
       clearTimeout(locTimer);
       locHandler = null;
     }
   };
-  this.logRules = function () {
+  this.logRules = function() {
     console.log(rules);
   };
 };
