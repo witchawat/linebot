@@ -132,14 +132,19 @@ const Cmd = function() {
     ret += 11 <= dir && dir < 13 ? emoji.get("arrow_right") : "";
     ret += 13 <= dir && dir < 15 ? emoji.get("arrow_lower_right") : "";
     ret += " " + inp.data.tc.toFixed(0) + "°C";
-    ret += " " + Math.round((inp.data.rh * 1) / 5) * 5 + " " + (Math.round(inp.data.tc) - 27) + " ";
     var realFeel = "Danger !!!";
     if (
       hIndex[Math.round((inp.data.rh * 1) / 5) * 5] &&
       hIndex[Math.round((inp.data.rh * 1) / 5) * 5][Math.round(inp.data.tc) - 27]
     )
       realFeel = hIndex[Math.round((inp.data.rh * 1) / 5) * 5][Math.round(inp.data.tc) - 27];
-    ret += " feel " + realFeel + "°C";
+    ret += " feel like ";
+    ret += isNaN(realFeel) ? emoji.get(":skull:") : "";
+    ret += !isNaN(realFeel) && realFeel > 51 ? emoji.get(":skull:") : "";
+    ret += !isNaN(realFeel) && realFeel > 39 ? emoji.get(":sos:") : "";
+    ret += !isNaN(realFeel) && realFeel > 32 ? emoji.get(":bangbang:") : "";
+    ret += !isNaN(realFeel) && realFeel > 26 ? emoji.get(":white_check_mark:") : "";
+    ret += realFeel + "°C";
     return ret;
   }
   util.inherits(Cmd, events.EventEmitter);
