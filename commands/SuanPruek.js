@@ -99,7 +99,7 @@ const Cmd = function() {
             type: "text",
             text: [
               `race will end in ${msToHMS(t - d.getTime())}`,
-              `dist left: ${ret.distLeft}`,
+              `dist left: ${ret.distLeft} km`,
               ret.res
             ].join("\n")
           }
