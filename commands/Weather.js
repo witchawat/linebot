@@ -75,6 +75,7 @@ var header={'headers':{'Authorization':  'Bearer ' + process.env.TMD_TOKEN}};
           return ret||'no forecast data from tmd.go.th';
       })
       .catch(err => {
+console.log(err);
         console.log('api error naja');
         return 'API Error';
       });
