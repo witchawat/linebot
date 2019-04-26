@@ -80,6 +80,8 @@ const Cmd = function() {
       });
     }
     if (!cmd) {
+      console.log(`${evt.message.latitude}, ${evt.message.longitude}`);
+
       redisClient.get("suanPruek", function(err, _) {
         if (err || !_) {
           return;
