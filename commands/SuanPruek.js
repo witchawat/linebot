@@ -89,7 +89,7 @@ if(t-d.getTime()<0)return;
         }
         var t = _ * 1;
         var d = new Date();
-if(t-d.getTime())<0) return;
+if(t-d.getTime()<0) return;
         var ret = getPos(
           evt.message.longitude * 1,
           evt.message.latitude * 1,
