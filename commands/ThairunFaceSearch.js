@@ -13,8 +13,8 @@ const Cmd = function() {
     if (!isNaN(param * 1)) picCount = param * 1;
     picCount = picCount < 1 ? 1 : picCount;
     picCount = picCount > MAX_RETURN_PICS ? MAX_RETURN_PICS : picCount;
-    if (cmd == "icmm") {
-      searchFace("icmm2019", replyId, picCount, evt.message.id);
+    if (cmd == "10hr") {
+      searchFace("10-hour-ultramarathon-2019", replyId, picCount, evt.message.id);
     }
   };
 

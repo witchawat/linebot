@@ -6,14 +6,14 @@ const Air = require("./commands/Air.js");
 const MyLog = require("./commands/MyLog.js");
 const WolframSolve = require("./commands/WolframSolve.js");
 const WeatherDarkSky = require("./commands/WeatherDarkSky.js");
-const Weather = require("./commands/Weather.js");
 const Manga = require("./commands/Manga.js");
 const ThairunFaceSearch = require("./commands/ThairunFaceSearch.js");
-//const UTMF = require('./commands/Utmf.js');
-//const PYT = require("./commands/Pyt.js");
 const Zmn = require("./commands/Zmn.js");
 const FitnessFirst = require("./commands/FitnessFirst.js");
-const SuanPruek = require("./commands/SuanPruek.js");
+//const Weather = require("./commands/Weather.js");
+//const UTMF = require('./commands/Utmf.js');
+//const PYT = require("./commands/Pyt.js");
+//const SuanPruek = require("./commands/SuanPruek.js");
 const ZmnAuto = process.env.NODE_ENV == "production" ? require("./commands/ZmnAuto.js") : null;
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
@@ -41,18 +41,18 @@ eventHandler.add(
   ["weather", "w", "w1", "w2", "w3", "w4", "w5", "w6", "w7", "w8", "w9", "w10"],
   new WeatherDarkSky()
 );
-eventHandler.add(
-  ["wweather", "ww", "ww1", "ww2", "ww3", "ww4", "ww5", "ww6", "ww7", "ww8", "ww9", "ww10"],
-  new Weather()
-);
-eventHandler.add(["icmm"], new ThairunFaceSearch(), "image");
-//eventHandler.add('utmf', new UTMF());
-//eventHandler.add("pyt", new PYT());
+eventHandler.add(["10hr"], new ThairunFaceSearch(), "image");
 eventHandler.add("zmn", new Zmn());
 eventHandler.add("ff", new FitnessFirst());
-var suanPruekHandler = new SuanPruek();
-eventHandler.add(["settime", "gettime"], suanPruekHandler);
-eventHandler.add("__", suanPruekHandler, "special");
+// eventHandler.add(
+//   ["wweather", "ww", "ww1", "ww2", "ww3", "ww4", "ww5", "ww6", "ww7", "ww8", "ww9", "ww10"],
+//   new Weather()
+// );
+//eventHandler.add('utmf', new UTMF());
+//eventHandler.add("pyt", new PYT());
+// var suanPruekHandler = new SuanPruek();
+// eventHandler.add(["settime", "gettime"], suanPruekHandler);
+// eventHandler.add("__", suanPruekHandler, "special");
 
 if (process.env.NODE_ENV == "production") eventHandler.add("zmnauto", new ZmnAuto());
 const app = express();
