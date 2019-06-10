@@ -17,7 +17,7 @@ const Cmd = function () {
     if (cmd == 'rain') {
       if (imgStat == 'error') ret = {
         "type": 'text',
-        'text': 'ไม่สามารถ load รูปได้ รบกวนไปดูเองที่\r\nhttp://203.155.220.231/Radar/pics/nkzfiltered.jpg'
+        'text': 'ไม่สามารถ load รูปได้ รบกวนไปดูเองที่\r\nhttp://weather.bangkok.go.th/FTPCustomer/radar/pics/zfiltered.jpg'
       }
       else ret = {
         "type": 'image',
@@ -147,7 +147,7 @@ const Cmd = function () {
     try {
       token = await gfyAuth();
       //post img
-      gfyname = await gfyPost('http://203.155.220.231/Radar/pics/nkzfiltered.jpg');
+      gfyname = await gfyPost('http://weather.bangkok.go.th/FTPCustomer/radar/pics/zfiltered.jpg');
       checkCount = 0;
       while (checkCount < 10) {
         checkCount++;
