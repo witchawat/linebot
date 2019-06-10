@@ -14,10 +14,6 @@ const Cmd = function() {
         }
       })
       .then(r => {
-        res = JSON.stringify(r.data);
-      })
-      .catch(e => console.error(e))
-      .finally(r => {
         _this.emit("replyMessage", {
           replyToken: evt.replyToken,
           message: {
@@ -32,7 +28,24 @@ const Cmd = function() {
               "\nparam : " +
               param +
               "\nres : " +
-              res
+              JSON.stringify(r.data)
+          }
+        });
+      })
+      .catch(e => {
+        _this.emit("replyMessage", {
+          replyToken: evt.replyToken,
+          message: {
+            type: "text",
+            text:
+              "userId : " +
+              evt.source.userId +
+              "\nroomId : " +
+              evt.source.roomId +
+              "\ngroupId : " +
+              evt.source.groupId +
+              "\nparam : " +
+              param
           }
         });
       });
