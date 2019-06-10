@@ -6,6 +6,7 @@ const Cmd = function() {
   const _this = this;
   this.handleEvent = function(evt, cmd, param) {
     console.log(evt);
+    var res = "";
     axios
       .get(`https://api.line.me/v2/bot/profile/${param}`, {
         headers: {
@@ -13,6 +14,10 @@ const Cmd = function() {
         }
       })
       .then(r => {
+        res = JSON.stringify(r.data);
+      })
+      .catch(e => console.error(e))
+      .finally(r => {
         _this.emit("replyMessage", {
           replyToken: evt.replyToken,
           message: {
@@ -25,11 +30,12 @@ const Cmd = function() {
               "\ngroupId : " +
               evt.source.groupId +
               "\nparam : " +
-              param 
+              param +
+              "\nres : " +
+              res
           }
         });
-      })
-      .catch(e => console.error(e));
+      });
   };
   util.inherits(Cmd, events.EventEmitter);
 };
