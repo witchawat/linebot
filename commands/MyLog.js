@@ -1,21 +1,23 @@
-const util = require('util');
-const events = require('events');
+const util = require("util");
+const events = require("events");
 const Cmd = function() {
   events.EventEmitter.call(this);
   const _this = this;
   this.handleEvent = function(evt, cmd, param) {
     console.log(evt);
-    _this.emit('replyMessage', {
+    _this.emit("replyMessage", {
       replyToken: evt.replyToken,
       message: {
-        type: 'text',
+        type: "text",
         text:
-          'userId : ' +
+          "userId : " +
           evt.source.userId +
-          '\nroomId : ' +
+          "\nroomId : " +
           evt.source.roomId +
-          '\ngroupId : ' +
-          evt.source.groupId
+          "\ngroupId : " +
+          evt.source.groupId +
+          "\nparam : " +
+          param
       }
     });
   };
