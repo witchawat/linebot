@@ -33,6 +33,8 @@ const Cmd = function() {
         });
       })
       .catch(e => {
+        console.log(e);
+        
         _this.emit("replyMessage", {
           replyToken: evt.replyToken,
           message: {
