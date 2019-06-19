@@ -6,6 +6,35 @@ const Cmd = function() {
   const _this = this;
   this.handleEvent = function(evt, cmd, param) {
     console.log(evt);
+    if(param=='flex'){
+       _this.emit("replyMessage", {
+         replyToken: evt.replyToken,
+         message: {
+           type: "flex",
+           altText: "this is flex message",
+           contents: {
+             type: "bubble", // ①
+             body: {
+               // ②
+               type: "box", // ③
+               layout: "horizontal", // ④
+               contents: [
+                 // ⑤
+                 {
+                   type: "text", // ⑥
+                   text: "Hello,"
+                 },
+                 {
+                   type: "text", // ⑥
+                   text: "World!"
+                 }
+               ]
+             }
+           }
+         }
+       });
+      return;
+    }
     var res = "";
     axios
       .get(`https://api.line.me/v2/bot/profile/${param}`, {
