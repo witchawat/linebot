@@ -22,7 +22,7 @@ const Cmd = function() {
                aspectMode: "cover",
                action: {
                  type: "uri",
-                 uri: "http://linecorp.com/"
+                 uri: "https://aoiaoi.herokuapp.com/vid.html"
                }
              },
              styles: {
@@ -97,6 +97,27 @@ const Cmd = function() {
                            align: "end"
                          }
                        ]
+                     },
+                     {
+                       type: "box",
+                       layout: "horizontal",
+                       contents: [
+                         {
+                           type: "text",
+                           text: "Note",
+                           size: "sm",
+                           color: "#555555",
+                           flex: 0
+                         }
+                       ]
+                     },
+                     {
+                       type: "text",
+                       text:
+                         "some long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long note",
+                       wrap: true,
+                       color: "#aaaaaa",
+                       size: "xxs"
                      }
                    ]
                  }
