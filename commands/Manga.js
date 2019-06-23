@@ -43,6 +43,9 @@ const Cmd = function (app) {
         }
       });
     }
+if(cmd == 'mangaRefresh'){
+getMangaList();
+}
   }
   async function getMangaList() {
     axios.post('https://api.mangarockhd.com/query/web401/mrs_filter', {
