@@ -42,7 +42,7 @@ eventHandler.add(
   new WeatherDarkSky()
 );
 eventHandler.add(["10hr"], new ThairunFaceSearch(), "image");
-eventHandler.add("zmn", new Zmn());
+//eventHandler.add("zmn", new Zmn());
 eventHandler.add("ff", new FitnessFirst());
 // eventHandler.add(
 //   ["wweather", "ww", "ww1", "ww2", "ww3", "ww4", "ww5", "ww6", "ww7", "ww8", "ww9", "ww10"],
