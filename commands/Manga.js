@@ -48,7 +48,7 @@ getMangaList();
 }
   }
   async function getMangaList() {
-    axios.post('https://api.mangarockhd.com/query/web401/mrs_filter', {
+    axios.post('https://api.mangarockhd.com/query/web401/mrs_filter?country=Thailand', {
       "status": "all"
     }).then(async r => {
       var qStr, chunks, chunkSize = 1000;
@@ -62,7 +62,7 @@ getMangaList();
       });
       //console.log('getMangaList :: ' + ids.length + ' new manga(s).');
       if (!ids.length) return;
-      axios.post('https://api.mangarockhd.com/meta', ids).then(async r => {
+      axios.post('https://api.mangarockhd.com/meta?country=Thailand', ids).then(async r => {
         var toUpdate = [];
         for (var k in r.data.data) {
           toUpdate.push(k);
