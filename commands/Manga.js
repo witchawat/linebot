@@ -54,14 +54,14 @@ const Cmd = function(app) {
         }
       });
     }
-    if (cmd == "mangaRefresh") { _this.emit("replyMessage", {
-                                   replyToken: evt.replyToken,
-                                   message: {
-                                     type: "text",
-                                     text:
-                                       "refreshing manga list..."
-                                   }
-                                 });
+    if (cmd == "mangarefresh") {
+      _this.emit("replyMessage", {
+        replyToken: evt.replyToken,
+        message: {
+          type: "text",
+          text: "refreshing manga list..."
+        }
+      });
       getMangaList();
     }
   };
@@ -88,7 +88,7 @@ const Cmd = function(app) {
         var ids = rows.map(r => {
           return r.id;
         });
-        console.log('getMangaList :: ' + ids.length + ' new manga(s).');
+        console.log("getMangaList :: " + ids.length + " new manga(s).");
         if (!ids.length) return;
         axios
           .post("https://api.mangarockhd.com/meta?country=Thailand", ids)
