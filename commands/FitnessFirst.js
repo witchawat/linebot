@@ -98,8 +98,8 @@ const Cmd = function() {
               searchBranch,
             { maxContentLength: 200000 }
           )
-          .then(r => {
-            const cls = r.data.Timetable;
+          .then(async r => {
+            const cls = await r.data.Timetable;
             // Filter only Today's CLASS
             let mtoday = cls.Morning.filter(c => c.IsToday == true);
             let atoday = cls.Afternoon.filter(c => c.IsToday == true);
