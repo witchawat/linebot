@@ -161,7 +161,7 @@ const Cmd = function() {
       }
     }
   };
-  util.inherits(Cmdevents.EventEmitter);
+  util.inherits(Cmd, events.EventEmitter);
 };
 module.exports = Cmd;
 
