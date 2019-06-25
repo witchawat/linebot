@@ -70,7 +70,7 @@ app.post("/webhook", line.middleware(config), (req, res) => {
   res.send("");
 });
 var mangaHandler = new Manga(app);
-eventHandler.add("manga", mangaHandler);
+eventHandler.add(["manga","mangaRefresh"], mangaHandler);
 //eventHandler.logRules();
 app.get("/to/:usrId/:msg", (req, res) => {
   if (process.env.NODE_ENV != "development") {
