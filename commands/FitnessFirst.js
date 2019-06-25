@@ -125,39 +125,6 @@ const Cmd = function() {
               }
             });
           });
-        axios
-          .get(
-            "https://www.fitnessfirst.co.th/fitness-first/web-services/v2/timetable/%7B03D82E6E-083F-4F37-B877-9CAFC75D919C%7D/" +
-              searchBranch
-          )
-          .then(r => {
-            const cls = r.data.Timetable;
-            // Filter only Today's CLASS
-            let mtoday = cls.Morning.filter(c => c.IsToday == true);
-            let atoday = cls.Afternoon.filter(c => c.IsToday == true);
-            let etoday = cls.Evening.filter(c => c.IsToday == true);
-
-            let m = findClassByName(mtoday[0].Classes, searchClass);
-            let a = findClassByName(atoday[0].Classes, searchClass);
-            let e = findClassByName(etoday[0].Classes, searchClass);
-
-            let result = m.concat(a, e);
-            let resultText = "";
-            // Result to Text
-            result.forEach(c => {
-              let time = c.TimeText.slice(0, 8);
-              let club = c.ClubTag;
-              let title = c.Title;
-              resultText += title + " " + time + " " + club + "\n";
-            });
-            _this.emit("replyMessage", {
-              replyToken: evt.replyToken,
-              message: {
-                type: "text",
-                text: "FF @ " + searchBranch + "\n" + resultText
-              }
-            });
-          });
       }
     }
   };
