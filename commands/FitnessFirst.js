@@ -25,9 +25,13 @@ const Cmd = function() {
         .then(r => {
           const cls = r.data.Timetable;
           // Filter only Today's CLASS
-          let m = findClassByName(cls.Morning[0].Classes, searchClass);
-          let a = findClassByName(cls.Afternoon[0].Classes, searchClass);
-          let e = findClassByName(cls.Evening[0].Classes, searchClass);
+          let mtoday = cls.Morning.filter(c => c.IsToday == true);
+          let atoday = cls.Afternoon.filter(c => c.IsToday == true);
+          let etoday = cls.Evening.filter(c => c.IsToday == true);
+
+          let m = findClassByName(mtoday[0].Classes, searchClass);
+          let a = findClassByName(atoday[0].Classes, searchClass);
+          let e = findClassByName(etoday[0].Classes, searchClass);
 
           let result = m.concat(a, e);
           let resultText = "";
