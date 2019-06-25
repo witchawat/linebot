@@ -95,7 +95,8 @@ const Cmd = function() {
         axios
           .get(
             "https://www.fitnessfirst.co.th/fitness-first/web-services/v2/timetable/%7B03D82E6E-083F-4F37-B877-9CAFC75D919C%7D/" +
-              searchBranch
+              searchBranch,
+            { maxContentLength: 200000 }
           )
           .then(r => {
             const cls = r.data.Timetable;
