@@ -130,6 +130,17 @@ const Cmd = function() {
                contents: [
                  {
                    type: "button",
+                   style: "primary",
+                   height: "sm",
+                   color: "#009900",
+                   action: {
+                     type: "uri",
+                     uri: "line://app/1526734026-V3AxnYZl",
+                     label: "lifff"
+                   }
+                 },
+                 {
+                   type: "button",
                    style: "link",
                    height: "sm",
                    action: {
