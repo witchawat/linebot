@@ -5,7 +5,7 @@ const Cmd = function() {
   const _this = this;
   this.handleEvent = function(evt, cmd, param) {
     var res = allCodes
-      .filter(v => q.toLowerCase() == v[0].toLowerCase())
+      .filter(v => param.toLowerCase() == v[0].toLowerCase())
       .map(v => v[1])
       .join(", ");
     res = res == "" ? "ไม่พบเมลของท่าน" : res;
