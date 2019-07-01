@@ -10,6 +10,7 @@ const Manga = require("./commands/Manga.js");
 const ThairunFaceSearch = require("./commands/ThairunFaceSearch.js");
 const Zmn = require("./commands/Zmn.js");
 const FitnessFirst = require("./commands/FitnessFirst.js");
+const BanSanCode = require("./commands/BanSanCode.js");
 //const Weather = require("./commands/Weather.js");
 //const UTMF = require('./commands/Utmf.js');
 //const PYT = require("./commands/Pyt.js");
@@ -35,6 +36,7 @@ eventHandler.add(["rain", "rainvid"], new Rain());
 var airHandler = new Air();
 eventHandler.add("air", airHandler);
 eventHandler.add("airloc", airHandler, "location");
+eventHandler.add("bs", new BanSanCode());
 eventHandler.add("log", new MyLog());
 eventHandler.add("solve", new WolframSolve());
 eventHandler.add(
