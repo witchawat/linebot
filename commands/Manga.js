@@ -180,9 +180,10 @@ const Cmd = function(app) {
   }
   async function notify(mangaIds) {
     if (!mangaIds.length) return;
-    var flexNoti = {};
+    var notiFlex = {},
+      notiName = {};
     for (var id of mangaIds) {
-      flexNoti[id] = await mangaNotiContent(id);
+      [notiName[id], notiFlex[id]] = await mangaNotiContent(id);
     }
     console.log(mangaIds.length + " updated chapters");
     var rows = await q(
@@ -193,14 +194,29 @@ const Cmd = function(app) {
         ")",
       mangaIds
     );
-    console.log(JSON.stringify(rows, null, 2));
     var uIds = [...new Set(rows.map(v => v.uid))];
-    console.log(uIds);
     uIds.forEach(u => {
-      var flexMsg = [];
-      rows.filter(v => v.uid == u).forEach(v => flexMsg.push(flexNoti[v.mid]));
-      
-    console.log(JSON.stringify(flexMsg, null, 2));
+      var contents = [],
+      altTexts = [];
+      rows
+        .filter(v => v.uid == u)
+        .forEach(v => {
+          altTexts.push(notiName[v.mid]);
+          contents.push(notiFlex[v.mid]);
+        });
+      _this.emit("pushMessage", {
+        to: uId,
+        message: {
+          type: "flex",
+          altText: altTexts.join(','),
+          contents: {
+            type: "carousel",
+            contents
+          }
+        }
+      });
+
+      console.log(JSON.stringify(flexMsg, null, 2));
     });
     return;
     rows.forEach(r => {
@@ -247,106 +263,109 @@ const Cmd = function(app) {
   }
   async function mangaNotiContent(id) {
     var r = (await q("select * from manga where id=?", id))[0];
-    if (!r) return {};
-    return {
-      type: "bubble",
-      body: {
-        type: "box",
-        layout: "vertical",
-        contents: [
-          {
-            type: "image",
-            url: r.tmb,
-            size: "full",
-            aspectMode: "cover",
-            aspectRatio: "2:3",
-            gravity: "top"
-          },
-          {
-            type: "box",
-            layout: "vertical",
-            contents: [
-              {
-                type: "box",
-                layout: "vertical",
-                contents: [
-                  {
-                    type: "text",
-                    text: r.name,
-                    size: "xl",
-                    color: "#ffffff",
-                    weight: "bold"
-                  }
-                ]
-              },
-              {
-                type: "box",
-                layout: "vertical",
-                contents: [
-                  {
-                    type: "text",
-                    text: r.chapName,
-                    size: "sm",
-                    color: "#ffffff"
-                  }
-                ],
-                spacing: "lg"
-              },
-              {
-                type: "box",
-                layout: "vertical",
-                action: {
-                  type: "uri",
-                  uri: `line://app/1526734026-V3AxnYZl?id=${id}`
+    if (!r) return ["", {}];
+    return [
+      r.name,
+      {
+        type: "bubble",
+        body: {
+          type: "box",
+          layout: "vertical",
+          contents: [
+            {
+              type: "image",
+              url: r.tmb,
+              size: "full",
+              aspectMode: "cover",
+              aspectRatio: "2:3",
+              gravity: "top"
+            },
+            {
+              type: "box",
+              layout: "vertical",
+              contents: [
+                {
+                  type: "box",
+                  layout: "vertical",
+                  contents: [
+                    {
+                      type: "text",
+                      text: r.name,
+                      size: "xl",
+                      color: "#ffffff",
+                      weight: "bold"
+                    }
+                  ]
                 },
-                contents: [
-                  {
-                    type: "filler"
+                {
+                  type: "box",
+                  layout: "vertical",
+                  contents: [
+                    {
+                      type: "text",
+                      text: r.chapName,
+                      size: "sm",
+                      color: "#ffffff"
+                    }
+                  ],
+                  spacing: "lg"
+                },
+                {
+                  type: "box",
+                  layout: "vertical",
+                  action: {
+                    type: "uri",
+                    uri: `line://app/1526734026-V3AxnYZl?id=${id}`
                   },
-                  {
-                    type: "box",
-                    layout: "baseline",
-                    contents: [
-                      {
-                        type: "filler"
-                      },
-                      {
-                        type: "text",
-                        text: "Read",
-                        color: "#ffffff",
-                        flex: 0,
-                        offsetTop: "-2px"
-                      },
-                      {
-                        type: "filler"
-                      }
-                    ],
-                    spacing: "sm"
-                  },
-                  {
-                    type: "filler"
-                  }
-                ],
-                borderWidth: "1px",
-                cornerRadius: "4px",
-                spacing: "sm",
-                borderColor: "#ffffff",
-                margin: "xxl",
-                height: "40px"
-              }
-            ],
-            position: "absolute",
-            offsetBottom: "0px",
-            offsetStart: "0px",
-            offsetEnd: "0px",
-            backgroundColor: "#03303Acc",
-            paddingAll: "20px",
-            paddingTop: "18px"
-          }
-        ],
-        paddingAll: "0px"
+                  contents: [
+                    {
+                      type: "filler"
+                    },
+                    {
+                      type: "box",
+                      layout: "baseline",
+                      contents: [
+                        {
+                          type: "filler"
+                        },
+                        {
+                          type: "text",
+                          text: "Read",
+                          color: "#ffffff",
+                          flex: 0,
+                          offsetTop: "-2px"
+                        },
+                        {
+                          type: "filler"
+                        }
+                      ],
+                      spacing: "sm"
+                    },
+                    {
+                      type: "filler"
+                    }
+                  ],
+                  borderWidth: "1px",
+                  cornerRadius: "4px",
+                  spacing: "sm",
+                  borderColor: "#ffffff",
+                  margin: "xxl",
+                  height: "40px"
+                }
+              ],
+              position: "absolute",
+              offsetBottom: "0px",
+              offsetStart: "0px",
+              offsetEnd: "0px",
+              backgroundColor: "#03303Acc",
+              paddingAll: "20px",
+              paddingTop: "18px"
+            }
+          ],
+          paddingAll: "0px"
+        }
       }
-    };
+    ];
   }
   new CronJob({
     cronTime: "0 0,5,10,15,20,25,30,35,40,45,50,55 * * * *",
