@@ -205,7 +205,7 @@ const Cmd = function(app) {
           contents.push(notiFlex[v.mid]);
         });
       _this.emit("pushMessage", {
-        to: uId,
+        to: u,
         message: {
           type: "flex",
           altText: altTexts.join(','),
