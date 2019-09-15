@@ -131,6 +131,8 @@ ${emoji.get(":vertical_traffic_light:")} PM2.5 = ${pm25} ${pm25_warning}
 ${emoji.get("thermometer")} ${temp}°C  Humidity = ${humidity}
 ${emoji.get("sunglasses")} UV Index ${uvindex} ${uvindex_warning}
 Updated At ${emoji.get(":clock2:")} ${time}`;
+          console.log(res);
+
           return res;
         })
       )
