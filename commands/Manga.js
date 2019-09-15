@@ -401,7 +401,7 @@ const Cmd = function(app) {
               offsetStart: "0px",
               offsetEnd: "0px",
               backgroundColor: "#03303Acc",
-              paddingAll: "20px",
+              paddingAll: "10px",
               paddingTop: "18px"
             }
           ],
