@@ -45,6 +45,9 @@ const Cmd = function(app) {
     }
   });
   this.handleEvent = function(evt, cmd, param) {
+    if(cmd =='mangad'){
+      notify(['mrs-serie-100069088','mrs-serie-100070572']);
+    }
     if (cmd == "manga") {
       _this.emit("replyMessage", {
         replyToken: evt.replyToken,
@@ -177,7 +180,13 @@ const Cmd = function(app) {
   }
   async function notify(mangaIds) {
     if (!mangaIds.length) return;
+    var flexNoti = {};
+    for (var id of mangaIds) {
+      flexNoti[id] = await mangaNotiContent(id);
+    }
     console.log(mangaIds.length + " updated chapters");
+    console.log(flexNoti);
+
     var uId = "",
       txt = [];
     var rows = await q(
@@ -229,6 +238,134 @@ const Cmd = function(app) {
       });
       connection.end();
     });
+  }
+  async function mangaNotiContent(id) {
+    var r = await q("select * from manga where id=?", id);
+    return {
+      type: "carousel",
+      contents: [
+        {
+          type: "bubble",
+          body: {
+            type: "box",
+            layout: "vertical",
+            contents: [
+              {
+                type: "image",
+                url:r.tmb,
+                size: "full",
+                aspectMode: "cover",
+                aspectRatio: "2:3",
+                gravity: "top"
+              },
+              {
+                type: "box",
+                layout: "vertical",
+                contents: [
+                  {
+                    type: "box",
+                    layout: "vertical",
+                    contents: [
+                      {
+                        type: "text",
+                        text: r.name,
+                        size: "xl",
+                        color: "#ffffff",
+                        weight: "bold"
+                      }
+                    ]
+                  },
+                  {
+                    type: "box",
+                    layout: "vertical",
+                    contents: [
+                      {
+                        type: "text",
+                        text: r.chapName,
+                        size: "sm",
+                        color: "#ffffff"
+                      }
+                    ],
+                    spacing: "lg"
+                  },
+                  {
+                    type: "box",
+                    layout: "vertical",
+                    action: {
+                      type: "uri",
+                      uri: "line://app/1526734026-V3AxnYZl?"
+                    },
+                    contents: [
+                      {
+                        type: "filler"
+                      },
+                      {
+                        type: "box",
+                        layout: "baseline",
+                        contents: [
+                          {
+                            type: "filler"
+                          },
+                          {
+                            type: "text",
+                            text: "Read",
+                            color: "#ffffff",
+                            flex: 0,
+                            offsetTop: "-2px"
+                          },
+                          {
+                            type: "filler"
+                          }
+                        ],
+                        spacing: "sm"
+                      },
+                      {
+                        type: "filler"
+                      }
+                    ],
+                    borderWidth: "1px",
+                    cornerRadius: "4px",
+                    spacing: "sm",
+                    borderColor: "#ffffff",
+                    margin: "xxl",
+                    height: "40px"
+                  }
+                ],
+                position: "absolute",
+                offsetBottom: "0px",
+                offsetStart: "0px",
+                offsetEnd: "0px",
+                backgroundColor: "#03303Acc",
+                paddingAll: "20px",
+                paddingTop: "18px"
+              },
+              {
+                type: "box",
+                layout: "vertical",
+                contents: [
+                  {
+                    type: "text",
+                    text: "SALE",
+                    color: "#ffffff",
+                    align: "center",
+                    size: "xs",
+                    offsetTop: "3px"
+                  }
+                ],
+                position: "absolute",
+                cornerRadius: "20px",
+                offsetTop: "18px",
+                backgroundColor: "#ff334b",
+                offsetStart: "18px",
+                height: "25px",
+                width: "53px"
+              }
+            ],
+            paddingAll: "0px"
+          }
+        }
+      ]
+    };
   }
   new CronJob({
     cronTime: "0 0,5,10,15,20,25,30,35,40,45,50,55 * * * *",
