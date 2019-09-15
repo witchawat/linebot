@@ -199,9 +199,10 @@
           }
         },
         created() {
+          var _this = this;
           liff.init(r => {
             if (window.location.search && window.location.search.indexOf("?id=") == 0) {
-              this.openWindow(window.location.search.replace("?id=", ""));
+              _this.openWindow(window.location.search.replace("?id=", ""));
             }
             this.uid = r.context.userId ? r.context.userId : this.uid;
             this.uid = r.context.roomId ? r.context.roomId : this.uid;
