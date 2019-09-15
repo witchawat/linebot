@@ -45,8 +45,8 @@ const Cmd = function(app) {
     }
   });
   this.handleEvent = function(evt, cmd, param) {
-    if(cmd =='mangad'){
-      notify(['mrs-serie-100069088','mrs-serie-100070572']);
+    if (cmd == "mangad") {
+      notify(["mrs-serie-100069088", "mrs-serie-100070572"]);
     }
     if (cmd == "manga") {
       _this.emit("replyMessage", {
@@ -185,8 +185,8 @@ const Cmd = function(app) {
       flexNoti[id] = await mangaNotiContent(id);
     }
     console.log(mangaIds.length + " updated chapters");
-    console.log(JSON.stringify(flexNoti,null,2));
-
+    console.log(JSON.stringify(flexNoti, null, 2));
+    return;
     var uId = "",
       txt = [];
     var rows = await q(
@@ -240,7 +240,8 @@ const Cmd = function(app) {
     });
   }
   async function mangaNotiContent(id) {
-    var r = await q("select * from manga where id=?", id);
+    var r = (await q("select * from manga where id=?", id))[0];
+    if (!r) return {};
     return {
       type: "carousel",
       contents: [
@@ -252,7 +253,7 @@ const Cmd = function(app) {
             contents: [
               {
                 type: "image",
-                url:r.tmb,
+                url: r.tmb,
                 size: "full",
                 aspectMode: "cover",
                 aspectRatio: "2:3",
