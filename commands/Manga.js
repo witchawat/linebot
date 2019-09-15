@@ -268,7 +268,7 @@ const Cmd = function(app) {
       r.name,
       {
         type: "bubble",
-        "size":"mega",
+        "size":"kilo",
         body: {
           type: "box",
           layout: "vertical",
