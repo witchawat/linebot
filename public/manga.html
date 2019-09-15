@@ -94,6 +94,8 @@
         z-index: 1000;
         width: 100vw;
         font-size: 8vw;
+        top: 0;
+        bottom: 0;
       }
     </style>
   </head>
@@ -110,7 +112,6 @@
       <button @click="search" :disabled="!canSearch">search</button> &nbsp;&nbsp;
       <button @click="save" :disabled="isBusy">save</button>&nbsp;
       <br />
-      {{toViewId}}
       <!-- {{qqq}}  ::  {{hhh}} -->
       <br />
       <div ref="searchingListContainer" class="listContainer">
@@ -134,7 +135,9 @@
           <button target="_blank" @click="openManga(v.id)"></button>
         </div>
       </div>
-      <button id="viewExternal" v-if="toViewId" @click="openManga(toViewId)">Read External<br><br>Click !</button>
+      <button id="viewExternal" v-if="toViewId" @click="openManga(toViewId)">
+        Read External<br /><br />Click !
+      </button>
     </div>
     <script>
       var _app = new Vue({
