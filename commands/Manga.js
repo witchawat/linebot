@@ -243,102 +243,35 @@ const Cmd = function(app) {
     var r = (await q("select * from manga where id=?", id))[0];
     if (!r) return {};
     return {
-      type: "carousel",
-      contents: [
-        {
-          type: "bubble",
-          body: {
+      type: "bubble",
+      body: {
+        type: "box",
+        layout: "vertical",
+        contents: [
+          {
+            type: "image",
+            url: r.tmb,
+            size: "full",
+            aspectMode: "cover",
+            aspectRatio: "2:3",
+            gravity: "top"
+          },
+          {
             type: "box",
             layout: "vertical",
             contents: [
-              {
-                type: "image",
-                url: r.tmb,
-                size: "full",
-                aspectMode: "cover",
-                aspectRatio: "2:3",
-                gravity: "top"
-              },
               {
                 type: "box",
                 layout: "vertical",
                 contents: [
                   {
-                    type: "box",
-                    layout: "vertical",
-                    contents: [
-                      {
-                        type: "text",
-                        text: r.name,
-                        size: "xl",
-                        color: "#ffffff",
-                        weight: "bold"
-                      }
-                    ]
-                  },
-                  {
-                    type: "box",
-                    layout: "vertical",
-                    contents: [
-                      {
-                        type: "text",
-                        text: r.chapName,
-                        size: "sm",
-                        color: "#ffffff"
-                      }
-                    ],
-                    spacing: "lg"
-                  },
-                  {
-                    type: "box",
-                    layout: "vertical",
-                    action: {
-                      type: "uri",
-                      uri: `line://app/1526734026-V3AxnYZl?id=${id}`
-                    },
-                    contents: [
-                      {
-                        type: "filler"
-                      },
-                      {
-                        type: "box",
-                        layout: "baseline",
-                        contents: [
-                          {
-                            type: "filler"
-                          },
-                          {
-                            type: "text",
-                            text: "Read",
-                            color: "#ffffff",
-                            flex: 0,
-                            offsetTop: "-2px"
-                          },
-                          {
-                            type: "filler"
-                          }
-                        ],
-                        spacing: "sm"
-                      },
-                      {
-                        type: "filler"
-                      }
-                    ],
-                    borderWidth: "1px",
-                    cornerRadius: "4px",
-                    spacing: "sm",
-                    borderColor: "#ffffff",
-                    margin: "xxl",
-                    height: "40px"
+                    type: "text",
+                    text: r.name,
+                    size: "xl",
+                    color: "#ffffff",
+                    weight: "bold"
                   }
-                ],
-                position: "absolute",
-                offsetBottom: "0px",
-                offsetStart: "0px",
-                offsetEnd: "0px",
-                backgroundColor: "#03303Acc",
-                paddingAll: "20px",
-                paddingTop: "18px"
+                ]
               },
               {
                 type: "box",
@@ -346,26 +279,88 @@ const Cmd = function(app) {
                 contents: [
                   {
                     type: "text",
-                    text: "SALE",
-                    color: "#ffffff",
-                    align: "center",
-                    size: "xs",
-                    offsetTop: "3px"
+                    text: r.chapName,
+                    size: "sm",
+                    color: "#ffffff"
                   }
                 ],
-                position: "absolute",
-                cornerRadius: "20px",
-                offsetTop: "18px",
-                backgroundColor: "#ff334b",
-                offsetStart: "18px",
-                height: "25px",
-                width: "53px"
+                spacing: "lg"
+              },
+              {
+                type: "box",
+                layout: "vertical",
+                action: {
+                  type: "uri",
+                  uri: `line://app/1526734026-V3AxnYZl?id=${id}`
+                },
+                contents: [
+                  {
+                    type: "filler"
+                  },
+                  {
+                    type: "box",
+                    layout: "baseline",
+                    contents: [
+                      {
+                        type: "filler"
+                      },
+                      {
+                        type: "text",
+                        text: "Read",
+                        color: "#ffffff",
+                        flex: 0,
+                        offsetTop: "-2px"
+                      },
+                      {
+                        type: "filler"
+                      }
+                    ],
+                    spacing: "sm"
+                  },
+                  {
+                    type: "filler"
+                  }
+                ],
+                borderWidth: "1px",
+                cornerRadius: "4px",
+                spacing: "sm",
+                borderColor: "#ffffff",
+                margin: "xxl",
+                height: "40px"
               }
             ],
-            paddingAll: "0px"
+            position: "absolute",
+            offsetBottom: "0px",
+            offsetStart: "0px",
+            offsetEnd: "0px",
+            backgroundColor: "#03303Acc",
+            paddingAll: "20px",
+            paddingTop: "18px"
+          },
+          {
+            type: "box",
+            layout: "vertical",
+            contents: [
+              {
+                type: "text",
+                text: "SALE",
+                color: "#ffffff",
+                align: "center",
+                size: "xs",
+                offsetTop: "3px"
+              }
+            ],
+            position: "absolute",
+            cornerRadius: "20px",
+            offsetTop: "18px",
+            backgroundColor: "#ff334b",
+            offsetStart: "18px",
+            height: "25px",
+            width: "53px"
           }
-        }
-      ]
+        ],
+        paddingAll: "0px"
+      }
     };
   }
   new CronJob({
