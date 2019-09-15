@@ -89,9 +89,10 @@
         background: url("./read.png");
         background-size: cover;
       }
-      #viewExternal{
-        position:absolute;
-        top:0;left:0;bottom:0;right:0;
+      #viewExternal {
+        position: absolute;
+        width: 100vw;
+        font-size: 8vw;
       }
     </style>
   </head>
@@ -131,7 +132,7 @@
           <button target="_blank" @click="openManga(v.id)"></button>
         </div>
       </div>
-      <button id='viewExternal' v-if="toViewId" @click="openManga(toViewId)">Read External</button>
+      <button id="viewExternal" v-if="toViewId" @click="openManga(toViewId)">Read External<br><br>Click !</button>
     </div>
     <script>
       var _app = new Vue({
