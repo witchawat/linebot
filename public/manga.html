@@ -89,6 +89,10 @@
         background: url("./read.png");
         background-size: cover;
       }
+      #viewExternal{
+        position:absolute;
+        top:0;left:0;bottom:0;right:0;
+      }
     </style>
   </head>
 
@@ -103,7 +107,6 @@
       />
       <button @click="search" :disabled="!canSearch">search</button> &nbsp;&nbsp;
       <button @click="save" :disabled="isBusy">save</button>&nbsp;
-      <button v-if="toViewId" @click="openManga(toViewId)">View</button>
       <br />
       <!-- {{qqq}}  ::  {{hhh}} -->
       <br />
@@ -128,6 +131,7 @@
           <button target="_blank" @click="openManga(v.id)"></button>
         </div>
       </div>
+      <button id='viewExternal' v-if="toViewId" @click="openManga(toViewId)">Read External</button>
     </div>
     <script>
       var _app = new Vue({

@@ -268,6 +268,7 @@ const Cmd = function(app) {
       r.name,
       {
         type: "bubble",
+        "size":"micro",
         body: {
           type: "box",
           layout: "vertical",
@@ -291,7 +292,7 @@ const Cmd = function(app) {
                     {
                       type: "text",
                       text: r.name,
-                      size: "xl",
+                      size: "sm",
                       color: "#ffffff",
                       weight: "bold"
                     }
@@ -315,7 +316,6 @@ const Cmd = function(app) {
                   layout: "vertical",
                   action: {
                     type: "uri",
-                   // uri: `line://app/1526734026-V3AxnYZl?id=${id}`,
                     uri: `https://mangarock.com/manga/${id}`
                   },
                   contents: [
@@ -332,6 +332,48 @@ const Cmd = function(app) {
                         {
                           type: "text",
                           text: "Read",
+                          color: "#ffffff",
+                          flex: 0,
+                          offsetTop: "-2px"
+                        },
+                        {
+                          type: "filler"
+                        }
+                      ],
+                      spacing: "sm"
+                    },
+                    {
+                      type: "filler"
+                    }
+                  ],
+                  borderWidth: "1px",
+                  cornerRadius: "4px",
+                  spacing: "sm",
+                  borderColor: "#ffffff",
+                  margin: "xxl",
+                  height: "40px"
+                },
+                {
+                  type: "box",
+                  layout: "vertical",
+                  action: {
+                    type: "uri",
+                    uri: `line://app/1526734026-V3AxnYZl?id=${id}`
+                  },
+                  contents: [
+                    {
+                      type: "filler"
+                    },
+                    {
+                      type: "box",
+                      layout: "baseline",
+                      contents: [
+                        {
+                          type: "filler"
+                        },
+                        {
+                          type: "text",
+                          text: "Read External",
                           color: "#ffffff",
                           flex: 0,
                           offsetTop: "-2px"
