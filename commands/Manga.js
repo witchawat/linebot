@@ -350,7 +350,7 @@ const Cmd = function(app) {
                   cornerRadius: "4px",
                   spacing: "sm",
                   borderColor: "#ffffff",
-                  margin: "xxl",
+                  margin: "md",
                   height: "40px"
                 },
                 {
@@ -392,7 +392,7 @@ const Cmd = function(app) {
                   cornerRadius: "4px",
                   spacing: "sm",
                   borderColor: "#ffffff",
-                  margin: "xxl",
+                  margin: "md",
                   height: "40px"
                 }
               ],
