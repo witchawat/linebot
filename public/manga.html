@@ -191,7 +191,7 @@
         },
         computed: {
           toViewId() {
-            var q = this.window.location.search;
+            var q = window.location.search;
             if (q && q.indexOf("?id=") == 0) {
               return q.replace("?id=", "");
             }
