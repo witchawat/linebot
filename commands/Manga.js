@@ -294,7 +294,7 @@ const Cmd = function(app) {
                     layout: "vertical",
                     action: {
                       type: "uri",
-                      uri: "line://app/1526734026-V3AxnYZl?"
+                      uri: `line://app/1526734026-V3AxnYZl?id=${id}`
                     },
                     contents: [
                       {

@@ -1,210 +1,223 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes"
+    />
+    <title>Manga List</title>
+    <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <style>
+      body {
+        background: #dadde6;
+      }
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes">
-  <title>Manga List</title>
-  <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-  <style>
-    body {
-      background: #dadde6;
-    }
+      .listContainer {
+        display: block;
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: 41vh;
+        border: 2px solid grey;
+        padding: 10px;
+        margin: 10px 0px;
+        box-sizing: border-box;
+      }
 
-    .listContainer {
-      display: block;
-      overflow-x: hidden;
-      overflow-y: auto;
-      height: 41vh;
-      border: 2px solid grey;
-      padding: 10px;
-      margin: 10px 0px;
-      box-sizing: border-box;
-    }
+      .listContainer::-webkit-scrollbar {
+        width: 0;
+        background: transparent;
+      }
 
-    .listContainer::-webkit-scrollbar {
-      width: 0;
-      background: transparent;
-    }
+      .listContainer img {
+        height: 70px;
+        width: 47px;
+        background: #ccc;
+      }
 
-    .listContainer img {
-      height: 70px;
-      width: 47px;
-      background: #ccc;
-    }
+      .listContainer span {
+        height: 70px;
+        width: calc(100vw - 165px);
+        overflow: hidden;
+        margin-left: 10px;
+        display: inline-block;
+        position: relative;
+      }
 
-    .listContainer span {
-      height: 70px;
-      width: calc(100vw - 165px);
-      overflow: hidden;
-      margin-left: 10px;
-      display: inline-block;
-      position: relative;
-    }
+      .listContainer span b:first-child:nth-last-child(1) {
+        line-height: 70px;
+      }
 
-    .listContainer span b:first-child:nth-last-child(1) {
-      line-height: 70px;
-    }
+      .listContainer span b:first-child:nth-last-child(2) {
+        line-height: 35px;
+      }
 
-    .listContainer span b:first-child:nth-last-child(2) {
-      line-height: 35px;
-    }
+      .listContainer span b:nth-of-type(2) {
+        line-height: 25px;
+        font-size: 70%;
+      }
 
-    .listContainer span b:nth-of-type(2) {
-      line-height: 25px;
-      font-size: 70%;
-    }
+      .listContainer span b {
+        font-weight: normal;
+        text-overflow: ellipsis;
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+      }
 
-    .listContainer span b {
-      font-weight: normal;
-      text-overflow: ellipsis;
-      display: block;
-      white-space: nowrap;
-      overflow: hidden;
-    }
+      .listContainer span.new::before {
+        content: "";
+        position: absolute;
+        top: 13px;
+        height: 10px;
+        width: 10px;
+        background-color: green;
+        border-radius: 20px;
+      }
 
-    .listContainer span.new::before {
-      content: '';
-      position: absolute;
-      top: 13px;
-      height: 10px;
-      width: 10px;
-      background-color: green;
-      border-radius: 20px;
-    }
+      .listContainer span.new b:nth-of-type(1) {
+        padding-left: 15px;
+      }
 
-    .listContainer span.new b:nth-of-type(1) {
-      padding-left: 15px;
-    }
+      .listContainer button {
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        border: 0 none;
+        background: url("./read.png");
+        background-size: cover;
+      }
+    </style>
+  </head>
 
-    .listContainer button {
-      display: inline-block;
-      width: 60px;
-      height: 60px;
-      border: 0 none;
-      background: url('./read.png');
-      background-size: cover;
-    }
-  </style>
-</head>
-
-<body>
-  <div id='app'>
-    <input type='text' placeholder="อย่างน้อย 3 ตัวอักษร" v-model='q' ref='q' @keyup.enter='search' />
-    <button @click='search' :disabled='!canSearch'>search</button> &nbsp;&nbsp;
-    <button @click='save' :disabled='isBusy'>save</button>
-    <br/>
-    {{qqq}}  ::  {{hhh}}
-    <br/>
-    <div ref='searchingListContainer' class='listContainer'>
-      <b v-if='searchingListDisp.length'>{{searchingListDisp.length}} item(s) found.</b>
-      <div v-for='v in searchingListDisp' :key='v.id'>
-        <img :src='v.tmb' @click='follow(v.id)' />
-        <span @click='follow(v.id)'>
-          <b>{{v.name}}</b>
-        </span>
-        <button target='_blank' @click='openManga(v.id)'></button>
+  <body>
+    <div id="app">
+      <input
+        type="text"
+        placeholder="อย่างน้อย 3 ตัวอักษร"
+        v-model="q"
+        ref="q"
+        @keyup.enter="search"
+      />
+      <button @click="search" :disabled="!canSearch">search</button> &nbsp;&nbsp;
+      <button @click="save" :disabled="isBusy">save</button>
+      <br />
+      <!-- {{qqq}}  ::  {{hhh}} -->
+      <br />
+      <div ref="searchingListContainer" class="listContainer">
+        <b v-if="searchingListDisp.length">{{ searchingListDisp.length }} item(s) found.</b>
+        <div v-for="v in searchingListDisp" :key="v.id">
+          <img :src="v.tmb" @click="follow(v.id)" />
+          <span @click="follow(v.id)">
+            <b>{{ v.name }}</b>
+          </span>
+          <button target="_blank" @click="openManga(v.id)"></button>
+        </div>
+      </div>
+      following
+      <div ref="followingListContainer" class="listContainer">
+        <div v-for="v in followingList" :key="v.id">
+          <img :src="v.tmb" @click="remove(v.id,v.name)" />
+          <span @click="remove(v.id,v.name)" :class='(v.age && v.age<86400)?"new":""'>
+            <b>{{ v.name }}</b>
+            <b v-if="v.chapName">{{ v.chapName }}</b>
+          </span>
+          <button target="_blank" @click="openManga(v.id)"></button>
+        </div>
       </div>
     </div>
-    following
-    <div ref='followingListContainer' class='listContainer'>
-      <div v-for='v in followingList' :key='v.id'>
-        <img :src='v.tmb' @click='remove(v.id,v.name)' />
-        <span @click='remove(v.id,v.name)' :class='(v.age && v.age<86400)?"new":""'>
-          <b>{{v.name}}</b>
-          <b v-if='v.chapName'>{{v.chapName}}</b>
-        </span>
-        <button target='_blank' @click='openManga(v.id)'></button>
-      </div>
-    </div>
-  </div>
-  <script>
-    var _app = new Vue({
-      el: '#app',
-      data: {
-        q: '',
-        qqq:window.location.search,
-        hhh:window.location.hash,
-        isBusy: false,
-        uid: '',
-        followingList: [],
-        searchingList: []
-      },
-      methods: {
-        openManga(id) {
-          liff.openWindow({
-            url: 'https://mangarock.com/manga/' + id,
-            external: true
-          });
+    <script>
+      var _app = new Vue({
+        el: "#app",
+        data: {
+          q: "",
+          qqq: window.location.search,
+          hhh: window.location.hash,
+          isBusy: false,
+          uid: "",
+          followingList: [],
+          searchingList: []
         },
-        save() {
-          console.log('saving');
-          if (!this.uid) return;
-          if (this.isBusy) return;
-          this.isBusy = true;
-          this.$refs.q.blur();
-          var mids = [];
-          this.followingList.forEach(r => mids.push(r.id));
-          axios.post('/manga/list/' + this.uid, mids).then(r => {
-            this.isBusy = false;
-            console.log(r.data);
-            alert('saved !');
-          });
-        },
-        follow(mid) {
-          this.$refs.followingListContainer.scrollTo(0, 0);
-          this.followingList = [...this.searchingList.filter(r => {
-            return r.id == mid
-          }), ...this.followingList];
-        },
-        remove(mid, name) {
-          if (confirm('เลิกติดตาม ' + name)) {
-            console.log(this.followingList.findIndex(r => r.id == mid));
-            this.followingList.splice(this.followingList.findIndex(r => r.id == mid), 1);
+        methods: {
+          openManga(id) {
+            liff.openWindow({
+              url: "https://mangarock.com/manga/" + id,
+              external: true
+            });
+          },
+          save() {
+            console.log("saving");
+            if (!this.uid) return;
+            if (this.isBusy) return;
+            this.isBusy = true;
+            this.$refs.q.blur();
+            var mids = [];
+            this.followingList.forEach(r => mids.push(r.id));
+            axios.post("/manga/list/" + this.uid, mids).then(r => {
+              this.isBusy = false;
+              console.log(r.data);
+              alert("saved !");
+            });
+          },
+          follow(mid) {
+            this.$refs.followingListContainer.scrollTo(0, 0);
+            this.followingList = [
+              ...this.searchingList.filter(r => {
+                return r.id == mid;
+              }),
+              ...this.followingList
+            ];
+          },
+          remove(mid, name) {
+            if (confirm("เลิกติดตาม " + name)) {
+              console.log(this.followingList.findIndex(r => r.id == mid));
+              this.followingList.splice(this.followingList.findIndex(r => r.id == mid), 1);
+            }
+          },
+          search() {
+            window.navigator.vibrate([10]);
+            if (!this.canSearch) return;
+            this.isBusy = true;
+            this.$refs.q.blur();
+            axios.get("/manga/search/" + this.q).then(r => {
+              this.$refs.searchingListContainer.scrollTo(0, 0);
+              this.isBusy = false;
+              this.searchingList = r.data;
+            });
           }
         },
-        search() {
-          window.navigator.vibrate([10]);
-          if (!this.canSearch) return;
-          this.isBusy = true;
-          this.$refs.q.blur();
-          axios.get('/manga/search/' + this.q).then(r => {
-            this.$refs.searchingListContainer.scrollTo(0, 0);
-            this.isBusy = false;
-            this.searchingList = r.data;
-          });
-        }
-      },
-      computed: {
-        canSearch() {
-          return !this.isBusy && this.q.length > 2
+        computed: {
+          canSearch() {
+            return !this.isBusy && this.q.length > 2;
+          },
+          searchingListDisp() {
+            return this.searchingList.filter(r => {
+              return this.followingList.findIndex(s => s.id == r.id) == -1;
+            });
+          }
         },
-        searchingListDisp() {
-          return this.searchingList.filter(r => {
-            return this.followingList.findIndex(s => s.id == r.id) == -1;
+        created() {
+          liff.init(r => {
+            if (window.location.search && window.location.search.indexOf("?id=") == 0) {
+              this.openWindow(window.location.search.replace("?id=", ""));
+            }
+            this.uid = r.context.userId ? r.context.userId : this.uid;
+            this.uid = r.context.roomId ? r.context.roomId : this.uid;
+            this.uid = r.context.groupId ? r.context.groupId : this.uid;
+            axios.get("/manga/list/" + this.uid).then(r => {
+              this.followingList = r.data;
+            });
           });
+          // axios.get('/manga/list/' + this.uid).then(r => {
+          //   this.followingList = r.data;
+          // });
+        },
+        mounted() {
+          this.$refs.q.focus();
         }
-      },
-      created() {
-        liff.init(r => {
-          this.uid = (r.context.userId) ? r.context.userId : this.uid;
-          this.uid = (r.context.roomId) ? r.context.roomId : this.uid;
-          this.uid = (r.context.groupId) ? r.context.groupId : this.uid;
-          axios.get('/manga/list/' + this.uid).then(r => {
-            this.followingList = r.data;
-          });
-        });
-        // axios.get('/manga/list/' + this.uid).then(r => {
-        //   this.followingList = r.data;
-        // });
-      },
-      mounted() {
-        this.$refs.q.focus();
-      }
-    });
-  </script>
-</body>
-
+      });
+    </script>
+  </body>
 </html>
