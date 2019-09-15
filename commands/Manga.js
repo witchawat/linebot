@@ -185,7 +185,7 @@ const Cmd = function(app) {
       flexNoti[id] = await mangaNotiContent(id);
     }
     console.log(mangaIds.length + " updated chapters");
-    console.log(flexNoti);
+    console.log(JSON.stringify(flexNoti,null,2));
 
     var uId = "",
       txt = [];
