@@ -185,8 +185,6 @@ const Cmd = function(app) {
       flexNoti[id] = await mangaNotiContent(id);
     }
     console.log(mangaIds.length + " updated chapters");
-    console.log(JSON.stringify(flexNoti, null, 2));
-    return;
     var uId = "",
       txt = [];
     var rows = await q(
@@ -197,6 +195,11 @@ const Cmd = function(app) {
         ")",
       mangaIds
     );
+    console.log(JSON.stringify(rows, null, 2));
+    var uIds=[...new Set(rows.map(v=>v.uid))];
+    console.log(uIds);
+    
+    return;
     rows.forEach(r => {
       if (uId != r.uid) {
         if (uId)
