@@ -185,8 +185,6 @@ const Cmd = function(app) {
       flexNoti[id] = await mangaNotiContent(id);
     }
     console.log(mangaIds.length + " updated chapters");
-    var uId = "",
-      txt = [];
     var rows = await q(
       "select * from follow where mid in(" +
         Array(mangaIds.length)
@@ -196,9 +194,14 @@ const Cmd = function(app) {
       mangaIds
     );
     console.log(JSON.stringify(rows, null, 2));
-    var uIds=[...new Set(rows.map(v=>v.uid))];
+    var uIds = [...new Set(rows.map(v => v.uid))];
     console.log(uIds);
-    
+    uIds.forEach(u => {
+      var flexMsg = [];
+      rows.filter(v => v.uid == u).forEach(v => flexMsg.push(flexNoti[v.mid]));
+      
+    console.log(JSON.stringify(flexMsg, null, 2));
+    });
     return;
     rows.forEach(r => {
       if (uId != r.uid) {
