@@ -208,16 +208,16 @@ const Cmd = function(app) {
         to: u,
         message: [
           {
-            type: "text",
-            text: "line://app/1526734026-V3AxnYZl"
-          },
-          {
             type: "flex",
             altText: altTexts.join(","),
             contents: {
               type: "carousel",
               contents
             }
+          },
+          {
+            type: "text",
+            text: "line://app/1526734026-V3AxnYZl"
           }
         ]
       });
