@@ -197,7 +197,7 @@ const Cmd = function(app) {
     var uIds = [...new Set(rows.map(v => v.uid))];
     uIds.forEach(u => {
       var contents = [],
-      altTexts = [];
+        altTexts = [];
       rows
         .filter(v => v.uid == u)
         .forEach(v => {
@@ -206,14 +206,20 @@ const Cmd = function(app) {
         });
       _this.emit("pushMessage", {
         to: u,
-        message: {
-          type: "flex",
-          altText: altTexts.join(','),
-          contents: {
-            type: "carousel",
-            contents
+        message: [
+          {
+            type: "text",
+            text: "line://app/1526734026-V3AxnYZl"
+          },
+          {
+            type: "flex",
+            altText: altTexts.join(","),
+            contents: {
+              type: "carousel",
+              contents
+            }
           }
-        }
+        ]
       });
 
       console.log(JSON.stringify(flexMsg, null, 2));
@@ -268,7 +274,7 @@ const Cmd = function(app) {
       r.name,
       {
         type: "bubble",
-        "size":"kilo",
+        size: "kilo",
         body: {
           type: "box",
           layout: "vertical",
@@ -332,48 +338,6 @@ const Cmd = function(app) {
                         {
                           type: "text",
                           text: "Read",
-                          color: "#ffffff",
-                          flex: 0,
-                          offsetTop: "-2px"
-                        },
-                        {
-                          type: "filler"
-                        }
-                      ],
-                      spacing: "sm"
-                    },
-                    {
-                      type: "filler"
-                    }
-                  ],
-                  borderWidth: "1px",
-                  cornerRadius: "4px",
-                  spacing: "sm",
-                  borderColor: "#ffffff",
-                  margin: "md",
-                  height: "40px"
-                },
-                {
-                  type: "box",
-                  layout: "vertical",
-                  action: {
-                    type: "uri",
-                    uri: `line://app/1526734026-V3AxnYZl?id=${id}`
-                  },
-                  contents: [
-                    {
-                      type: "filler"
-                    },
-                    {
-                      type: "box",
-                      layout: "baseline",
-                      contents: [
-                        {
-                          type: "filler"
-                        },
-                        {
-                          type: "text",
-                          text: "Read External",
                           color: "#ffffff",
                           flex: 0,
                           offsetTop: "-2px"
