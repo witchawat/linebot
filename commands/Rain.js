@@ -382,16 +382,14 @@ const Cmd = function(app) {
                   contents: [
                     {
                       type: "text",
-                      text: "PM2.5",
-                      weight: "bold",
+                      text: "🏠",
                       size: "sm",
                       color: "#555555",
                       flex: 0
                     },
                     {
                       type: "text",
-                      text: `${pm25} ${pm25_warning}`,
-                      weight: "bold",
+                      text: `${city}`,
                       size: "sm",
                       color: "#111111",
                       align: "end"
@@ -404,14 +402,16 @@ const Cmd = function(app) {
                   contents: [
                     {
                       type: "text",
-                      text: "🏠",
+                      text: "PM2.5",
+                      weight: "bold",
                       size: "sm",
                       color: "#555555",
                       flex: 0
                     },
                     {
                       type: "text",
-                      text: `${city}`,
+                      text: `${pm25} ${pm25_warning}`,
+                      weight: "bold",
                       size: "sm",
                       color: "#111111",
                       align: "end"
