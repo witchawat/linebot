@@ -261,7 +261,7 @@ const Cmd = function(app) {
 
   // copy from weather darksky
   async function rainFlex(evt) {
-    var duration = 4,
+    var duration = 6,
       lat = 13.731213,
       lng = 100.541458,
       addr = "สวนลุมพินี";
