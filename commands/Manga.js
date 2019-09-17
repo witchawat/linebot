@@ -46,12 +46,13 @@ const Cmd = function(app) {
   });
   this.handleEvent = async function(evt, cmd, param) {
     if (cmd == "mangad") {
-      notify(
-        (await q(
-          "select mid from follow where uid=? order by rand() limit 10",
-          evt.source.userId
-        )).map(v => v.mid)
-      );
+      var ids = (await q(
+        "select mid from follow where uid=? order by rand() limit 10",
+        evt.source.userId
+      )).map(v => v.mid);
+      console.log(ids);
+
+      notify(ids);
     }
     if (cmd == "manga") {
       _this.emit("replyMessage", {
