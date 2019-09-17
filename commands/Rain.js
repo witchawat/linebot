@@ -68,14 +68,15 @@ const Cmd = function(app) {
         };
     }
     if (cmd == "rain_change_loc") {
-      redis(`rain${evt.source.userId}`, {
+      var uInfo = {
         addr: evt.message.title || evt.message.address,
         lat: evt.message.latitude,
         lng: evt.message.longitude
-      });
+      };
+      redis(`rain${evt.source.userId}`, uInfo);
       ret = {
         type: "text",
-        text: `เปลี่ยนพิกัดเป็น ${evt.message.address} แล้ว`
+        text: `เปลี่ยนพิกัดเป็น ${uInfo.addr} แล้ว`
       };
     }
     _this.emit("replyMessage", {
