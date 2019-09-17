@@ -323,13 +323,13 @@ const Cmd = function(app) {
     var realFeel = f2c(inp.apparentTemperature);
 
     ret += emoji.get("clock" + t) + " ";
-    ret += " " + f2c(inp.temperature) + "°C ";
+    ret += " " + f2c(inp.temperature) + "° ";
     ret += 59 <= realFeel ? emoji.get(":skull:") : "";
     ret += 52 <= realFeel && realFeel <= 58 ? emoji.get(":skull:") : "";
     ret += 40 <= realFeel && realFeel <= 51 ? emoji.get(":sos:") : "";
     ret += 33 <= realFeel && realFeel <= 39 ? emoji.get(":large_orange_diamond:") : "";
     ret += realFeel <= 32 ? emoji.get(":white_check_mark:") : "";
-    ret += " " + realFeel + "°C ";
+    ret += " " + realFeel + "° ";
     ret += emoji.get(":rain_cloud:") + " " + (inp.precipProbability*100).toFixed(0)+'%';
     ret += " " + inp.summary;
     return ret;
