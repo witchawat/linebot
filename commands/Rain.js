@@ -282,7 +282,7 @@ const Cmd = function(app) {
               color: "#d1115b",
               action: {
                 type: "uri",
-                url: "line://nv/location",
+                url: "https://google.com",
                 label: "เปลี่ยนพิกัด"
               }
             }
