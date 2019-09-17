@@ -279,9 +279,9 @@ const Cmd = function(app) {
               type: "button",
               style: "primary",
               height: "sm",
-              color: "#ff0163",
+              color: "#d1115b",
               action: {
-                type: "message",
+                type: "location",
                 text: "ggg",
                 label: "เปลี่ยนพิกัด"
               }
