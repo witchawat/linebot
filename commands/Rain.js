@@ -333,6 +333,7 @@ const Cmd = function(app) {
             let airData = air.data.data,
               city =
                 airData.city.name
+.split('Thailand')[1]
                   .split("(")
                   .slice(1)
                   .join("(")
