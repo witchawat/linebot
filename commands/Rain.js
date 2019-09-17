@@ -51,7 +51,7 @@ const Cmd = function(app) {
         altText: `ถ้าดูไม่ได้รบกวนไปดูเองที่\r\n${process.env.RAIN_IMG}`,
         contents: await rainFlex(evt)
       };
-      console.log(JSON.stringify(ret, null, 2));
+      //console.log(JSON.stringify(ret, null, 2));
     }
     if (cmd == "rainvid") {
       if (vidStat == "error")
@@ -68,9 +68,9 @@ const Cmd = function(app) {
     }
     if (cmd == "rain_change_loc") {
       redis(`rain${evt.source.userId}`, {
-        addr: evt.message.address,
+        addr: evt.message.title || evt.message.address,
         lat: evt.message.latitude,
-        lag: evt.message.longitude
+        lng: evt.message.longitude
       });
       ret = {
         type: "text",
@@ -269,8 +269,7 @@ const Cmd = function(app) {
       addr = uInfo.addr;
       lat = uInfo.lat;
       lng = uInfo.lng;
-      console.log('has uinfo ',JSON.stringify(uInfo));
-      
+      console.log("has uinfo ", JSON.stringify(uInfo));
     }
 
     //บ่อขยะอ่อนนุช 13.7070603,100.6801283
