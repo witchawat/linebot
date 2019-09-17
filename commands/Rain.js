@@ -4,6 +4,10 @@ var emoji = require("node-emoji");
 var CronJob = require("cron").CronJob;
 const util = require("util");
 const events = require("events");
+const _redis = require("redis");
+var redisClient = _redis.createClient(process.env.REDISCLOUD_URL, {
+  no_ready_check: true
+});
 const Cmd = function(app) {
   events.EventEmitter.call(this);
   var lastUpdate = new Date("2017-01-01"),
@@ -45,7 +49,7 @@ const Cmd = function(app) {
       ret = {
         type: "flex",
         altText: `ถ้าดูไม่ได้รบกวนไปดูเองที่\r\n${process.env.RAIN_IMG}`,
-        contents: await rainFlex(6, 13.689716, 100.669553)
+        contents: await rainFlex(evt)
       };
       console.log(JSON.stringify(ret, null, 2));
     }
@@ -61,6 +65,17 @@ const Cmd = function(app) {
           originalContentUrl: vidUrl,
           previewImageUrl: imgStat == "error" ? vidTmb : imgTmb
         };
+    }
+    if (cmd == "rain_change_loc") {
+      redis(`rain${evt.source.userId}`, {
+        addr: evt.message.address,
+        lat: evt.message.latitude,
+        lag: evt.message.longitude
+      });
+      ret = {
+        type: "text",
+        text: `เปลี่ยนพิกัดเป็น ${evt.message.address} แล้ว`
+      };
     }
     _this.emit("replyMessage", {
       replyToken: evt.replyToken,
@@ -243,17 +258,27 @@ const Cmd = function(app) {
   }
 
   // copy from weather darksky
-  function rainFlex(duration, lat, lng) {
-    // //default is บ่อขยะอ่อนนุช
-    // lat = lat || 13.7070603;
-    // lng = lng || 100.6801283;
+  async function rainFlex(evt) {
+    var duration = 6,
+      lat = 13.689716,
+      lng = 100.669553,
+      addr = "สวนหลวง ร.9";
 
-    //default is สวนพริกอันตร้า
-    lat = lat || 13.781143;
-    lng = lng || 100.650343;
+    var uInfo = await redis(`rain${evt.source.userId}`);
+    if (uInfo) {
+      addr = uInfo.addr;
+      lat = uInfo.lat;
+      lng = uInfo.lng;
+      console.log('has uinfo ',JSON.stringify(uInfo));
+      
+    }
+
+    //บ่อขยะอ่อนนุช 13.7070603,100.6801283
+    // สวนพริกอันตร้า 13.781143,100.650343
     // สวนหลวง ร.9 13.689716, 100.669553
 
     return new Promise(resolve => {
+      var uInfo;
       var url = imgStat == "error" ? "https://linerain.herokuapp.com/rain/img" : imgUrl;
       var uri = imgStat == "error" ? `${process.env.RAIN_IMG}` : imgUrl;
       var ret = {
@@ -281,9 +306,9 @@ const Cmd = function(app) {
               height: "sm",
               color: "#d1115b",
               action: {
-                "type": "message",
-                "label": "บันทึ 2ก",
-                "text": "บันทึก"
+                type: "message",
+                label: "เปลี่ยนพิกัด",
+                text: "!rain_change_loc"
               }
             }
           ]
@@ -292,7 +317,7 @@ const Cmd = function(app) {
       var contents = [
         {
           type: "text",
-          text: "สวนหลวง ร.9",
+          text: addr,
           weight: "bold",
           color: "#1DB446",
           size: "sm"
@@ -354,6 +379,29 @@ const Cmd = function(app) {
   }
   function f2c(f) {
     return (((f - 32) / 9) * 5).toFixed(0);
+  }
+  function redis() {
+    var varName = arguments[0];
+    var val = arguments[1];
+    return new Promise(resolve => {
+      if (val === undefined) {
+        redisClient.get(varName, function(err, _) {
+          if (err || !_) {
+            resolve({});
+            return;
+          }
+          try {
+            resolve(JSON.parse(_));
+          } catch (e) {
+            resolve({});
+          }
+        });
+        return;
+      } else {
+        redisClient.set(varName, JSON.stringify(val), "EX", 20 * 60 * 60);
+        resolve(true);
+      }
+    });
   }
   util.inherits(Cmd, events.EventEmitter);
   new CronJob({
