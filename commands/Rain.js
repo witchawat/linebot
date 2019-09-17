@@ -329,15 +329,18 @@ const Cmd = function(app) {
         .then(resp => {
           //console.log(JSON.stringify(resp.data, null, 2));
           var dat = resp.data.hourly.data.slice(0, duration);
+          var isFirstForecast = true;
           if (!dat.length) return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
-          dat.forEach(v =>
+          dat.forEach(v => {
             contents.push({
               type: "text",
               text: forecast2string(v),
               color: "#555555",
-              size: "sm"
-            })
-          );
+              size: "sm",
+              margin: isFirstForecast ? "xxl" : null
+            });
+            isFirstForecast = false;
+          });
           ret.body = {
             type: "box",
             layout: "vertical",
