@@ -16,7 +16,7 @@ const Cmd = function(app) {
   const _this = this;
   app.get("/rain/img", (req, res) => {
     axios
-      .get("http://weather.bangkok.go.th/Images/Radar/nkradar.jpg", {
+      .get(`${process.env.RAIN_IMG}`, {
         responseType: "arraybuffer"
       })
       .then(r => {
@@ -35,7 +35,7 @@ const Cmd = function(app) {
         ret = {
           type: "text",
           text:
-            "ไม่สามารถ load รูปได้ รบกวนไปดูเองที่\r\nhttp://weather.bangkok.go.th/Images/Radar/nkradar.jpg"
+            `ไม่สามารถ load รูปได้ รบกวนไปดูเองที่\r\n${process.env.RAIN_IMG}`
         };
       else
         ret = {
@@ -46,7 +46,7 @@ const Cmd = function(app) {
       ret = {
         type: "flex",
         altText:
-          "ถ้าดูไม่ได้รบกวนไปดูเองที่\r\nhttp://weather.bangkok.go.th/Images/Radar/nkradar.jpg",
+          `ถ้าดูไม่ได้รบกวนไปดูเองที่\r\n${process.env.RAIN_IMG}`,
         contents: await rainFlex(6, 13.689716, 100.669553)
       };
       console.log(JSON.stringify(ret, null, 2));
@@ -56,7 +56,7 @@ const Cmd = function(app) {
         ret = {
           type: "text",
           text:
-            "ไม่สามารถ load gif ได้ รบกวนไปดูเองที่\r\nhttp://203.155.220.231/Radar/pics/nkradar.gif"
+            `ไม่สามารถ load gif ได้ รบกวนไปดูเองที่\r\n${process.env.RAIN_VID}`
         };
       else
         ret = {
@@ -188,7 +188,7 @@ const Cmd = function(app) {
     try {
       token = await gfyAuth();
       //post img
-      gfyname = await gfyPost("http://weather.bangkok.go.th/FTPCustomer/radar/pics/zfiltered.jpg");
+      gfyname = await gfyPost(process.env.RAIN_IMG);
       checkCount = 0;
       while (checkCount < 10) {
         checkCount++;
@@ -210,7 +210,7 @@ const Cmd = function(app) {
         imgStat = "error";
       }
       //post vid
-      gfyname = await gfyPost("http://203.155.220.231/Radar/pics/nkradar.gif");
+      gfyname = await gfyPost(process.env.RAIN_VID);
       checkCount = 0;
       //check 10 times
       while (checkCount < 10) {
@@ -281,6 +281,7 @@ const Cmd = function(app) {
             })
           );
           var url = imgStat == "error" ? "https://linerain.herokuapp.com/rain/img" : imgUrl;
+          var uri = imgStat == "error" ? `${process.env.RAIN_IMG}` : imgUrl;
           return resolve({
             type: "bubble",
             hero: {
@@ -291,7 +292,7 @@ const Cmd = function(app) {
               aspectMode: "cover",
               action: {
                 type: "uri",
-                uri: url
+                uri
               }
             },
             body: {
