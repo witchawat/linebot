@@ -299,6 +299,23 @@ const Cmd = function(app) {
             contents,
             paddingAll: "10px"
           };
+          ret.footer = {
+            type: "box",
+            layout: "vertical",
+            spacing: "sm",
+            contents: [
+              {
+                type: "button",
+                style: "primary",
+                height: "sm",
+                color: "#ff0163",
+                action: {
+                  type: "location",
+                  label: "เปลี่ยนพิกัด"
+                }
+              }
+            ]
+          };
           return resolve(ret);
         })
         .catch(err => {
