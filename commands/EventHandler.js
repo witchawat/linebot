@@ -1,7 +1,15 @@
 const EventHandler = function(_client) {
   var client = _client;
   var rules = [];
-  var specialHandler, locHandler, locHandlerParam, locTimer, imgHandler, imgHandlerParam, imgTimer;
+  var specialHandler,
+    locHandler,
+    locUID,
+    locHandlerParam,
+    locTimer,
+    imgHandler,
+    imgUID,
+    imgHandlerParam,
+    imgTimer;
   this.add = function(cmd, cmdHandler, _type) {
     var type = _type || "text";
     if (Array.isArray(cmd)) {
@@ -61,21 +69,23 @@ const EventHandler = function(_client) {
             text: "waiting for img"
           }
         });
+        imgUID = evt.source.userId;
         imgHandler = r;
         imgHandlerParam = regTest[2];
         clearTimeout(imgTimer);
         setTimeout(function() {
           imgHandler = null;
-        }, 60000); //wait 1 minute for image
+        }, 120000); //wait 2 minute for image
       }
       if (r.type == "location") {
         replyMessage({
           replyToken: evt.replyToken,
           message: {
             type: "text",
-            text: "waiting for location"
+            text: "please sent a location"
           }
         });
+        locUID = evt.source.userId;
         locHandler = r;
         locHandlerParam = regTest[2];
         clearTimeout(locTimer);
@@ -90,7 +100,7 @@ const EventHandler = function(_client) {
     //console.log(evt);
     if (evt.type != "message" || !evt.message) return;
     if (evt.message.type == "text") rules.forEach(r => isCmdMatched(evt, r));
-    if (evt.message.type == "image" && imgHandler) {
+    if (evt.message.type == "image" && imgHandler && evt.source.userId == imgUID) {
       imgHandler.handler.handleEvent(evt, imgHandler.cmd, imgHandlerParam);
       clearTimeout(imgTimer);
       imgHandler = null;
@@ -98,7 +108,7 @@ const EventHandler = function(_client) {
     if (evt.message.type == "location" && specialHandler) {
       specialHandler.handleEvent(evt, null, null);
     }
-    if (evt.message.type == "location" && locHandler) {
+    if (evt.message.type == "location" && locHandler && evt.source.userId == locUID) {
       locHandler.handler.handleEvent(evt, locHandler.cmd, locHandlerParam);
       clearTimeout(locTimer);
       locHandler = null;
