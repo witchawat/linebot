@@ -315,15 +315,7 @@ const Cmd = function(app) {
           ]
         }
       };
-      var contents = [
-        {
-          type: "text",
-          text: addr,
-          weight: "bold",
-          color: "#1DB446",
-          size: "sm"
-        }
-      ];
+      var contents = [];
       axios
         .all([
           axios.get(
@@ -383,14 +375,15 @@ const Cmd = function(app) {
                   contents: [
                     {
                       type: "text",
-                      text: "🏠",
+                      text: addr,
+                      weight: "bold",
+                      color: "#1DB446",
                       size: "sm",
-                      color: "#555555",
                       flex: 0
                     },
                     {
                       type: "text",
-                      text: `${city}`,
+                      text: ` 🏠${city}`,
                       size: "sm",
                       color: "#111111",
                       align: "end"
