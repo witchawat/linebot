@@ -329,19 +329,14 @@ const Cmd = function(app) {
             `https://api.darksky.net/forecast/e3609d95c9670e7e3adc450f54e9c21e/${lat},${lng}`
           ),
           axios.get(
-            "https://api.waqi.info/feed/geo:" +
-              lat +
-              ";" +
-              lng +
-              "/?token=" +
-              process.env.AIRQUALITY_TOKEN
+            `https://api.waqi.info/feed/geo:${lat};${lng}/?token=${process.env.AIRQUALITY_TOKEN}`
           )
         ])
         .then(
           axios.spread((weather, air) => {
             // air
-            console.log(JSON.stringify(air.data.data.city,null,2));
-            
+            console.log(JSON.stringify(air.data.data.city, null, 2));
+
             let airData = air.data.data,
               city = airData.city.name,
               pm25 = airData.iaqi.pm25 ? airData.iaqi.pm25.v * 1 : 0,
