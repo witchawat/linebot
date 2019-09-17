@@ -69,7 +69,7 @@ const Cmd = function(app) {
     }
     if (cmd == "rain_change_loc") {
       var uInfo = {
-        addr: evt.message.title || evt.message.address,
+        addr: evt.message.title || evt.message.address || "สถานที่ไม่ทราบชื่อ",
         lat: evt.message.latitude,
         lng: evt.message.longitude
       };
