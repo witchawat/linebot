@@ -47,8 +47,7 @@ const Cmd = function(app) {
         altText: `ถ้าดูไม่ได้รบกวนไปดูเองที่\r\n${process.env.RAIN_IMG}`,
         contents: await rainFlex(6, 13.689716, 100.669553)
       };
-      console.log(JSON.stringify(ret,null,2));
-      
+      console.log(JSON.stringify(ret, null, 2));
     }
     if (cmd == "rainvid") {
       if (vidStat == "error")
@@ -270,6 +269,24 @@ const Cmd = function(app) {
             type: "uri",
             uri
           }
+        },
+        footer: {
+          type: "box",
+          layout: "vertical",
+          spacing: "sm",
+          contents: [
+            {
+              type: "button",
+              style: "primary",
+              height: "sm",
+              color: "#ff0163",
+              action: {
+                type: "message",
+                text: "ggg",
+                label: "เปลี่ยนพิกัด"
+              }
+            }
+          ]
         }
       };
       var contents = [
@@ -300,23 +317,6 @@ const Cmd = function(app) {
             layout: "vertical",
             contents,
             paddingAll: "10px"
-          };
-          ret.footer = {
-            type: "box",
-            layout: "vertical",
-            spacing: "sm",
-            contents: [
-              {
-                type: "button",
-                style: "primary",
-                height: "sm",
-                color: "#ff0163",
-                action: {
-                  type: "location",
-                  label: "เปลี่ยนพิกัด"
-                }
-              }
-            ]
           };
           return resolve(ret);
         })
