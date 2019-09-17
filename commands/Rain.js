@@ -28,7 +28,7 @@ const Cmd = function(app) {
           .send(r.data);
       });
   });
-  this.handleEvent =async function(evt, cmd, param) {
+  this.handleEvent = async function(evt, cmd, param) {
     var ret = {};
     if (cmd == "rain") {
       if (imgStat == "error")
@@ -330,8 +330,8 @@ const Cmd = function(app) {
     ret += 33 <= realFeel && realFeel <= 39 ? emoji.get(":large_orange_diamond:") : "";
     ret += realFeel <= 32 ? emoji.get(":white_check_mark:") : "";
     ret += " " + realFeel + "°C ";
-    ret += inp.summary;
-    ret += " " + emoji.get(":rain_cloud:") + " " + inp.precipProbability;
+    ret += emoji.get(":rain_cloud:") + " " + inp.precipProbability;
+    ret += " " + inp.summary;
     return ret;
   }
   function f2c(f) {
