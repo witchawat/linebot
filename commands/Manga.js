@@ -47,7 +47,7 @@ const Cmd = function(app) {
   this.handleEvent = async function(evt, cmd, param) {
     if (cmd == "mangad") {
       var ids = (await q(
-        "select mid from follow where uid=? order by rand() limit 10",
+        "select mid from follow where uid=? order by rand() limit 7",
         evt.source.userId
       )).map(v => v.mid);
       console.log(ids);
