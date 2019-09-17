@@ -47,6 +47,8 @@ const Cmd = function(app) {
         altText: `ถ้าดูไม่ได้รบกวนไปดูเองที่\r\n${process.env.RAIN_IMG}`,
         contents: await rainFlex(6, 13.689716, 100.669553)
       };
+      console.log(JSON.stringify(ret,null,2));
+      
     }
     if (cmd == "rainvid") {
       if (vidStat == "error")
