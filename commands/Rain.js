@@ -31,13 +31,6 @@ const Cmd = function(app) {
   this.handleEvent = function(evt, cmd, param) {
     var ret = {};
     if (cmd == "rain") {
-      ret = {
-        type: "flex",
-        altText:
-          "ถ้าดูไม่ได้รบกวนไปดูเองที่\r\nhttp://weather.bangkok.go.th/Images/Radar/nkradar.jpg",
-        contents: rainFlex(6, 13.689716, 100.669553)
-      };break;
-
       if (imgStat == "error")
         ret = {
           type: "text",
@@ -50,6 +43,12 @@ const Cmd = function(app) {
           originalContentUrl: imgUrl,
           previewImageUrl: imgTmb
         };
+      ret = {
+        type: "flex",
+        altText:
+          "ถ้าดูไม่ได้รบกวนไปดูเองที่\r\nhttp://weather.bangkok.go.th/Images/Radar/nkradar.jpg",
+        contents: rainFlex(6, 13.689716, 100.669553)
+      };
     }
     if (cmd == "rainvid") {
       if (vidStat == "error")
@@ -278,11 +277,12 @@ const Cmd = function(app) {
             size: "sm"
           })
         );
+        var url = imgStat == "error" ? "https://linerain.herokuapp.com/rain/img" : imgUrl;
         return {
           type: "bubble",
           hero: {
             type: "image",
-            url: "https://linerain.herokuapp.com/rain/img",
+            url,
             size: "full",
             aspectRatio: "1:1",
             aspectMode: "cover",
