@@ -335,7 +335,7 @@ const Cmd = function(app) {
         .then(
           axios.spread((weather, air) => {
             // air
-            console.log(JSON.stringify(air.data.data.city, null, 2));
+            console.log(JSON.stringify(air.data.data, null, 2));
 
             let airData = air.data.data,
               city = airData.city.name,
