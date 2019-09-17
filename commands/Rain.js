@@ -52,7 +52,7 @@ const Cmd = function(app) {
         altText,
         contents
       };
-      //console.log(JSON.stringify(ret, null, 2));
+      console.log(JSON.stringify(ret, null, 2));
     }
     if (cmd == "rainvid") {
       if (vidStat == "error")
