@@ -281,8 +281,9 @@ const Cmd = function(app) {
               height: "sm",
               color: "#d1115b",
               action: {
-                "type":"location",
-   "label":"Location"
+                type: "uri",
+                url: "line://nv/location",
+                label: "เปลี่ยนพิกัด"
               }
             }
           ]
