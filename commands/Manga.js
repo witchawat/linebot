@@ -62,7 +62,7 @@ app.get("/manga/img/:id", async (req, res) => {
   this.handleEvent = async function(evt, cmd, param) {
     if (cmd == "mangad") {
       var ids = (await q(
-        "select mid from follow where uid=? order by rand() limit 7",
+        "select mid from follow where uid=? order by rand() limit 10",
         evt.source.userId
       )).map(v => v.mid);
       console.log(ids);
@@ -291,7 +291,7 @@ app.get("/manga/img/:id", async (req, res) => {
   async function mangaNotiContent(id) {
     var r = (await q("select * from manga where id=?", id))[0];
     if (!r) return ["", {}];
-var tmb=r.tmb.indexOf('https:')>=0?r.tmb:'https://linerain.herokuapp.com/manga/img/'+r.id;
+var tmb=r.tmb.indexOf('https:')>=0?r.tmb:'https://linerain.herokuapp.com/manga/img/'+r.id+'?'+Math.random();
     return [
       r.name,
       {
