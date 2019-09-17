@@ -269,7 +269,7 @@ const Cmd = function(app) {
       addr = uInfo.addr;
       lat = uInfo.lat;
       lng = uInfo.lng;
-      console.log("has uinfo ", JSON.stringify(uInfo));
+      //console.log("has uinfo ", JSON.stringify(uInfo));
     }
 
     //บ่อขยะอ่อนนุช 13.7070603,100.6801283

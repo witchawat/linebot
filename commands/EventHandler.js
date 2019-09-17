@@ -81,13 +81,13 @@ const EventHandler = function(_client) {
         clearTimeout(locTimer);
         setTimeout(function() {
           locHandler = null;
-        }, 60000); //wait 1 minute for location
+        }, 120000); //wait 2 minute for location
       }
       if (r.type == "text") r.handler.handleEvent(evt, r.cmd, regTest[2]);
     }
   }
   this.handleEvent = function(evt) {
-    console.log(evt);
+    //console.log(evt);
     if (evt.type != "message" || !evt.message) return;
     if (evt.message.type == "text") rules.forEach(r => isCmdMatched(evt, r));
     if (evt.message.type == "image" && imgHandler) {
