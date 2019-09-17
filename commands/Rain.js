@@ -34,8 +34,7 @@ const Cmd = function(app) {
       if (imgStat == "error")
         ret = {
           type: "text",
-          text:
-            `ไม่สามารถ load รูปได้ รบกวนไปดูเองที่\r\n${process.env.RAIN_IMG}`
+          text: `ไม่สามารถ load รูปได้ รบกวนไปดูเองที่\r\n${process.env.RAIN_IMG}`
         };
       else
         ret = {
@@ -45,8 +44,7 @@ const Cmd = function(app) {
         };
       ret = {
         type: "flex",
-        altText:
-          `ถ้าดูไม่ได้รบกวนไปดูเองที่\r\n${process.env.RAIN_IMG}`,
+        altText: `ถ้าดูไม่ได้รบกวนไปดูเองที่\r\n${process.env.RAIN_IMG}`,
         contents: await rainFlex(6, 13.689716, 100.669553)
       };
       console.log(JSON.stringify(ret, null, 2));
@@ -55,8 +53,7 @@ const Cmd = function(app) {
       if (vidStat == "error")
         ret = {
           type: "text",
-          text:
-            `ไม่สามารถ load gif ได้ รบกวนไปดูเองที่\r\n${process.env.RAIN_VID}`
+          text: `ไม่สามารถ load gif ได้ รบกวนไปดูเองที่\r\n${process.env.RAIN_VID}`
         };
       else
         ret = {
@@ -284,6 +281,7 @@ const Cmd = function(app) {
           var uri = imgStat == "error" ? `${process.env.RAIN_IMG}` : imgUrl;
           return resolve({
             type: "bubble",
+            size: "giga",
             hero: {
               type: "image",
               url,
