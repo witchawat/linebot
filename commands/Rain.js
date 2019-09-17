@@ -279,7 +279,8 @@ const Cmd = function(app) {
 
     return new Promise(resolve => {
       var uInfo;
-      var url = imgStat == "error" ? "https://linerain.herokuapp.com/rain/img" : imgUrl;
+      var url =
+        imgStat == "error" ? `https://linerain.herokuapp.com/rain/img?${Math.random()}` : imgUrl;
       var uri = imgStat == "error" ? `${process.env.RAIN_IMG}` : imgUrl;
       var ret = {
         type: "bubble",
