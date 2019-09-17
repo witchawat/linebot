@@ -268,23 +268,6 @@ const Cmd = function(app) {
             type: "uri",
             uri
           }
-        },
-        footer: {
-          type: "box",
-          layout: "vertical",
-          spacing: "sm",
-          contents: [
-            {
-              type: "button",
-              style: "primary",
-              height: "sm",
-              color: "#ff0163",
-              action: {
-                type: "location",
-                label: "เปลี่ยนพิกัด"
-              }
-            }
-          ]
         }
       };
       var contents = [
