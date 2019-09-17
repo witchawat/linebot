@@ -331,6 +331,7 @@ const Cmd = function(app) {
             // console.log(JSON.stringify(air.data.data, null, 2));
 
             let airData = air.data.data,
+uTime=airData.time.s,
               city =
                 airData.city.name
 .split('Thailand').pop()
@@ -385,7 +386,7 @@ console.log('cityName '+airData.city.name);
                     },
                     {
                       type: "text",
-                      text: ` 🏠${city}`,
+                      text: `🏠 ${city}`,
                       size: "sm",
                       color: "#111111",
                       align: "end"
@@ -398,7 +399,7 @@ console.log('cityName '+airData.city.name);
                   contents: [
                     {
                       type: "text",
-                      text: "PM2.5",
+                      text: `PM2.5 @ ${emoji.get(":clock2:")} ${uTime}`,
                       weight: "bold",
                       size: "sm",
                       color: "#555555",
