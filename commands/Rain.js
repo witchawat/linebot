@@ -324,30 +324,121 @@ const Cmd = function(app) {
         }
       ];
       axios
-        .get(`https://api.darksky.net/forecast/e3609d95c9670e7e3adc450f54e9c21e/${lat},${lng}`)
-        .then(resp => {
-          //console.log(JSON.stringify(resp.data, null, 2));
-          var dat = resp.data.hourly.data.slice(0, duration);
-          var isFirstForecast = true;
-          if (!dat.length) return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
-          dat.forEach(v => {
+        .all([
+          axios.get(
+            `https://api.darksky.net/forecast/e3609d95c9670e7e3adc450f54e9c21e/${lat},${lng}`
+          ),
+          axios.get(
+            "https://api.waqi.info/feed/geo:" +
+              lat +
+              ";" +
+              lng +
+              "/?token=" +
+              process.env.AIRQUALITY_TOKEN
+          )
+        ])
+        .then(
+          axios.spread((weather, air) => {
+            // air
+            let airData = air.data.data,
+              city = airData.city.name,
+              pm25 = airData.iaqi.pm25 ? airData.iaqi.pm25.v * 1 : 0,
+              pm25_warning = `${emoji.get(":white_check_mark:")} Good`;
+            if (pm25 > 51) {
+              pm25_warning = `${emoji.get(":small_orange_diamond:")} Moderate`;
+            }
+            if (pm25 > 101) {
+              pm25_warning = `${emoji.get(
+                ":large_orange_diamond:"
+              )} Unhealthy for Sensitive Groups`;
+            }
+            if (pm25 > 151) {
+              pm25_warning = `${emoji.get(":bangbang:")} Unhealthy`;
+            }
+            if (pm25 > 201) {
+              pm25_warning = `${emoji.get(":sos:")} Very Unhealthy`;
+            }
+            if (pm25 > 300) {
+              pm25_warning = `${emoji.get(":skull:")} Hazardous`;
+            }
+            if (pm25 == 0) {
+              pm25_warning = "";
+              pm25 = "no data";
+            }
             contents.push({
-              type: "text",
-              text: forecast2string(v),
-              color: "#555555",
-              size: "sm",
-              margin: isFirstForecast ? "md" : "none"
+              type: "box",
+              layout: "vertical",
+              margin: "sm",
+              spacing: "sm",
+              contents: [
+                {
+                  type: "box",
+                  layout: "horizontal",
+                  contents: [
+                    {
+                      type: "text",
+                      text: "PM2.5",
+                      weight: "bold",
+                      size: "sm",
+                      color: "#555555",
+                      flex: 0
+                    },
+                    {
+                      type: "text",
+                      text: `${pm25} ${pm25_warning}`,
+                      weight: "bold",
+                      size: "sm",
+                      color: "#111111",
+                      align: "end"
+                    }
+                  ]
+                },
+                {
+                  type: "box",
+                  layout: "horizontal",
+                  contents: [
+                    {
+                      type: "text",
+                      text: "🏠",
+                      size: "sm",
+                      color: "#555555",
+                      flex: 0
+                    },
+                    {
+                      type: "text",
+                      text: `${city}`,
+                      size: "sm",
+                      color: "#111111",
+                      align: "end"
+                    }
+                  ]
+                }
+              ]
             });
-            isFirstForecast = false;
-          });
-          ret.body = {
-            type: "box",
-            layout: "vertical",
-            contents,
-            paddingAll: "10px"
-          };
-          return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
-        })
+            // weather
+            //console.log(JSON.stringify(resp.data, null, 2));
+            var dat = weather.data.hourly.data.slice(0, duration);
+            var isFirstForecast = true;
+            if (!dat.length) return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
+            dat.forEach(v => {
+              contents.push({
+                type: "text",
+                text: forecast2string(v),
+                color: "#555555",
+                size: "sm",
+                margin: isFirstForecast ? "md" : "none"
+              });
+              isFirstForecast = false;
+            });
+            ret.body = {
+              type: "box",
+              layout: "vertical",
+              contents,
+              paddingAll: "10px"
+            };
+            return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
+          })
+        )
         .catch(err => {
           //console.log(err);
           console.log("api error naja");
