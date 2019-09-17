@@ -227,8 +227,6 @@ const Cmd = function(app) {
           }
         ]
       });
-
-      console.log(JSON.stringify(flexMsg, null, 2));
     });
     return;
     rows.forEach(r => {
