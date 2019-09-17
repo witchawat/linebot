@@ -49,6 +49,8 @@ const Cmd = function(app) {
           "ถ้าดูไม่ได้รบกวนไปดูเองที่\r\nhttp://weather.bangkok.go.th/Images/Radar/nkradar.jpg",
         contents: rainFlex(6, 13.689716, 100.669553)
       };
+      console.log(JSON.stringify(ret,null,2));
+      
     }
     if (cmd == "rainvid") {
       if (vidStat == "error")
@@ -265,9 +267,9 @@ const Cmd = function(app) {
       }
     ];
     return axios
-      .get(`https://api.darksky.net/forecast/e3609d95c9670e7e3adc450f54e9c21e/13.689716,100.669553`)
+      .get(`https://api.darksky.net/forecast/e3609d95c9670e7e3adc450f54e9c21e/${lat},${lng}`)
       .then(resp => {
-        console.log(JSON.stringify(resp.data, null, 2));
+        //console.log(JSON.stringify(resp.data, null, 2));
         resp.data.hourly.data.slice(0, duration).forEach(v =>
           contents.push({
             type: "text",
