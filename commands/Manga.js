@@ -9,6 +9,21 @@ const Cmd = function(app) {
   var checkEveryThisSecs = 60 * 45; //45 mins
   var checkLimit = 10; // max fetch per check
   const _this = this;
+app.get("/manga/img/:id", async (req, res) => {
+  var tmb= (await q("select tmb from manga where id=?",req.params.id))[0].tmb;
+  axios
+      .get(tmb, {
+        responseType: "arraybuffer"
+      })
+      .then(r => {
+        res
+          .set({
+            "Content-Type": "image/png",
+            "Content-Length": r.data.length
+          })
+          .send(r.data);
+      });
+  });
   app.get("/manga/search/:q", (req, res) => {
     q("select id,name,tmb from manga where canRead='yes' and name like ? order by name asc", [
       "%" + req.params.q + "%"
@@ -276,6 +291,7 @@ const Cmd = function(app) {
   async function mangaNotiContent(id) {
     var r = (await q("select * from manga where id=?", id))[0];
     if (!r) return ["", {}];
+var tmb=r.tmb.indexOf('https:')>=0?r.tmb:'https://linerain.herokuapp.com/manga/img/'+r.id;
     return [
       r.name,
       {
@@ -287,7 +303,7 @@ const Cmd = function(app) {
           contents: [
             {
               type: "image",
-              url: r.tmb,
+              url: tmb,
               size: "full",
               aspectMode: "cover",
               aspectRatio: "2:3",
