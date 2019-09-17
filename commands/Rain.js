@@ -281,9 +281,8 @@ const Cmd = function(app) {
               height: "sm",
               color: "#d1115b",
               action: {
-                type: "location",
-                text: "ggg",
-                label: "เปลี่ยนพิกัด"
+                "type":"location",
+   "label":"Location"
               }
             }
           ]
