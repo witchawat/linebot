@@ -337,7 +337,7 @@ const Cmd = function(app) {
               text: forecast2string(v),
               color: "#555555",
               size: "sm",
-              margin: isFirstForecast ? "md" : null
+              margin: isFirstForecast ? "md" : "none"
             });
             isFirstForecast = false;
           });
