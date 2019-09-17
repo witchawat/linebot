@@ -338,7 +338,15 @@ const Cmd = function(app) {
             console.log(JSON.stringify(air.data.data, null, 2));
 
             let airData = air.data.data,
-              city = airData.city.name,
+              city =
+                airData.city.name
+                  .split("(")
+                  .slice(1)
+                  .join("(")
+                  .split(")")
+                  .slice(0, -1)
+                  .join(")")
+                  .trim() || airData.city.name,
               pm25 = airData.iaqi.pm25 ? airData.iaqi.pm25.v * 1 : 0,
               pm25_warning = `${emoji.get(":white_check_mark:")} Good`;
             if (pm25 > 51) {
