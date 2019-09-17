@@ -1,8 +1,9 @@
 var request = require("request");
+const axios = require("axios");
 var CronJob = require("cron").CronJob;
 const util = require("util");
 const events = require("events");
-const Cmd = function() {
+const Cmd = function(app) {
   events.EventEmitter.call(this);
   var lastUpdate = new Date("2017-01-01"),
     vidStat = "error",
@@ -12,6 +13,20 @@ const Cmd = function() {
     vidTmb = "",
     vidUrl = "";
   const _this = this;
+  app.get("/rain/img", (req, res) => {
+    axios
+      .get("http://weather.bangkok.go.th/Images/Radar/nkradar.jpg", {
+        responseType: "arraybuffer"
+      })
+      .then(r => {
+        res
+          .set({
+            "Content-Type": "image/png",
+            "Content-Length": r.data.length
+          })
+          .send(r.data);
+      });
+  });
   this.handleEvent = function(evt, cmd, param) {
     var ret = {};
     if (cmd == "rain") {
@@ -165,9 +180,7 @@ const Cmd = function() {
     try {
       token = await gfyAuth();
       //post img
-      gfyname = await gfyPost(
-        "http://weather.bangkok.go.th/FTPCustomer/radar/pics/zfiltered.jpg"
-      );
+      gfyname = await gfyPost("http://weather.bangkok.go.th/FTPCustomer/radar/pics/zfiltered.jpg");
       checkCount = 0;
       while (checkCount < 10) {
         checkCount++;

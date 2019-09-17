@@ -32,7 +32,6 @@ const config = {
 };
 const client = new line.Client(config);
 var eventHandler = new LineEventHandler(client);
-eventHandler.add(["rain", "rainvid"], new Rain());
 var airHandler = new Air();
 eventHandler.add("air", airHandler);
 eventHandler.add("airloc", airHandler, "location");
@@ -73,6 +72,7 @@ app.post("/webhook", line.middleware(config), (req, res) => {
 });
 var mangaHandler = new Manga(app);
 eventHandler.add(["mangad", "manga", "mangaRefresh"], mangaHandler);
+eventHandler.add(["rain", "rainvid"], new Rain(app));
 //eventHandler.logRules();
 app.get("/to/:usrId/:msg", (req, res) => {
   if (process.env.NODE_ENV != "development") {
