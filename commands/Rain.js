@@ -47,7 +47,6 @@ const Cmd = function(app) {
         altText: `ถ้าดูไม่ได้รบกวนไปดูเองที่\r\n${process.env.RAIN_IMG}`,
         contents: await rainFlex(6, 13.689716, 100.669553)
       };
-      console.log(JSON.stringify(ret, null, 2));
     }
     if (cmd == "rainvid") {
       if (vidStat == "error")
@@ -254,6 +253,21 @@ const Cmd = function(app) {
     // สวนหลวง ร.9 13.689716, 100.669553
 
     return new Promise(resolve => {
+      var ret = {
+        type: "bubble",
+        size: "giga",
+        hero: {
+          type: "image",
+          url,
+          size: "full",
+          aspectRatio: "1:1",
+          aspectMode: "cover",
+          action: {
+            type: "uri",
+            uri
+          }
+        }
+      };
       var contents = [
         {
           type: "text",
@@ -268,7 +282,7 @@ const Cmd = function(app) {
         .then(resp => {
           //console.log(JSON.stringify(resp.data, null, 2));
           var dat = resp.data.hourly.data.slice(0, duration);
-          if (!dat.length) return resolve(null);
+          if (!dat.length) return resolve(ret);
           dat.forEach(v =>
             contents.push({
               type: "text",
@@ -279,32 +293,18 @@ const Cmd = function(app) {
           );
           var url = imgStat == "error" ? "https://linerain.herokuapp.com/rain/img" : imgUrl;
           var uri = imgStat == "error" ? `${process.env.RAIN_IMG}` : imgUrl;
-          return resolve({
-            type: "bubble",
-            size: "giga",
-            hero: {
-              type: "image",
-              url,
-              size: "full",
-              aspectRatio: "1:1",
-              aspectMode: "cover",
-              action: {
-                type: "uri",
-                uri
-              }
-            },
-            body: {
-              type: "box",
-              layout: "vertical",
-              contents,
-              paddingAll: "10px"
-            }
-          });
+          ret.body = {
+            type: "box",
+            layout: "vertical",
+            contents,
+            paddingAll: "10px"
+          };
+          return resolve(ret);
         })
         .catch(err => {
           //console.log(err);
           console.log("api error naja");
-          return resolve(null);
+          return resolve(ret);
         });
     });
   }
