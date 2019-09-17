@@ -253,6 +253,8 @@ const Cmd = function(app) {
     // สวนหลวง ร.9 13.689716, 100.669553
 
     return new Promise(resolve => {
+      var url = imgStat == "error" ? "https://linerain.herokuapp.com/rain/img" : imgUrl;
+      var uri = imgStat == "error" ? `${process.env.RAIN_IMG}` : imgUrl;
       var ret = {
         type: "bubble",
         size: "giga",
@@ -291,8 +293,6 @@ const Cmd = function(app) {
               size: "sm"
             })
           );
-          var url = imgStat == "error" ? "https://linerain.herokuapp.com/rain/img" : imgUrl;
-          var uri = imgStat == "error" ? `${process.env.RAIN_IMG}` : imgUrl;
           ret.body = {
             type: "box",
             layout: "vertical",
