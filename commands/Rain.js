@@ -343,6 +343,7 @@ const Cmd = function(app) {
                   .trim() || airData.city.name,
               pm25 = airData.iaqi.pm25 ? airData.iaqi.pm25.v * 1 : 0,
               pm25_warning = `${emoji.get(":white_check_mark:")} Good`;
+console.log('cityName '+airData.city.name);
             if (pm25 > 51) {
               pm25_warning = `${emoji.get(":small_orange_diamond:")} Moderate`;
             }
