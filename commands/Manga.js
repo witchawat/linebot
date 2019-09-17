@@ -220,7 +220,7 @@ app.get("/manga/img/:id", async (req, res) => {
       var contents = [],
         altTexts = [];
       rows
-        .filter(v => v.uid == u)
+        .filter(v => v.uid == u).slice(0,10)
         .forEach(v => {
           altTexts.push(notiName[v.mid]);
           contents.push(notiFlex[v.mid]);
