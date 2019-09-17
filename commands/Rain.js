@@ -276,8 +276,7 @@ const Cmd = function(app) {
             contents.push({
               type: "text",
               text: forecast2string(v),
-              weight: "bold",
-              color: "#1DB446",
+              color: "#555555",
               size: "sm"
             })
           );
