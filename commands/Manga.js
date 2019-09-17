@@ -47,7 +47,7 @@ const Cmd = function(app) {
   this.handleEvent = async function(evt, cmd, param) {
     if (cmd == "mangad") {
       var ids = (await q(
-        "select mid from follow where uid=? order by rand() limit 9",
+        "select mid from follow where uid=? order by rand() limit 10",
         evt.source.userId
       )).map(v => v.mid);
       console.log(ids);
@@ -215,7 +215,7 @@ const Cmd = function(app) {
         message: [
           {
             type: "flex",
-            altText: altTexts.join(","),
+            altText: altTexts.join(",").substring(0,399),
             contents: {
               type: "carousel",
               contents
@@ -227,6 +227,8 @@ const Cmd = function(app) {
           }
         ]
       });
+
+      console.log(JSON.stringify(contents, null, 2));
     });
     return;
     rows.forEach(r => {
