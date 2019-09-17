@@ -46,10 +46,11 @@ const Cmd = function(app) {
           originalContentUrl: imgUrl,
           previewImageUrl: imgTmb
         };
+      var [altText, contents] = await rainFlex(evt);
       ret = {
         type: "flex",
-        altText: `ถ้าดูไม่ได้รบกวนไปดูเองที่\r\n${process.env.RAIN_IMG}`,
-        contents: await rainFlex(evt)
+        altText,
+        contents
       };
       //console.log(JSON.stringify(ret, null, 2));
     }
@@ -327,7 +328,7 @@ const Cmd = function(app) {
         .then(resp => {
           //console.log(JSON.stringify(resp.data, null, 2));
           var dat = resp.data.hourly.data.slice(0, duration);
-          if (!dat.length) return resolve(ret);
+          if (!dat.length) return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
           dat.forEach(v =>
             contents.push({
               type: "text",
@@ -342,12 +343,12 @@ const Cmd = function(app) {
             contents,
             paddingAll: "10px"
           };
-          return resolve(ret);
+          return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
         })
         .catch(err => {
           //console.log(err);
           console.log("api error naja");
-          return resolve(ret);
+          return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
         });
     });
   }
