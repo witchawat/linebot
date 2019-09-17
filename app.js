@@ -10,8 +10,8 @@ const Manga = require("./commands/Manga.js");
 const ThairunFaceSearch = require("./commands/ThairunFaceSearch.js");
 const Zmn = require("./commands/Zmn.js");
 const FitnessFirst = require("./commands/FitnessFirst.js");
-const BangSanCode = require("./commands/BangSanCode.js");
-const Weather = require("./commands/Weather.js");
+// const WeatherDarkSky = require("./commands/WeatherDarkSky.js");
+// const Weather = require("./commands/Weather.js");
 //const UTMF = require('./commands/Utmf.js');
 //const PYT = require("./commands/Pyt.js");
 //const SuanPruek = require("./commands/SuanPruek.js");
@@ -35,7 +35,6 @@ var eventHandler = new LineEventHandler(client);
 var airHandler = new Air();
 eventHandler.add("air", airHandler);
 eventHandler.add("airloc", airHandler, "location");
-eventHandler.add("bs", new BangSanCode());
 eventHandler.add("log", new MyLog());
 eventHandler.add("solve", new WolframSolve());
 // eventHandler.add(
@@ -45,10 +44,10 @@ eventHandler.add("solve", new WolframSolve());
 eventHandler.add(["10hr"], new ThairunFaceSearch(), "image");
 eventHandler.add("zmn", new Zmn());
 eventHandler.add("ff", new FitnessFirst());
-eventHandler.add(
-  ["wweather", "ww", "ww1", "ww2", "ww3", "ww4", "ww5", "ww6", "ww7", "ww8", "ww9", "ww10"],
-  new Weather()
-);
+// eventHandler.add(
+//   ["wweather", "ww", "ww1", "ww2", "ww3", "ww4", "ww5", "ww6", "ww7", "ww8", "ww9", "ww10"],
+//   new Weather()
+// );
 //eventHandler.add('utmf', new UTMF());
 //eventHandler.add("pyt", new PYT());
 // var suanPruekHandler = new SuanPruek();
