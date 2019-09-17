@@ -44,9 +44,14 @@ const Cmd = function(app) {
       next(e);
     }
   });
-  this.handleEvent = function(evt, cmd, param) {
+  this.handleEvent = async function(evt, cmd, param) {
     if (cmd == "mangad") {
-      notify(["mrs-serie-100069088", "mrs-serie-100070572"]);
+      notify(
+        (await q(
+          "select mid from follow where uid=? order by rand() limit 10",
+          evt.source.userId
+        )).map(v => v.mid)
+      );
     }
     if (cmd == "manga") {
       _this.emit("replyMessage", {
