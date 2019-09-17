@@ -281,9 +281,9 @@ const Cmd = function(app) {
               height: "sm",
               color: "#d1115b",
               action: {
-                type: "uri",
-                url: "https://google.com",
-                label: "เปลี่ยนพิกัด"
+                "type": "message",
+                "label": "บันทึ 2ก",
+                "text": "บันทึก"
               }
             }
           ]
