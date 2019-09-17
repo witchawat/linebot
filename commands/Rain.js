@@ -266,7 +266,7 @@ const Cmd = function(app) {
         size: "sm"
       }
     ];
-    return axios
+    axios
       .get(`https://api.darksky.net/forecast/e3609d95c9670e7e3adc450f54e9c21e/${lat},${lng}`)
       .then(resp => {
         //console.log(JSON.stringify(resp.data, null, 2));
@@ -290,7 +290,7 @@ const Cmd = function(app) {
             aspectMode: "cover",
             action: {
               type: "uri",
-              uri: "http://weather.bangkok.go.th/Images/Radar/nkradar.jpg"
+              uri: url
             }
           },
           body: {
