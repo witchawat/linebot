@@ -28,7 +28,7 @@ const Cmd = function(app) {
           .send(r.data);
       });
   });
-  this.handleEvent = function(evt, cmd, param) {
+  this.handleEvent =async function(evt, cmd, param) {
     var ret = {};
     if (cmd == "rain") {
       if (imgStat == "error")
@@ -47,10 +47,9 @@ const Cmd = function(app) {
         type: "flex",
         altText:
           "ถ้าดูไม่ได้รบกวนไปดูเองที่\r\nhttp://weather.bangkok.go.th/Images/Radar/nkradar.jpg",
-        contents: rainFlex(6, 13.689716, 100.669553)
+        contents: await rainFlex(6, 13.689716, 100.669553)
       };
-      console.log(JSON.stringify(ret,null,2));
-      
+      console.log(JSON.stringify(ret, null, 2));
     }
     if (cmd == "rainvid") {
       if (vidStat == "error")
@@ -257,55 +256,59 @@ const Cmd = function(app) {
     lng = lng || 100.650343;
     // สวนหลวง ร.9 13.689716, 100.669553
 
-    var contents = [
-      {
-        type: "text",
-        text: "สวนหลวง ร.9",
-        weight: "bold",
-        color: "#1DB446",
-        size: "sm"
-      }
-    ];
-    axios
-      .get(`https://api.darksky.net/forecast/e3609d95c9670e7e3adc450f54e9c21e/${lat},${lng}`)
-      .then(resp => {
-        //console.log(JSON.stringify(resp.data, null, 2));
-        resp.data.hourly.data.slice(0, duration).forEach(v =>
-          contents.push({
-            type: "text",
-            text: forecast2string(v),
-            weight: "bold",
-            color: "#1DB446",
-            size: "sm"
-          })
-        );
-        var url = imgStat == "error" ? "https://linerain.herokuapp.com/rain/img" : imgUrl;
-        return {
-          type: "bubble",
-          hero: {
-            type: "image",
-            url,
-            size: "full",
-            aspectRatio: "1:1",
-            aspectMode: "cover",
-            action: {
-              type: "uri",
-              uri: url
+    return new Promise(resolve => {
+      var contents = [
+        {
+          type: "text",
+          text: "สวนหลวง ร.9",
+          weight: "bold",
+          color: "#1DB446",
+          size: "sm"
+        }
+      ];
+      axios
+        .get(`https://api.darksky.net/forecast/e3609d95c9670e7e3adc450f54e9c21e/${lat},${lng}`)
+        .then(resp => {
+          //console.log(JSON.stringify(resp.data, null, 2));
+          var dat = resp.data.hourly.data.slice(0, duration);
+          if (!dat.length) return resolve(null);
+          dat.forEach(v =>
+            contents.push({
+              type: "text",
+              text: forecast2string(v),
+              weight: "bold",
+              color: "#1DB446",
+              size: "sm"
+            })
+          );
+          var url = imgStat == "error" ? "https://linerain.herokuapp.com/rain/img" : imgUrl;
+          return resolve({
+            type: "bubble",
+            hero: {
+              type: "image",
+              url,
+              size: "full",
+              aspectRatio: "1:1",
+              aspectMode: "cover",
+              action: {
+                type: "uri",
+                uri: url
+              }
+            },
+            body: {
+              type: "box",
+              layout: "vertical",
+              contents,
+              paddingAll: "10px"
             }
-          },
-          body: {
-            type: "box",
-            layout: "vertical",
-            contents,
-            paddingAll: "10px"
-          }
-        };
-      })
-      .catch(err => {
-        //console.log(err);
-        console.log("api error naja");
-        return "API Error";
-      });
+          });
+        })
+        .catch(err => {
+          //console.log(err);
+          console.log("api error naja");
+          return resolve(null);
+        });
+    });
   }
 
   function forecast2string(inp) {
