@@ -261,7 +261,7 @@ const Cmd = function(app) {
 
   // copy from weather darksky
   async function rainFlex(evt) {
-    var duration = 6,
+    var duration = 4,
       lat = 13.731213,
       lng = 100.541458,
       addr = "สวนลุมพินี";
@@ -340,6 +340,8 @@ const Cmd = function(app) {
         .then(
           axios.spread((weather, air) => {
             // air
+            console.log(JSON.stringify(air.data.data.city,null,2));
+            
             let airData = air.data.data,
               city = airData.city.name,
               pm25 = airData.iaqi.pm25 ? airData.iaqi.pm25.v * 1 : 0,
@@ -368,7 +370,7 @@ const Cmd = function(app) {
             contents.push({
               type: "box",
               layout: "vertical",
-              margin: "sm",
+              margin: "none",
               spacing: "sm",
               contents: [
                 {
