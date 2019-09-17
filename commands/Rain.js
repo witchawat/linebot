@@ -262,9 +262,9 @@ const Cmd = function(app) {
   // copy from weather darksky
   async function rainFlex(evt) {
     var duration = 6,
-      lat = 13.689716,
-      lng = 100.669553,
-      addr = "สวนหลวง ร.9";
+      lat = 13.731213,
+      lng = 100.541458,
+      addr = "สวนลุมพินี";
 
     var uInfo = await redis(`rain${evt.source.userId}`);
     if (uInfo) {
@@ -274,7 +274,6 @@ const Cmd = function(app) {
       //console.log("has uinfo ", JSON.stringify(uInfo));
     }
 
-    //บ่อขยะอ่อนนุช 13.7070603,100.6801283
     // สวนพริกอันตร้า 13.781143,100.650343
     // สวนหลวง ร.9 13.689716, 100.669553
 
