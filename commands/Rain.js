@@ -352,7 +352,6 @@ const Cmd = function(app) {
                   .trim() || airData.city.name,
               pm25 = airData.iaqi.pm25 ? airData.iaqi.pm25.v * 1 : 0,
               pm25_warning = `${emoji.get(":white_check_mark:")} Good`;
-            
 
             uTime = ordSfx(uTime[0]) + " " + uTime[1].substring(0, 5);
             if (pm25 > 51) {
@@ -448,7 +447,9 @@ const Cmd = function(app) {
             var isFirstForecast = true;
             if (!dat.length) return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
             if (!windDat.length) return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
-            var weatherDat = dat.forEach(v => forecast2string(v));
+            var weatherDat = dat.forEach(v => {
+              return forecast2string(v);
+            });
             console.log(JSON.stringify(wind.data, null, 2));
             console.log(JSON.stringify(windDat, null, 2));
             console.log(JSON.stringify(weatherDat, null, 2));
