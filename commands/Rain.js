@@ -475,7 +475,11 @@ const Cmd = function(app) {
     ret += 33 <= realFeel && realFeel <= 39 ? emoji.get(":large_orange_diamond:") : "";
     ret += realFeel <= 32 ? emoji.get(":white_check_mark:") : "";
     ret += " " + realFeel + "° ";
-    ret += emoji.get(":rain_cloud:") + " " + (inp.precipProbability * 100).toFixed(0) + "%";
+    ret +=
+      emoji.get(":rain_cloud:") +
+      " " +
+      ("0" + (inp.precipProbability * 100).toFixed(0)).slice(-2) +
+      "%";
     ret += " " + inp.summary;
     return ret;
   }
