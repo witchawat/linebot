@@ -352,7 +352,7 @@ const Cmd = function(app) {
                   .trim() || airData.city.name,
               pm25 = airData.iaqi.pm25 ? airData.iaqi.pm25.v * 1 : 0,
               pm25_warning = `${emoji.get(":white_check_mark:")} Good`;
-            console.log("cityName " + airData.city.name);
+            
 
             uTime = ordSfx(uTime[0]) + " " + uTime[1].substring(0, 5);
             if (pm25 > 51) {
@@ -443,6 +443,7 @@ const Cmd = function(app) {
               ret += 13 <= dir && dir < 15 ? emoji.get("arrow_lower_right") : "";
               return ret;
             });
+            console.log(JSON.stringify(windDat, null, 2));
             var dat = weather.data.hourly.data.slice(0, duration);
             var isFirstForecast = true;
             if (!dat.length) return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
