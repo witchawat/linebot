@@ -478,7 +478,7 @@ const Cmd = function(app) {
     ret +=
       emoji.get(":rain_cloud:") +
       " " +
-      (" " + (inp.precipProbability * 100).toFixed(0)).slice(-2) +
+      ("⠀" + (inp.precipProbability * 100).toFixed(0)).slice(-2) +
       "%";
     ret += " " + inp.summary;
     return ret;
