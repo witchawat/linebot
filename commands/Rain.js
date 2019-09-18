@@ -429,7 +429,7 @@ const Cmd = function(app) {
             // weather
             //console.log(JSON.stringify(resp.data, null, 2));
             var windDat = wind.data.WeatherForecasts[0].forecasts.map(v => {
-              if (!v) return " ";
+              if (!v) return "";
               var ret = "",
                 dir = v.data.wd10m / 22.5;
               ret += dir >= 15 || dir < 1 ? emoji.get("arrow_down") : "";
@@ -451,6 +451,7 @@ const Cmd = function(app) {
               return forecast2string(v);
             });
             console.log(JSON.stringify(wind.data, null, 2));
+            console.log(JSON.stringify(dat, null, 2));
             console.log(JSON.stringify(windDat, null, 2));
             console.log(JSON.stringify(weatherDat, null, 2));
             for (var i = 0; i < duration; i++) {
