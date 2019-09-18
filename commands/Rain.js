@@ -432,7 +432,7 @@ const Cmd = function(app) {
             var windDat = wind.data.WeatherForecasts[0].forecasts.map(v => {
               if (!v) return " ";
               var ret = "",
-                dir = inp.data.wd10m / 22.5;
+                dir = v.data.wd10m / 22.5;
               ret += dir >= 15 || dir < 1 ? emoji.get("arrow_down") : "";
               ret += 1 <= dir && dir < 3 ? emoji.get("arrow_lower_left") : "";
               ret += 3 <= dir && dir < 5 ? emoji.get("arrow_left") : "";
