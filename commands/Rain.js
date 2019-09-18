@@ -447,7 +447,7 @@ const Cmd = function(app) {
             var isFirstForecast = true;
             if (!dat.length) return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
             if (!windDat.length) return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
-            var weatherDat = dat.forEach(v => {
+            var weatherDat = dat.map(v => {
               return forecast2string(v);
             });
             console.log(JSON.stringify(wind.data, null, 2));
