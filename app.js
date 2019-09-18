@@ -71,8 +71,8 @@ app.post("/webhook", line.middleware(config), (req, res) => {
 });
 var mangaHandler = new Manga(app);
 eventHandler.add(["mangad", "manga", "mangaRefresh"], mangaHandler);
-var rainHandler= new Rain(app);
-eventHandler.add(["rain", "rainvid"],rainHandler);
+var rainHandler = new Rain(app);
+eventHandler.add(["rain", "rainvid"], rainHandler);
 eventHandler.add("rain_change_loc", rainHandler, "location");
 //eventHandler.logRules();
 app.get("/to/:usrId/:msg", (req, res) => {

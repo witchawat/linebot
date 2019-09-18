@@ -331,10 +331,14 @@ const Cmd = function(app) {
             // console.log(JSON.stringify(air.data.data, null, 2));
 
             let airData = air.data.data,
-uTime=airData.time.s.split('-').pop().split(' '),
+              uTime = airData.time.s
+                .split("-")
+                .pop()
+                .split(" "),
               city =
                 airData.city.name
-.split('Thailand').pop()
+                  .split("Thailand")
+                  .pop()
                   .split("(")
                   .slice(1)
                   .join("(")
@@ -344,9 +348,9 @@ uTime=airData.time.s.split('-').pop().split(' '),
                   .trim() || airData.city.name,
               pm25 = airData.iaqi.pm25 ? airData.iaqi.pm25.v * 1 : 0,
               pm25_warning = `${emoji.get(":white_check_mark:")} Good`;
-console.log('cityName '+airData.city.name);
+            console.log("cityName " + airData.city.name);
 
-uTime=ordSfx(uTime[0])+' '+uTime[1].substring(0,5);
+            uTime = ordSfx(uTime[0]) + " " + uTime[1].substring(0, 5);
             if (pm25 > 51) {
               pm25_warning = `${emoji.get(":small_orange_diamond:")} Moderate`;
             }
@@ -501,21 +505,21 @@ uTime=ordSfx(uTime[0])+' '+uTime[1].substring(0,5);
       }
     });
   }
-function ordSfx(i) {
-i*=1;
+  function ordSfx(i) {
+    i *= 1;
     var j = i % 10,
-        k = i % 100;
+      k = i % 100;
     if (j == 1 && k != 11) {
-        return i + "st";
+      return i + "st";
     }
     if (j == 2 && k != 12) {
-        return i + "nd";
+      return i + "nd";
     }
     if (j == 3 && k != 13) {
-        return i + "rd";
+      return i + "rd";
     }
     return i + "th";
-}
+  }
   util.inherits(Cmd, events.EventEmitter);
   new CronJob({
     cronTime: "56 1,11,21,31,41,51 * * * *",

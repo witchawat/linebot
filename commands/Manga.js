@@ -9,9 +9,9 @@ const Cmd = function(app) {
   var checkEveryThisSecs = 60 * 45; //45 mins
   var checkLimit = 10; // max fetch per check
   const _this = this;
-app.get("/manga/img/:id", async (req, res) => {
-  var tmb= (await q("select tmb from manga where id=?",req.params.id))[0].tmb;
-  axios
+  app.get("/manga/img/:id", async (req, res) => {
+    var tmb = (await q("select tmb from manga where id=?", req.params.id))[0].tmb;
+    axios
       .get(tmb, {
         responseType: "arraybuffer"
       })
@@ -220,7 +220,8 @@ app.get("/manga/img/:id", async (req, res) => {
       var contents = [],
         altTexts = [];
       rows
-        .filter(v => v.uid == u).slice(0,10)
+        .filter(v => v.uid == u)
+        .slice(0, 10)
         .forEach(v => {
           altTexts.push(notiName[v.mid]);
           contents.push(notiFlex[v.mid]);
@@ -230,7 +231,7 @@ app.get("/manga/img/:id", async (req, res) => {
         message: [
           {
             type: "flex",
-            altText: altTexts.join(",").substring(0,399),
+            altText: altTexts.join(",").substring(0, 399),
             contents: {
               type: "carousel",
               contents
@@ -291,7 +292,10 @@ app.get("/manga/img/:id", async (req, res) => {
   async function mangaNotiContent(id) {
     var r = (await q("select * from manga where id=?", id))[0];
     if (!r) return ["", {}];
-var tmb=r.tmb.indexOf('https:')>=0?r.tmb:'https://linerain.herokuapp.com/manga/img/'+r.id+'?'+Math.random();
+    var tmb =
+      r.tmb.indexOf("https:") >= 0
+        ? r.tmb
+        : "https://linerain.herokuapp.com/manga/img/" + r.id + "?" + Math.random();
     return [
       r.name,
       {
