@@ -470,7 +470,7 @@ const Cmd = function(app) {
           })
         )
         .catch(err => {
-          //console.log(err);
+          console.log(err);
           console.log("api error naja");
           return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
         });
