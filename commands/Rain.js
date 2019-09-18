@@ -442,7 +442,7 @@ const Cmd = function(app) {
               ret += 13 <= dir && dir < 15 ? emoji.get("arrow_lower_right") : "";
               return ret;
             });
-            console.log(JSON.stringify(windDat, null, 2));
+            // console.log(JSON.stringify(windDat, null, 2));
             var dat = weather.data.hourly.data.slice(0, duration);
             var isFirstForecast = true;
             if (!dat.length) return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
@@ -450,10 +450,10 @@ const Cmd = function(app) {
             var weatherDat = dat.map(v => {
               return forecast2string(v);
             });
-            console.log(JSON.stringify(wind.data, null, 2));
-            console.log(JSON.stringify(dat, null, 2));
-            console.log(JSON.stringify(windDat, null, 2));
-            console.log(JSON.stringify(weatherDat, null, 2));
+            // console.log(JSON.stringify(wind.data, null, 2));
+            // console.log(JSON.stringify(dat, null, 2));
+            // console.log(JSON.stringify(windDat, null, 2));
+            // console.log(JSON.stringify(weatherDat, null, 2));
             for (var i = 0; i < duration; i++) {
               var t = weatherDat[i].split("%");
               contents.push({
