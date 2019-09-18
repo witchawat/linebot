@@ -323,10 +323,14 @@ const Cmd = function(app) {
           ),
           axios.get(
             `https://api.waqi.info/feed/geo:${lat};${lng}/?token=${process.env.AIRQUALITY_TOKEN}`
+          ),
+          axios.get(
+            `'https://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat=${lat}&lon=${lng}&fields=wd10m&duration=${duration}`,
+            { headers: { Authorization: "Bearer " + process.env.TMD_TOKEN } }
           )
         ])
         .then(
-          axios.spread((weather, air) => {
+          axios.spread((weather, air, wind) => {
             // air
             // console.log(JSON.stringify(air.data.data, null, 2));
 
@@ -425,19 +429,36 @@ const Cmd = function(app) {
             });
             // weather
             //console.log(JSON.stringify(resp.data, null, 2));
+            var windDat = wind.data.WeatherForecasts[0].forecasts.map(v => {
+              if (!v) return " ";
+              var ret = "",
+                dir = inp.data.wd10m / 22.5;
+              ret += dir >= 15 || dir < 1 ? emoji.get("arrow_down") : "";
+              ret += 1 <= dir && dir < 3 ? emoji.get("arrow_lower_left") : "";
+              ret += 3 <= dir && dir < 5 ? emoji.get("arrow_left") : "";
+              ret += 5 <= dir && dir < 7 ? emoji.get("arrow_upper_left") : "";
+              ret += 7 <= dir && dir < 9 ? emoji.get("arrow_up") : "";
+              ret += 9 <= dir && dir < 11 ? emoji.get("arrow_upper_right") : "";
+              ret += 11 <= dir && dir < 13 ? emoji.get("arrow_right") : "";
+              ret += 13 <= dir && dir < 15 ? emoji.get("arrow_lower_right") : "";
+              return ret;
+            });
             var dat = weather.data.hourly.data.slice(0, duration);
             var isFirstForecast = true;
             if (!dat.length) return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
-            dat.forEach(v => {
+            if (!windDat.length) return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
+            var weatherDat = dat.forEach(v => forecast2string(v));
+            for (var i = 0; i < duration; i++) {
+              var t = weatherDat[i].split("%");
               contents.push({
                 type: "text",
-                text: forecast2string(v),
+                text: `${t[0]}% ${windDat[i]} ${t[1]}`,
                 color: "#555555",
                 size: "sm",
                 margin: isFirstForecast ? "md" : "none"
               });
               isFirstForecast = false;
-            });
+            }
             ret.body = {
               type: "box",
               layout: "vertical",
