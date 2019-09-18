@@ -325,7 +325,7 @@ const Cmd = function(app) {
             `https://api.waqi.info/feed/geo:${lat};${lng}/?token=${process.env.AIRQUALITY_TOKEN}`
           ),
           axios.get(
-            `'https://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat=${lat}&lon=${lng}&fields=wd10m&duration=${duration}`,
+            `https://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat=${lat}&lon=${lng}&fields=wd10m&duration=${duration}`,
             { headers: { Authorization: "Bearer " + process.env.TMD_TOKEN } }
           )
         ])
