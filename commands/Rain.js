@@ -516,6 +516,7 @@ const Cmd = function(app) {
   function redis() {
     var varName = arguments[0];
     var val = arguments[1];
+    var sec = arguments[2];
     return new Promise(resolve => {
       if (val === undefined) {
         redisClient.get(varName, function(err, _) {
@@ -531,7 +532,8 @@ const Cmd = function(app) {
         });
         return;
       } else {
-        redisClient.set(varName, JSON.stringify(val), "EX", 20 * 60 * 60);
+        if (sec) redisClient.set(varName, JSON.stringify(val), "EX", sec);
+        else redisClient.set(varName, JSON.stringify(val));
         resolve(true);
       }
     });
