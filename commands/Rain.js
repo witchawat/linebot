@@ -267,11 +267,11 @@ const Cmd = function(app) {
       addr = "สวนลุมพินี";
 
     var uInfo = await redis(`rain${evt.source.userId}`);
-    if (uInfo) {
+    if (uInfo && uInfo.lat) {
       addr = uInfo.addr;
       lat = uInfo.lat;
       lng = uInfo.lng;
-      console.log("has uinfo ", JSON.stringify(uInfo));
+      //console.log("has uinfo ", JSON.stringify(uInfo));
     }
 
     // สวนพริกอันตร้า 13.781143,100.650343
