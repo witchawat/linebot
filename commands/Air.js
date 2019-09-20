@@ -2,12 +2,16 @@ var axios = require("axios");
 var emoji = require("node-emoji");
 const util = require("util");
 const events = require("events");
+const _redis = require("redis");
+var redisClient = _redis.createClient(process.env.REDISCLOUD_URL, {
+  no_ready_check: true
+});
 const Cmd = function() {
   events.EventEmitter.call(this);
   const _this = this;
   this.handleEvent = function(evt, cmd, param) {
     if (cmd == "airloc") {
-      airInfo(evt.message.latitude, evt.message.longitude).then(r => {
+      airInfo(null, evt.message.latitude, evt.message.longitude).then(r => {
         _this.emit("replyMessage", {
           replyToken: evt.replyToken,
           message: {
@@ -19,7 +23,7 @@ const Cmd = function() {
     }
     if (cmd == "air") {
       if (!param) {
-        airInfo().then(r => {
+        airInfo(evt).then(r => {
           _this.emit("replyMessage", {
             replyToken: evt.replyToken,
             message: {
@@ -41,6 +45,7 @@ const Cmd = function() {
             if (r.data.results.length) {
               var formatted_address = r.data.results[0].formatted_address;
               airInfo(
+                evt,
                 r.data.results[0].geometry.location.lat,
                 r.data.results[0].geometry.location.lng
               ).then(r => {
@@ -59,10 +64,16 @@ const Cmd = function() {
     }
   };
 
-  function airInfo(lat, lng) {
+  async function airInfo(evt, lat, lng) {
     //default is สวนลุม
     lat = lat || 13.730575;
     lng = lng || 100.541372;
+    var uInfo = evt ? await redis(`rain${evt.source.userId}`) : null;
+    if (uInfo && uInfo.lat) {
+      lat = uInfo.lat;
+      lng = uInfo.lng;
+      //console.log("has uinfo ", JSON.stringify(uInfo));
+    }
     return axios
       .all([
         axios.get(
@@ -140,6 +151,31 @@ Updated At ${emoji.get(":clock2:")} ${time}`;
         console.log(err);
         return "API Error";
       });
+  }
+  function redis() {
+    var varName = arguments[0];
+    var val = arguments[1];
+    var sec = arguments[2];
+    return new Promise(resolve => {
+      if (val === undefined) {
+        redisClient.get(varName, function(err, _) {
+          if (err || !_) {
+            resolve({});
+            return;
+          }
+          try {
+            resolve(JSON.parse(_));
+          } catch (e) {
+            resolve({});
+          }
+        });
+        return;
+      } else {
+        if (sec) redisClient.set(varName, JSON.stringify(val), "EX", sec);
+        else redisClient.set(varName, JSON.stringify(val));
+        resolve(true);
+      }
+    });
   }
   util.inherits(Cmd, events.EventEmitter);
 };
