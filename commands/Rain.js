@@ -351,24 +351,29 @@ const Cmd = function(app) {
                   .join(")")
                   .trim() || airData.city.name,
               pm25 = airData.iaqi.pm25 ? airData.iaqi.pm25.v * 1 : 0,
-              pm25_warning = `${emoji.get(":white_check_mark:")} Good`;
+              pm25_warning = `${emoji.get(":white_check_mark:")} Good`,
+              pm25_color = "#111111";
 
             uTime = ordSfx(uTime[0]) + " " + uTime[1].substring(0, 5);
             if (pm25 > 51) {
               pm25_warning = `${emoji.get(":small_orange_diamond:")} Moderate`;
             }
             if (pm25 > 101) {
+              pm25_color = "#ff8029";
               pm25_warning = `${emoji.get(
                 ":large_orange_diamond:"
               )} Unhealthy for Sensitive Groups`;
             }
             if (pm25 > 151) {
+              pm25_color = "#f52c2a";
               pm25_warning = `${emoji.get(":bangbang:")} Unhealthy`;
             }
             if (pm25 > 201) {
+              pm25_color = "#cc0033";
               pm25_warning = `${emoji.get(":sos:")} Very Unhealthy`;
             }
             if (pm25 > 300) {
+              pm25_color = "#990228";
               pm25_warning = `${emoji.get(":skull:")} Hazardous`;
             }
             if (pm25 == 0) {
@@ -419,7 +424,7 @@ const Cmd = function(app) {
                       text: `${pm25} ${pm25_warning}`,
                       weight: "bold",
                       size: "sm",
-                      color: "#111111",
+                      color: pm25_color,
                       align: "end"
                     }
                   ]
