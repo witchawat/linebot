@@ -324,7 +324,9 @@ const Cmd = function(app) {
       .then(weather => {
         var dat = weather.data.hourly.data.slice(0, duration);
         if (!dat.length) return new Array(duration).fill("");
-        return dat;
+        return dat.map(v => {
+          return forecast2string(v);
+        });
       })
       .catch(e => {
         return new Array(duration).fill("");
@@ -337,11 +339,11 @@ const Cmd = function(app) {
     return await axios
       .get(
         `https://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat=${lat}&lon=${lng}&fields=wd10m&duration=${duration}`,
-        { headers: { Authorization: "Bearer " + process.env.TMD_TOKEN } }
+        { headers: { Authorization: "Bearer " + process.env.TMD_TOKEN }, timeout: 200 }
       )
       .then(wind => {
-        console.log('has wind data');
-        
+        console.log("has wind data");
+
         var windDat = wind.data.WeatherForecasts[0].forecasts.map(v => {
           if (!v) return "";
           var ret = "",
@@ -359,8 +361,8 @@ const Cmd = function(app) {
         return windDat;
       })
       .catch(e => {
-        console.log('wind data error');
-        
+        console.log("wind data error");
+
         return new Array(duration).fill("");
       });
   }
