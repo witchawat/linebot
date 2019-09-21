@@ -498,7 +498,7 @@ const Cmd = function(app) {
       contents,
       paddingAll: "10px"
     };
-    return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
+    return [`สภาพอากาศ ณ ${addr}`, ret];
   }
 
   function forecast2string(inp) {
