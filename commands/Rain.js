@@ -378,10 +378,10 @@ const Cmd = function(app) {
     // สวนพริกอันตร้า 13.781143,100.650343
     // สวนหลวง ร.9 13.689716, 100.669553
     var weather = await weatherData(lat, lng, duration);
-    var [uTime, city, pm25_warning, pm25_color] = await airData(lat, lng, duration);
-    var wind = await windData(lat, lng, duration);
     console.log("weather", weather);
+    var [uTime, city, pm25_warning, pm25_color] = await airData(lat, lng, duration);
     console.log("air", pm25_warning);
+    var wind = await windData(lat, lng, duration);
     console.log("wind", wind);
     var url =
       imgStat == "error" ? `https://linerain.herokuapp.com/rain/img?${Math.random()}` : imgUrl;
