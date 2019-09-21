@@ -52,7 +52,7 @@ const Cmd = function(app) {
         altText,
         contents
       };
-      //console.log(JSON.stringify(ret, null, 2));
+      console.log(JSON.stringify(ret, null, 2));
     }
     if (cmd == "rainvid") {
       if (vidStat == "error")
@@ -258,6 +258,108 @@ const Cmd = function(app) {
     }
     return "ok";
   }
+  async function airData(lat, lng, duration) {
+    lat = lat || 13.731213;
+    lng = lng || 100.541458;
+    duration = duration || 6;
+    await axios
+      .get(`https://api.waqi.info/feed/geo:${lat};${lng}/?token=${process.env.AIRQUALITY_TOKEN}`)
+      .then(air => {
+        let airData = air.data.data,
+          uTime = airData.time.s
+            .split("-")
+            .pop()
+            .split(" "),
+          city =
+            airData.city.name
+              .split("Thailand")
+              .pop()
+              .split("(")
+              .slice(1)
+              .join("(")
+              .split(")")
+              .slice(0, -1)
+              .join(")")
+              .trim() || airData.city.name,
+          pm25 = airData.iaqi.pm25 ? airData.iaqi.pm25.v * 1 : 0,
+          pm25_warning = `${emoji.get(":white_check_mark:")} Good`,
+          pm25_color = "#111111";
+
+        uTime = ordSfx(uTime[0]) + " " + uTime[1].substring(0, 5);
+        if (pm25 > 51) {
+          pm25_warning = `${emoji.get(":small_orange_diamond:")} Moderate`;
+        }
+        if (pm25 > 101) {
+          pm25_color = "#ff8029";
+          pm25_warning = `${emoji.get(":large_orange_diamond:")} Unhealthy for Sensitive Groups`;
+        }
+        if (pm25 > 151) {
+          pm25_color = "#f52c2a";
+          pm25_warning = `${emoji.get(":bangbang:")} Unhealthy`;
+        }
+        if (pm25 > 201) {
+          pm25_color = "#cc0033";
+          pm25_warning = `${emoji.get(":sos:")} Very Unhealthy`;
+        }
+        if (pm25 > 300) {
+          pm25_color = "#990228";
+          pm25_warning = `${emoji.get(":skull:")} Hazardous`;
+        }
+        if (pm25 == 0) {
+          pm25_warning = "";
+          pm25 = "no data";
+        }
+        return [uTime, city, pm25_warning, pm25_color];
+      })
+      .catch(e => {
+        return [new Array(4).fill("")];
+      });
+  }
+  async function weatherData(lat, lng, duration) {
+    lat = lat || 13.731213;
+    lng = lng || 100.541458;
+    duration = duration || 6;
+    await axios
+      .get(`https://api.darksky.net/forecast/e3609d95c9670e7e3adc450f54e9c21e/${lat},${lng}`)
+      .then(weather => {
+        var dat = weather.data.hourly.data.slice(0, duration);
+        if (!dat.length) return new Array(duration).fill("");
+        return dat;
+      })
+      .catch(e => {
+        return new Array(duration).fill("");
+      });
+  }
+  async function windData(lat, lng, duration) {
+    lat = lat || 13.731213;
+    lng = lng || 100.541458;
+    duration = duration || 6;
+    await axios
+      .get(
+        `https://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat=${lat}&lon=${lng}&fields=wd10m&duration=${duration}`,
+        { headers: { Authorization: "Bearer " + process.env.TMD_TOKEN } }
+      )
+      .then(wind => {
+        var windDat = wind.data.WeatherForecasts[0].forecasts.map(v => {
+          if (!v) return "";
+          var ret = "",
+            dir = v.data.wd10m / 22.5;
+          ret += dir >= 15 || dir < 1 ? emoji.get("arrow_down") : "";
+          ret += 1 <= dir && dir < 3 ? emoji.get("arrow_lower_left") : "";
+          ret += 3 <= dir && dir < 5 ? emoji.get("arrow_left") : "";
+          ret += 5 <= dir && dir < 7 ? emoji.get("arrow_upper_left") : "";
+          ret += 7 <= dir && dir < 9 ? emoji.get("arrow_up") : "";
+          ret += 9 <= dir && dir < 11 ? emoji.get("arrow_upper_right") : "";
+          ret += 11 <= dir && dir < 13 ? emoji.get("arrow_right") : "";
+          ret += 13 <= dir && dir < 15 ? emoji.get("arrow_lower_right") : "";
+          return ret;
+        });
+        return windDat;
+      })
+      .catch(e => {
+        return new Array(duration).fill("");
+      });
+  }
 
   // copy from weather darksky
   async function rainFlex(evt) {
@@ -273,218 +375,124 @@ const Cmd = function(app) {
       lng = uInfo.lng;
       //console.log("has uinfo ", JSON.stringify(uInfo));
     }
-
     // สวนพริกอันตร้า 13.781143,100.650343
     // สวนหลวง ร.9 13.689716, 100.669553
-
-    return new Promise(resolve => {
-      var uInfo;
-      var url =
-        imgStat == "error" ? `https://linerain.herokuapp.com/rain/img?${Math.random()}` : imgUrl;
-      var uri = imgStat == "error" ? `${process.env.RAIN_IMG}` : imgUrl;
-      var ret = {
-        type: "bubble",
-        size: "giga",
-        hero: {
-          type: "image",
-          url,
-          size: "full",
-          aspectRatio: "1:1",
-          aspectMode: "cover",
-          action: {
-            type: "uri",
-            uri
-          }
-        },
-        footer: {
-          type: "box",
-          layout: "vertical",
-          spacing: "sm",
-          contents: [
-            {
-              type: "button",
-              style: "primary",
-              height: "sm",
-              color: "#d1115b",
-              action: {
-                type: "message",
-                label: "เปลี่ยนพิกัด",
-                text: "!rain_change_loc"
-              }
-            }
-          ]
+    var weather = await weatherData(lat, lng, duration);
+    var [uTime, city, pm25_warning, pm25_color] = await airData(lat, lng, duration);
+    var wind = await windData(lat, lng, duration);
+    console.log("weather", weather);
+    console.log("air", pm25_warning);
+    console.log("wind", wind);
+    var url =
+      imgStat == "error" ? `https://linerain.herokuapp.com/rain/img?${Math.random()}` : imgUrl;
+    var uri = imgStat == "error" ? `${process.env.RAIN_IMG}` : imgUrl;
+    var ret = {
+      type: "bubble",
+      size: "giga",
+      hero: {
+        type: "image",
+        url,
+        size: "full",
+        aspectRatio: "1:1",
+        aspectMode: "cover",
+        action: {
+          type: "uri",
+          uri
         }
-      };
-      var contents = [];
-      axios
-        .all([
-          axios.get(
-            `https://api.darksky.net/forecast/e3609d95c9670e7e3adc450f54e9c21e/${lat},${lng}`
-          ),
-          axios.get(
-            `https://api.waqi.info/feed/geo:${lat};${lng}/?token=${process.env.AIRQUALITY_TOKEN}`
-          ),
-          axios.get(
-            `https://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat=${lat}&lon=${lng}&fields=wd10m&duration=${duration}`,
-            { headers: { Authorization: "Bearer " + process.env.TMD_TOKEN } }
-          )
-        ])
-        .then(
-          axios.spread((weather, air, wind) => {
-            // air
-            // console.log(JSON.stringify(air.data.data, null, 2));
-
-            let airData = air.data.data,
-              uTime = airData.time.s
-                .split("-")
-                .pop()
-                .split(" "),
-              city =
-                airData.city.name
-                  .split("Thailand")
-                  .pop()
-                  .split("(")
-                  .slice(1)
-                  .join("(")
-                  .split(")")
-                  .slice(0, -1)
-                  .join(")")
-                  .trim() || airData.city.name,
-              pm25 = airData.iaqi.pm25 ? airData.iaqi.pm25.v * 1 : 0,
-              pm25_warning = `${emoji.get(":white_check_mark:")} Good`,
-              pm25_color = "#111111";
-
-            uTime = ordSfx(uTime[0]) + " " + uTime[1].substring(0, 5);
-            if (pm25 > 51) {
-              pm25_warning = `${emoji.get(":small_orange_diamond:")} Moderate`;
+      },
+      footer: {
+        type: "box",
+        layout: "vertical",
+        spacing: "sm",
+        contents: [
+          {
+            type: "button",
+            style: "primary",
+            height: "sm",
+            color: "#d1115b",
+            action: {
+              type: "message",
+              label: "เปลี่ยนพิกัด",
+              text: "!rain_change_loc"
             }
-            if (pm25 > 101) {
-              pm25_color = "#ff8029";
-              pm25_warning = `${emoji.get(
-                ":large_orange_diamond:"
-              )} Unhealthy for Sensitive Groups`;
-            }
-            if (pm25 > 151) {
-              pm25_color = "#f52c2a";
-              pm25_warning = `${emoji.get(":bangbang:")} Unhealthy`;
-            }
-            if (pm25 > 201) {
-              pm25_color = "#cc0033";
-              pm25_warning = `${emoji.get(":sos:")} Very Unhealthy`;
-            }
-            if (pm25 > 300) {
-              pm25_color = "#990228";
-              pm25_warning = `${emoji.get(":skull:")} Hazardous`;
-            }
-            if (pm25 == 0) {
-              pm25_warning = "";
-              pm25 = "no data";
-            }
-            contents.push({
-              type: "box",
-              layout: "vertical",
-              margin: "none",
-              spacing: "sm",
-              contents: [
-                {
-                  type: "box",
-                  layout: "horizontal",
-                  contents: [
-                    {
-                      type: "text",
-                      text: addr,
-                      weight: "bold",
-                      color: "#1DB446",
-                      size: "sm",
-                      flex: 0
-                    },
-                    {
-                      type: "text",
-                      text: `🏠 ${city}`,
-                      size: "sm",
-                      color: "#111111",
-                      align: "end"
-                    }
-                  ]
-                },
-                {
-                  type: "box",
-                  layout: "horizontal",
-                  contents: [
-                    {
-                      type: "text",
-                      text: `PM2.5 @ ${uTime}`,
-                      weight: "bold",
-                      size: "sm",
-                      color: "#555555",
-                      flex: 0
-                    },
-                    {
-                      type: "text",
-                      text: `${pm25} ${pm25_warning}`,
-                      weight: "bold",
-                      size: "sm",
-                      color: pm25_color,
-                      align: "end"
-                    }
-                  ]
-                }
-              ]
-            });
-            // weather
-            //console.log(JSON.stringify(resp.data, null, 2));
-            var windDat = wind.data.WeatherForecasts[0].forecasts.map(v => {
-              if (!v) return "";
-              var ret = "",
-                dir = v.data.wd10m / 22.5;
-              ret += dir >= 15 || dir < 1 ? emoji.get("arrow_down") : "";
-              ret += 1 <= dir && dir < 3 ? emoji.get("arrow_lower_left") : "";
-              ret += 3 <= dir && dir < 5 ? emoji.get("arrow_left") : "";
-              ret += 5 <= dir && dir < 7 ? emoji.get("arrow_upper_left") : "";
-              ret += 7 <= dir && dir < 9 ? emoji.get("arrow_up") : "";
-              ret += 9 <= dir && dir < 11 ? emoji.get("arrow_upper_right") : "";
-              ret += 11 <= dir && dir < 13 ? emoji.get("arrow_right") : "";
-              ret += 13 <= dir && dir < 15 ? emoji.get("arrow_lower_right") : "";
-              return ret;
-            });
-            // console.log(JSON.stringify(windDat, null, 2));
-            var dat = weather.data.hourly.data.slice(0, duration);
-            var isFirstForecast = true;
-            if (!dat.length) return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
-            if (!windDat.length) return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
-            var weatherDat = dat.map(v => {
-              return forecast2string(v);
-            });
-            // console.log(JSON.stringify(wind.data, null, 2));
-            // console.log(JSON.stringify(dat, null, 2));
-            // console.log(JSON.stringify(windDat, null, 2));
-            // console.log(JSON.stringify(weatherDat, null, 2));
-            for (var i = 0; i < duration; i++) {
-              var t = weatherDat[i].split("%");
-              contents.push({
-                type: "text",
-                text: `${t[0]}% ${windDat[i]} ${t[1]}`,
-                color: "#555555",
-                size: "sm",
-                margin: isFirstForecast ? "md" : "none"
-              });
-              isFirstForecast = false;
-            }
-            ret.body = {
-              type: "box",
-              layout: "vertical",
-              contents,
-              paddingAll: "10px"
-            };
-            return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
-          })
-        )
-        .catch(err => {
-          console.log(err);
-          console.log("api error naja");
-          return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
-        });
+          }
+        ]
+      }
+    };
+    var contents = [];
+    var airContent = [
+      {
+        type: "box",
+        layout: "horizontal",
+        contents: [
+          {
+            type: "text",
+            text: addr,
+            weight: "bold",
+            color: "#1DB446",
+            size: "sm",
+            flex: 0
+          },
+          {
+            type: "text",
+            text: city ? `🏠 ${city}` : "",
+            size: "sm",
+            color: "#111111",
+            align: "end"
+          }
+        ]
+      }
+    ];
+    if (city)
+      airContent.push({
+        type: "box",
+        layout: "horizontal",
+        contents: [
+          {
+            type: "text",
+            text: `PM2.5 @ ${uTime}`,
+            weight: "bold",
+            size: "sm",
+            color: "#555555",
+            flex: 0
+          },
+          {
+            type: "text",
+            text: `${pm25} ${pm25_warning}`,
+            weight: "bold",
+            size: "sm",
+            color: pm25_color,
+            align: "end"
+          }
+        ]
+      });
+    contents.push({
+      type: "box",
+      layout: "vertical",
+      margin: "none",
+      spacing: "sm",
+      contents: airContent
     });
+    var isFirstForecast = true;
+    if (weather[0])
+      for (var i = 0; i < duration; i++) {
+        var t = weatherDat[i].split("%");
+        contents.push({
+          type: "text",
+          text: `${t[0]}% ${windDat[i]} ${t[1]}`,
+          color: "#555555",
+          size: "sm",
+          margin: isFirstForecast ? "md" : "none"
+        });
+        isFirstForecast = false;
+      }
+    ret.body = {
+      type: "box",
+      layout: "vertical",
+      contents,
+      paddingAll: "10px"
+    };
+    return resolve([`สภาพอากาศ ณ ${addr}`, ret]);
   }
 
   function forecast2string(inp) {
