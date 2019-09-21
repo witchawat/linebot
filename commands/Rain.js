@@ -476,10 +476,10 @@ const Cmd = function(app) {
     var isFirstForecast = true;
     if (weather[0])
       for (var i = 0; i < duration; i++) {
-        var t = weatherDat[i].split("%");
+        var t = weather[i].split("%");
         contents.push({
           type: "text",
-          text: `${t[0]}% ${windDat[i]} ${t[1]}`,
+          text: `${t[0]}% ${wind[i]} ${t[1]}`,
           color: "#555555",
           size: "sm",
           margin: isFirstForecast ? "md" : "none"
