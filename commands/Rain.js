@@ -262,7 +262,7 @@ const Cmd = function(app) {
     lat = lat || 13.731213;
     lng = lng || 100.541458;
     duration = duration || 6;
-    await axios
+    return await axios
       .get(`https://api.waqi.info/feed/geo:${lat};${lng}/?token=${process.env.AIRQUALITY_TOKEN}`)
       .then(air => {
         let airDat = air.data.data,
@@ -271,7 +271,7 @@ const Cmd = function(app) {
             .pop()
             .split(" "),
           city =
-          airDat.city.name
+            airDat.city.name
               .split("Thailand")
               .pop()
               .split("(")
@@ -319,7 +319,7 @@ const Cmd = function(app) {
     lat = lat || 13.731213;
     lng = lng || 100.541458;
     duration = duration || 6;
-    await axios
+    return await axios
       .get(`https://api.darksky.net/forecast/e3609d95c9670e7e3adc450f54e9c21e/${lat},${lng}`)
       .then(weather => {
         var dat = weather.data.hourly.data.slice(0, duration);
@@ -334,7 +334,7 @@ const Cmd = function(app) {
     lat = lat || 13.731213;
     lng = lng || 100.541458;
     duration = duration || 6;
-    await axios
+    return await axios
       .get(
         `https://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat=${lat}&lon=${lng}&fields=wd10m&duration=${duration}`,
         { headers: { Authorization: "Bearer " + process.env.TMD_TOKEN } }
