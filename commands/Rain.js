@@ -345,8 +345,8 @@ const Cmd = function(app) {
         console.log("has wind data");
 
         var windDat = wind.data.WeatherForecasts[0].forecasts.map(v => {
-          if (!v) return "";
-          var ret = "",
+          if (!v) return " ";
+          var ret = " ",
             dir = v.data.wd10m / 22.5;
           ret += dir >= 15 || dir < 1 ? emoji.get("arrow_down") : "";
           ret += 1 <= dir && dir < 3 ? emoji.get("arrow_lower_left") : "";
@@ -485,7 +485,7 @@ const Cmd = function(app) {
         var t = weather[i].split("%");
         contents.push({
           type: "text",
-          text: `${t[0]}% ${wind[i]} ${t[1]}`,
+          text: `${t[0]}%${wind[i]} ${t[1]}`,
           color: "#555555",
           size: "sm",
           margin: isFirstForecast ? "md" : "none"
