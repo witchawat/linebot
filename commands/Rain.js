@@ -265,13 +265,13 @@ const Cmd = function(app) {
     await axios
       .get(`https://api.waqi.info/feed/geo:${lat};${lng}/?token=${process.env.AIRQUALITY_TOKEN}`)
       .then(air => {
-        let airData = air.data.data,
-          uTime = airData.time.s
+        let airDat = air.data.data,
+          uTime = airDat.time.s
             .split("-")
             .pop()
             .split(" "),
           city =
-            airData.city.name
+          airDat.city.name
               .split("Thailand")
               .pop()
               .split("(")
@@ -280,8 +280,8 @@ const Cmd = function(app) {
               .split(")")
               .slice(0, -1)
               .join(")")
-              .trim() || airData.city.name,
-          pm25 = airData.iaqi.pm25 ? airData.iaqi.pm25.v * 1 : 0,
+              .trim() || airDat.city.name,
+          pm25 = airDat.iaqi.pm25 ? airDat.iaqi.pm25.v * 1 : 0,
           pm25_warning = `${emoji.get(":white_check_mark:")} Good`,
           pm25_color = "#111111";
 
