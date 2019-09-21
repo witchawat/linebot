@@ -340,6 +340,8 @@ const Cmd = function(app) {
         { headers: { Authorization: "Bearer " + process.env.TMD_TOKEN } }
       )
       .then(wind => {
+        console.log('has wind data');
+        
         var windDat = wind.data.WeatherForecasts[0].forecasts.map(v => {
           if (!v) return "";
           var ret = "",
@@ -357,6 +359,8 @@ const Cmd = function(app) {
         return windDat;
       })
       .catch(e => {
+        console.log('wind data error');
+        
         return new Array(duration).fill("");
       });
   }
