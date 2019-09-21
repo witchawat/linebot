@@ -309,10 +309,10 @@ const Cmd = function(app) {
           pm25_warning = "";
           pm25 = "no data";
         }
-        return [uTime, city, pm25_warning, pm25_color];
+        return [uTime, city, pm25, pm25_warning, pm25_color];
       })
       .catch(e => {
-        return [new Array(4).fill("")];
+        return [new Array(5).fill("")];
       });
   }
   async function weatherData(lat, lng, duration) {
@@ -379,7 +379,7 @@ const Cmd = function(app) {
     // สวนหลวง ร.9 13.689716, 100.669553
     var weather = await weatherData(lat, lng, duration);
     console.log("weather", weather);
-    var [uTime, city, pm25_warning, pm25_color] = await airData(lat, lng, duration);
+    var [uTime, city, pm25, pm25_warning, pm25_color] = await airData(lat, lng, duration);
     console.log("air", pm25_warning);
     var wind = await windData(lat, lng, duration);
     console.log("wind", wind);
