@@ -339,7 +339,7 @@ const Cmd = function(app) {
     return await axios
       .get(
         `https://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat=${lat}&lon=${lng}&fields=wd10m&duration=${duration}`,
-        { headers: { Authorization: "Bearer " + process.env.TMD_TOKEN }, timeout: 200 }
+        { headers: { Authorization: "Bearer " + process.env.TMD_TOKEN }, timeout: 300 }
       )
       .then(wind => {
         console.log("has wind data");
