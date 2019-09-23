@@ -52,7 +52,7 @@ const Cmd = function(app) {
         altText,
         contents
       };
-      console.log(JSON.stringify(ret, null, 2));
+      //console.log(JSON.stringify(ret, null, 2));
     }
     if (cmd == "rainvid") {
       if (vidStat == "error")
@@ -343,7 +343,7 @@ const Cmd = function(app) {
       )
       .then(wind => {
         console.log("has wind data");
-
+return '';
         var windDat = wind.data.WeatherForecasts[0].forecasts.map(v => {
           if (!v) return " ";
           var ret = " ",
