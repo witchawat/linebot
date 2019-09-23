@@ -336,13 +336,14 @@ const Cmd = function(app) {
     lat = lat || 13.731213;
     lng = lng || 100.541458;
     duration = duration || 6;
+    var foo = new Date().getTime();
     return await axios
       .get(
         `https://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat=${lat}&lon=${lng}&fields=wd10m&duration=${duration}`,
-        { headers: { Authorization: "Bearer " + process.env.TMD_TOKEN }, timeout: 1000 }
+        { headers: { Authorization: "Bearer " + process.env.TMD_TOKEN }, timeout: 5000 }
       )
       .then(wind => {
-        console.log("has wind data");
+        console.log("has wind data ", new Date().getTime() - foo);
         var windDat = wind.data.WeatherForecasts[0].forecasts.map(v => {
           if (!v) return " ";
           var ret = " ",
