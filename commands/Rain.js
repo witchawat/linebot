@@ -344,8 +344,10 @@ const Cmd = function(app) {
       )
       .then(wind => {
         console.log("has wind data ", new Date().getTime() - foo);
-console.log(JSON.stringify(wind.data,null,2));
-        var windDat = wind.data.WeatherForecasts[0].forecasts.map(v => {
+//console.log(JSON.stringify(wind.data,null,2));
+        if(!wind.data.WeatherForecasts[0].forecasts)
+return new Array(duration).fill("");
+var windDat = wind.data.WeatherForecasts[0].forecasts.map(v => {
           if (!v) return " ";
           var ret = " ",
             dir = v.data.wd10m / 22.5;
