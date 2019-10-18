@@ -344,7 +344,7 @@ const Cmd = function(app) {
       )
       .then(wind => {
         console.log("has wind data ", new Date().getTime() - foo);
-console.log(JSON.stringify(wind,null,2);
+console.log(JSON.stringify(wind,null,2));
         var windDat = wind.data.WeatherForecasts[0].forecasts.map(v => {
           if (!v) return " ";
           var ret = " ",
