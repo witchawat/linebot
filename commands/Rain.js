@@ -345,7 +345,7 @@ const Cmd = function(app) {
       .then(wind => {
         console.log("has wind data ", new Date().getTime() - foo);
 //console.log(JSON.stringify(wind.data,null,2));
-        if(!wind.data.WeatherForecasts[0].forecasts)
+        if(!wind.data.WeatherForecasts[0].forecasts.length)
 return new Array(duration).fill("");
 var windDat = wind.data.WeatherForecasts[0].forecasts.map(v => {
           if (!v) return " ";
@@ -488,7 +488,7 @@ var windDat = wind.data.WeatherForecasts[0].forecasts.map(v => {
         var t = weather[i].split("%");
         contents.push({
           type: "text",
-          text: `${t[0]}%${wind[i]} ${t[1]}`,
+          text: `${t[0]}%${wind[i]||''} ${t[1]}`,
           color: "#555555",
           size: "sm",
           margin: isFirstForecast ? "md" : "none"
