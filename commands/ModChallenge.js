@@ -8,13 +8,31 @@ const Cmd = function() {
     console.log("-----------mod challenge");
 
     var ids = evt.message.text.split(/[\s,]+/).splice(1);
-
-    console.log(cmd, evt);
-    console.log(ids);
-
-    if (cmd == "modFactorTo1") {
-      console.log({ newMul: 1, ids });
+    var newMul = 1;
+    if (cmd == "modfactorto2") {
+      newMul = 2;
     }
+    if (cmd == "modfactorto3") {
+      newMul = 3;
+    }
+    axios
+      .post("https://icmm.run/ranger/profile/mod_promo_multiplier", {
+        newMul,
+        ids,
+        pwd: "ZI^yK+bGdHbE&Upn04X7u!7&PV2X0v+1ID9xV0b?YWz"
+      })
+      .then(r =>
+        _this.emit("replyMessage", {
+          replyToken: evt.replyToken,
+          message: { type: "text", text: r.data }
+        })
+      )
+      .catch(e =>
+        _this.emit("replyMessage", {
+          replyToken: evt.replyToken,
+          message: { type: "text", text: "error มากก" }
+        })
+      );
   };
   util.inherits(Cmd, events.EventEmitter);
 };
