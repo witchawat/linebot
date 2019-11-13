@@ -5,6 +5,8 @@ const Cmd = function() {
   events.EventEmitter.call(this);
   const _this = this;
   this.handleEvent = function(evt, cmd, param) {
+    // only ปั้น+เอก can use
+    if (["Uea2175b9174b7fb693edac4b153170c6", "Ub24e70b8331c3512df8cea02a37ff16b"].indexOf(evt.source.userId) < 0) return;
     var ids = evt.message.text.split(/[\s,]+/).splice(1);
     var newMul = 1;
     if (cmd == "modfactorto2") {
