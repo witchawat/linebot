@@ -16,7 +16,7 @@ const Cmd = function() {
       newMul = 3;
     }
     axios
-      .post("https://icmm.run/ranger/profile/mod_promo_multiplier", {
+      .post("https://icmm.run/ranger/mod_promo_multiplier", {
         newMul,
         ids,
         pwd: "ZI^yK+bGdHbE&Upn04X7u!7&PV2X0v+1ID9xV0b?YWz"
