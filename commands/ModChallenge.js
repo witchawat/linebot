@@ -7,9 +7,13 @@ const Cmd = function() {
   this.handleEvent = function(evt, cmd, param) {
     console.log('-----------mod challenge');
     
-    console.log(evt);
-    console.log(param);
+    var ids=evt.message.text.split(/[\s,]+/).splice(1);
     
+    console.log(evt);
+    if (cmd == "modFactorTo1") {
+      console.log({newMul:1,ids});
+      
+    }
   };
   util.inherits(Cmd, events.EventEmitter);
 };
