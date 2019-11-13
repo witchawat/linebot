@@ -25,7 +25,7 @@ const Cmd = function() {
       .post("https://icmm.run/ranger/mod_promo_multiplier", {
         newMul,
         ids,
-        pwd: "ZI^yK+bGdHbE&Upn04X7u!7&PV2X0v+1ID9xV0b?YWz"
+        pwd: process.env.MOD_MULTIPLIER_PWD
       })
       .then(r =>
         _this.emit("replyMessage", {
