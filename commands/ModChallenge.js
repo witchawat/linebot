@@ -8,6 +8,8 @@ const Cmd = function() {
     console.log('-----------mod challenge');
     
     console.log(evt);
+    console.log(param);
+    
   };
   util.inherits(Cmd, events.EventEmitter);
 };
