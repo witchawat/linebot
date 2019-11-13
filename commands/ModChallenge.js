@@ -5,8 +5,6 @@ const Cmd = function() {
   events.EventEmitter.call(this);
   const _this = this;
   this.handleEvent = function(evt, cmd, param) {
-    console.log("-----------mod challenge");
-
     var ids = evt.message.text.split(/[\s,]+/).splice(1);
     var newMul = 1;
     if (cmd == "modfactorto2") {

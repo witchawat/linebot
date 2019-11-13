@@ -188,11 +188,7 @@ const Cmd = function() {
           "\nroomId : " +
           evt.source.roomId +
           "\ngroupId : " +
-          evt.source.groupId +
-          "\nparam : " +
-          param +
-          "\nres : " +
-          JSON.stringify(r.data)
+          evt.source.groupId
       }
     });
   };
