@@ -34,7 +34,7 @@ const config = {
 const client = new line.Client(config);
 var eventHandler = new LineEventHandler(client);
 var airHandler = new Air();
-eventHandler.add(["modFactorTo1","modFactorTo2","modFactorTo3"], new ModChallenge());
+eventHandler.add(["modFactorTo1","modFactorTo2","modFactorTo3","modFactorTo4","modFactorTo5"], new ModChallenge());
 eventHandler.add("air", airHandler);
 eventHandler.add("airloc", airHandler, "location");
 eventHandler.add("log", new MyLog());
