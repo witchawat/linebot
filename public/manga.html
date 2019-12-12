@@ -10,6 +10,7 @@
     <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
     <style>
       body {
         background: #dadde6;
@@ -112,7 +113,7 @@
       <button @click="search" :disabled="!canSearch">search</button> &nbsp;&nbsp;
       <button @click="save" :disabled="isBusy">save</button>&nbsp;
       <br />
-      <!-- {{qqq}}  ::  {{hhh}} -->
+      {{c}}  ::  {{qqq}}  ::  {{hhh}} 
       <br />
       <div ref="searchingListContainer" class="listContainer">
         <b v-if="searchingListDisp.length">{{ searchingListDisp.length }} item(s) found.</b>
@@ -143,6 +144,7 @@
       var _app = new Vue({
         el: "#app",
         data: {
+          c:0,
           q: "",
           qqq: window.location.search,
           hhh: window.location.hash,
@@ -217,6 +219,12 @@
           }
         },
         created() {
+          var ttt=Cookies.get('ttt') ;
+          if(!ttt){
+            Cookies.set('ttt',1);
+          }else{
+            Cookies.set('ttt',ttt*1+1);
+          }
           var _this = this;
           liff.init(r => {
             this.uid = r.context.userId ? r.context.userId : this.uid;
