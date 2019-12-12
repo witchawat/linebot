@@ -219,10 +219,11 @@
           }
         },
         created() {
-          var ttt=Cookies.get('ttt') ;
+          var ttt=Cookies.get('ttt') ;          
           if(!ttt){
             Cookies.set('ttt',1);
           }else{
+            this.c=ttt;
             Cookies.set('ttt',ttt*1+1);
           }
           var _this = this;
