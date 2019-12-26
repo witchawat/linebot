@@ -7,7 +7,7 @@ const Air = require("./commands/Air.js");
 const MyLog = require("./commands/MyLog.js");
 const WolframSolve = require("./commands/WolframSolve.js");
 const WeatherDarkSky = require("./commands/WeatherDarkSky.js");
-const Manga = require("./commands/Manga.js");
+// const Manga = require("./commands/Manga.js"); MangaRock is dead :(
 const ThairunFaceSearch = require("./commands/ThairunFaceSearch.js");
 const Zmn = require("./commands/Zmn.js");
 const FitnessFirst = require("./commands/FitnessFirst.js");
@@ -59,20 +59,20 @@ eventHandler.add(
 if (process.env.NODE_ENV == "production") eventHandler.add("zmnauto", new ZmnAuto());
 const app = express();
 app.use(express.static("public"));
-app.use(
-  "/manga",
-  bodyParser.urlencoded({
-    extended: true
-  })
-);
-app.use("/manga", bodyParser.json());
+// app.use(
+//   "/manga",
+//   bodyParser.urlencoded({
+//     extended: true
+//   })
+// );
+// app.use("/manga", bodyParser.json());
 app.set("port", process.env.PORT || 5000);
 app.post("/webhook", line.middleware(config), (req, res) => {
   req.body.events.forEach(evt => eventHandler.handleEvent(evt));
   res.send("");
 });
-var mangaHandler = new Manga(app);
-eventHandler.add(["mangad", "manga", "mangaRefresh"], mangaHandler);
+// var mangaHandler = new Manga(app);
+// eventHandler.add(["mangad", "manga", "mangaRefresh"], mangaHandler);
 var rainHandler = new Rain(app);
 eventHandler.add(["rain", "rainvid"], rainHandler);
 eventHandler.add("rain_change_loc", rainHandler, "location");
