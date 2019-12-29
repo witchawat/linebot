@@ -27,6 +27,9 @@ const Cmd = function() {
     if (cmd == "modfactorto5") {
       newMul = 5;
     }
+    if (cmd == "modfactorto20") {
+      newMul = 20;
+    }
     axios
       .post("https://icmm.run/ranger/mod_promo_multiplier", {
         newMul,
