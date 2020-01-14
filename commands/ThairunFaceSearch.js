@@ -16,6 +16,9 @@ const Cmd = function() {
     if (cmd == "10hr") {
       searchFace("10-hour-ultramarathon-2019", replyId, picCount, evt.message.id);
     }
+    if (cmd == "icmm") {
+      searchFace("icmm2020", replyId, picCount, evt.message.id);
+    }
   };
 
   function searchFace(raceName, replyId, picCount, contentId) {
