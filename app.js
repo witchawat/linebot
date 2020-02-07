@@ -7,9 +7,9 @@ const Air = require("./commands/Air.js");
 const MyLog = require("./commands/MyLog.js");
 const WolframSolve = require("./commands/WolframSolve.js");
 const WeatherDarkSky = require("./commands/WeatherDarkSky.js");
- const Manga = require("./commands/Manga.js"); 
+// const Manga = require("./commands/Manga.js"); 
 // MangaRock is dead :(
-const ThairunFaceSearch = require("./commands/ThairunFaceSearch.js");
+// const ThairunFaceSearch = require("./commands/ThairunFaceSearch.js");
 const Zmn = require("./commands/Zmn.js");
 const FitnessFirst = require("./commands/FitnessFirst.js");
 // const WeatherDarkSky = require("./commands/WeatherDarkSky.js");
@@ -44,7 +44,7 @@ eventHandler.add("solve", new WolframSolve());
 //   ["weather", "w", "w1", "w2", "w3", "w4", "w5", "w6", "w7", "w8", "w9", "w10"],
 //   new WeatherDarkSky()
 // );
-eventHandler.add(["icmm"], new ThairunFaceSearch(), "image");
+//eventHandler.add(["icmm"], new ThairunFaceSearch(), "image");
 eventHandler.add("zmn", new Zmn());
 eventHandler.add("ff", new FitnessFirst());
 eventHandler.add(
@@ -72,8 +72,8 @@ app.post("/webhook", line.middleware(config), (req, res) => {
   req.body.events.forEach(evt => eventHandler.handleEvent(evt));
   res.send("");
 });
-var mangaHandler = new Manga(app);
-eventHandler.add(["mangad", "manga", "mangaRefresh"], mangaHandler);
+// var mangaHandler = new Manga(app);
+// eventHandler.add(["mangad", "manga", "mangaRefresh"], mangaHandler);
 var rainHandler = new Rain(app);
 eventHandler.add(["rain", "rainvid"], rainHandler);
 eventHandler.add("rain_change_loc", rainHandler, "location");
