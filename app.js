@@ -71,8 +71,8 @@ app.post("/webhook", line.middleware(config), (req, res) => {
   req.body.events.forEach(evt => eventHandler.handleEvent(evt));
   res.send("");
 });
-// var mangaHandler = new Manga(app);
-// eventHandler.add(["mangad", "manga", "mangaRefresh"], mangaHandler);
+var mangaHandler = new Manga(app);
+eventHandler.add(["mangad", "manga", "mangaRefresh"], mangaHandler);
 var rainHandler = new Rain(app);
 eventHandler.add(["rain", "rainvid"], rainHandler);
 eventHandler.add("rain_change_loc", rainHandler, "location");
